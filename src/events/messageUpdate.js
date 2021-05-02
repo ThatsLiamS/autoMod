@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const GhostPing = require('discord.js-ghost-ping');
 
 module.exports = {
-	name: 'messageUpdate',
-	async execute(oldMessage, newMessage, client, firestore) {
+    name: 'messageUpdate',
+    async execute(oldMessage, newMessage, client, firestore) {
 
         GhostPing.detector("messageUpdate", oldMessage, newMessage).catch(() => { })
         
