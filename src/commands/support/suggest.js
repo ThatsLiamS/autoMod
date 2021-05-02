@@ -21,8 +21,8 @@ module.exports = {
             let avatarURL = message.guild.iconURL();
             if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
             await webhook.send({username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] }).then(msg, () => {
-		await msg.react('✅')
-		await msg.react('❌')
+		msg.react('✅')
+		msg.react('❌')
 	    })
 	} catch{
             errorMessage = true
