@@ -45,7 +45,7 @@ module.exports = {
                     let channel = message.guild.channels.cache.get(document.data().wordFilter.channel)
                     if(!channel) return message.channel.send('I could not find The logging channel.')
                     
-                    channel.send({embed}).catch(() => { message.channel.send(`I failed to log this in ${channel}`)}).catch(() => { })
+                    channel.send(embed).catch(() => { message.channel.send(`I failed to log this in ${channel}`)}).catch(() => { })
                     break; 
                 }
             }
