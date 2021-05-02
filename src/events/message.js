@@ -3,7 +3,7 @@ const prefix = "!";
 
 module.exports = {
     name: 'message',
-	async execute(message, client, firestore) {
+    async execute(message, client, firestore) {
         if (!message.author.bot && message.guild === null) return
         
         if(message.content.startsWith(prefix)){
