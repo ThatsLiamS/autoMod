@@ -7,11 +7,12 @@ module.exports = {
         
         const flip = Math.floor((Math.random() * 100) + 0);
         let ans = ``
-
-        if(flip % 2 == 0) ans = `heads`
-        else ans = `tails`
-
-        if(flip == 73) ans = `its side! Impressive`
+        
+        if(flip != 73){
+            if(flip % 2 == 0) ans = `heads`
+            else ans = `tails`
+        }
+        else ans = `its side! Impressive`
    
         const embed = new Discord.MessageEmbed()
         .setTitle(`Coin Flipper`)
@@ -19,7 +20,5 @@ module.exports = {
         .setColor(`#cd7f32`)
         .setThumbnail(`https://i.imgur.com/4Zw6qky.png`)
         message.channel.send(embed).catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`)}).catch(() => { })
-
-        client.developer.get('logs').execute(client, message, "Coin Flip Command")
     }
 }
