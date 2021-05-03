@@ -30,13 +30,11 @@ module.exports = {
         .setTitle(`${memberTarget.user.tag} has been warned`)
         .setColor(`#DC143C`)
         channelMessage.addFields(
-            {name:`**User**`, value:`${memberTarget}  ||  ${memberTarget.user.tag}`},
-            {name:`**Moderator**`, value:`${message.member}  ||  ${message.author.tag}`},
+            {name:`**User**`, value:`${memberTarget}\n${memberTarget.user.tag}`},
+            {name:`**Moderator**`, value:`${message.member}\n${message.author.tag}`},
             {name:`**Reason**`, value:`${reason}`}
         )
         .setFooter(`Bot made by @ThatsLiamS#6950`)
         message.channel.send(channelMessage).catch(() => { message.author.send(`I couldn't send messages in that channel`, channelMessage) }).catch(() => { })
-
-        client.developer.get('logs').execute(client, message, "Warn Command")
     }
 }
