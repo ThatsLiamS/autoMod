@@ -10,21 +10,21 @@ for (const file of files) {
 
 module.exports = {
     name: 'disable',
-    description: "Provides the ability to toggle certain features off, to help suit your requirements!",
+    description: "Provides the ability to toggle certain features off, to help suit your server!\n\nThe features are: `word-filter` ~~and `ghost-ping`",
     usage: '<feature>',
-    permissions: ["Admin"],
+    permissions: ["administrator"],
     async execute(message, args, prefix, client, firestore){
-        client.developer.get('logs').execute(client, message, "Disable Command")
 
-        let member = message.member
+        const member = message.member
         if(member.hasPermission('ADMINISTRATOR')){
             
-            if(!args[0]) return message.reply(`Please include the feature you wish to disable`)
+            if(!args[0]) return message.reply(`Please include the features you want to disable! To view the features do \`${prefix}help disable\``)
 
             if(args[0] == "word-filter") disable.get('wordFilter').execute(message, args, prefix, client, firestore)
-            else{
-                return message.reply('That is not a valid feature! The features are: `word-filter`')
-            }       
+            if(args[0] == "ghost-ping") disable.get('ghostPing').execute(message, args, prefix, client, firestore)
+            
+            else return message.reply(`That is not a valid feature! To view the features do \`${prefix}help disable\``)
+   
         }
         else{
             message.reply(`:no: You do not have permission to use this command.`)
