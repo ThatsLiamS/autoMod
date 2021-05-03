@@ -20,10 +20,8 @@ module.exports = {
             const webhook = webhooks.first();
             let avatarURL = message.guild.iconURL();
             if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
-            await webhook.send({username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] }).then(msg, () => {
-		msg.react('✅')
-		msg.react('❌')
-	    })
+            await webhook.send({username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] })
+		
 	} catch{
             errorMessage = true
 	    message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`)}).catch(() => { })
