@@ -15,11 +15,10 @@ module.exports = {
 
             await message.delete().catch(() => { })
             message.channel.bulkDelete(args[0]).catch(() => { message.channel.send("I can not delete messages over 14 days old") })
-            
-            client.developer.get('logs').execute(client, message, "Clear Command")
+          
         }
         else{
-            message.reply(`I'm sorry, You do not have permission to use this command.`).catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`)}).catch(() => { })
+            message.reply(`I'm sorry, You do not have permission to use this command.`).catch(() => { message.author.send(`I'm sorry. You do not have permission to use that command`)}).catch(() => { })
         }
     }
 }
