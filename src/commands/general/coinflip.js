@@ -6,13 +6,10 @@ module.exports = {
     async execute(message, args, prefix, client, firestore){
         
         const flip = Math.floor((Math.random() * 100) + 0);
-        let ans = ``
-        
-        if(flip != 73){
-            if(flip % 2 == 0) ans = `heads`
-            else ans = `tails`
-        }
-        else ans = `its side! Impressive`
+        let ans = `heads`
+
+        if(flip % 2 == 0) ans = `tails`
+        if(flip == 73) ans = `its side! Impressive`
    
         const embed = new Discord.MessageEmbed()
         .setTitle(`Coin Flipper`)
