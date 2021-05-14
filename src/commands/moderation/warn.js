@@ -6,7 +6,6 @@ module.exports = {
     permissions: ["Kick Members"], 
     aliases: ["w"],
     async execute(message, args, prefix, client, firestore){
-        if(!message.member.hasPermission("KICK_MEMBERS") && !message.member.hasPermission("ADMINISTRATOR") && !message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You do not have the correct permissions to use this command.").catch(() => { message.author.send(`You do not have the correct permissions to use this command.`) }).catch(() => { })
 
         let memberTarget = message.guild.members.cache.get(args[0]) || message.mentions.members.first()
         if(!memberTarget) return message.channel.send("Please mention/include the user you want to warn").catch(() => { message.author.send(`Please mention/include the user you want to warn`) }).catch(() => { })
