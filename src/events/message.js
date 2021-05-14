@@ -3,7 +3,9 @@ const prefix = "!";
 
 module.exports = {
     name: 'message',
-    async execute(message, client, firestore) {
+	async execute(message, client, firestore) {
+        let error = false;
+
         if (!message.author.bot && message.guild === null) return
         
         if(message.content.startsWith(prefix)){
@@ -12,6 +14,16 @@ module.exports = {
             if (command.length === 0) return;
             let cmd = client.commands.get(command) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
             if (!cmd) return;
+
+            if(cmd.permissions){
+                await cmd.permissions.forEach(permission => { 
+                    if(!message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.guild.me.hasPermission('ADMINISTRATOR')){
+                        message.channel.send(`You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\``)
+                        error = true
+                        return
+                    }
+                });
+            }
 
             let Ref = await firestore.collection(`servers`).doc(`${message.guild.id}`).get()
             if (!Ref.data()){
