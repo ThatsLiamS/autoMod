@@ -3,12 +3,9 @@ module.exports = {
     name: 'slowmode',
     description: "Change the slowmode time in the channel!",
     usage: '<number/off>',
-    permissions: ["Manage Channel"], 
+    permissions: ["Manage Channels"], 
     aliases: ["sm"],
     async execute(message, args, prefix, client, firestore){
-        
-        if(!message.member.hasPermission("MANAGE_CHANNELS")) return message.reply("You do not have permission to use this command, if it is a mistake please contact the server owner").catch(() => { })
-        if(!message.guild.me.hasPermission("MANAGE_CHANNELS") && !message.guild.me.hasPermission("ADMINISTRATOR")) return message.reply("I do have not permission to manage the channel").catch(() => { })
         
         if(!args[0]) return message.reply("Please include how long you want slowmode for").catch(() => { })
 
