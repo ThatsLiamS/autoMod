@@ -17,7 +17,7 @@ module.exports = {
 
             if(cmd.permissions){
                 await cmd.permissions.forEach(permission => { 
-                    if(!message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.guild.me.hasPermission('ADMINISTRATOR')){
+                    if(!message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.member.hasPermission('ADMINISTRATOR')){
                         message.channel.send(`You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\``)
                         error = true
                         return
