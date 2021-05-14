@@ -4,7 +4,6 @@ module.exports = {
     description: "Temporarily removes a member from the server!\nNote: They can rejoin if they have a invite code",
     usage: '<@member> [reason]',
     permissions: ["Kick Members"], 
-    myPermissions: ['Kick Members', 'Send Messages', 'Embed Links'],
     aliases: ["k"],
     async execute(message, args, prefix, client, firestore){
  
