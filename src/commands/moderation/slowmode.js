@@ -17,15 +17,17 @@ module.exports = {
                 message.reply("**I am unable to turn the slowmode off.**").catch(() => { })
             }
         }
+        else{
 
-        if (isNaN (args[0])) return message.reply("Please provide a number to the slowmode to.").catch(() => {})
-        if(Number(args[0]) > 21600) return message.reply("Sorry but slowmode can't be above 6 hours (21,600 seconds)").catch(() => {})
+            if (isNaN (args[0])) return message.reply("Please provide a number to the slowmode to.").catch(() => {})
+            if(Number(args[0]) > 21600) return message.reply("Sorry but slowmode can't be above 6 hours (21,600 seconds)").catch(() => {})
         
-        try{
-            message.channel.setRateLimitPerUser(args[0])
-            message.channel.send(`Sucessfully set the slowmode in ${message.channel} to ${args[0]}!`).catch(() => {})
-        }catch{
-            message.channel.send(`**I am unable to set the slowmode to ${number}, sorry ${message.member}!`).catch(() => {})
+            try{
+                message.channel.setRateLimitPerUser(args[0])
+                message.channel.send(`Sucessfully set the slowmode in ${message.channel} to ${args[0]}!`).catch(() => {})
+            }catch{
+                message.channel.send(`**I am unable to set the slowmode to ${number}, sorry ${message.member}!`).catch(() => {})
+            }
         }
     }
 }
