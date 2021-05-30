@@ -1,0 +1,5 @@
+# Contains all node packages. Install with 'npm install <package name>'
+node_modules/
+
+# Contains testing tools and database information
+src/util/developer/
