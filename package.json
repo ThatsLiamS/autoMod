@@ -30,5 +30,8 @@
     "firebase-admin": "^9.9.0",
     "moment": "^2.29.1",
     "topgg-autoposter": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0"
   }
 }

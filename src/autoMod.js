@@ -1,4 +1,6 @@
-const express = require('express'); const app = express(); const port = 3000;
+const express = require('express');
+const app = express();
+const port = 3000;
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 
@@ -17,11 +19,11 @@ const firestore = admin.firestore();
 client.commands = new Discord.Collection();
 const categories = fs.readdirSync(`${__dirname}/commands/`);
 for (const category of categories) {
-    const commandFiles = fs.readdirSync(`${__dirname}/commands/${category}`).filter(File => File.endsWith('.js'));
-    for (const file of commandFiles) {
-        const command = require(`${__dirname}/commands/${category}/${file}`);
-        client.commands.set(command.name, command);
-    }
+	const commandFiles = fs.readdirSync(`${__dirname}/commands/${category}`).filter(File => File.endsWith('.js'));
+	for (const file of commandFiles) {
+		const command = require(`${__dirname}/commands/${category}/${file}`);
+		client.commands.set(command.name, command);
+	}
 }
 
 const eventFiles = fs.readdirSync(`${__dirname}/events`).filter(file => file.endsWith('.js'));
@@ -31,4 +33,4 @@ for (const file of eventFiles) {
 	else client.on(event.name, (...args) => event.execute(...args, client, firestore));
 }
 
-client.login(process.env['AutomodToken'])
+client.login(process.env['AutomodToken']);
