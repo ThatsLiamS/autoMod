@@ -3,9 +3,8 @@ module.exports = {
 	description: 'Make autoMod repeat your sentence!',
 	aliases: ["repeat"],
 	usage: '<message>',
+	arguments: 1,
 	async execute(message, args) {
-		if(!args[0]) return message.reply("Please include a message for me to say...");
-
 		const profanities = ["@", "bastard", "cunt", "fanny", "shit", "bitch", "pussy", "wanker", "fuck", "nigger", "nigga", "gook", "niger", "dick", " cum ", "penis", "vagina"];
 		const msg = message.content.toLowerCase();
 		for (let x = 0; x < profanities.length; x++) {

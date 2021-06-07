@@ -5,6 +5,7 @@ module.exports = {
 	name: 'serverinfo',
 	description: 'Displays lots of cool information about the server!',
 	aliases: ["server"],
+	arguments: 0,
 	async execute(message,) {
 		const member = message.member;
 

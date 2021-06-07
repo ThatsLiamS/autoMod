@@ -4,9 +4,8 @@ module.exports = {
 	usage: '<number/off>',
 	permissions: ["Manage Channels"],
 	aliases: ["sm"],
+	arguments: 1,
 	async execute(message, args) {
-
-		if(!args[0]) return message.reply("Please include how long you want slowmode for").catch();
 
 		if(args[0] == "off") {
 			try{

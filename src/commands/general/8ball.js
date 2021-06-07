@@ -26,9 +26,8 @@ module.exports = {
 	description: 'Ask a question, and get an answer from the all-knowing, magic 8ball!',
 	aliases: ["8-ball"],
 	usage: '<question>',
+	arguments: 1,
 	async execute(message, args) {
-
-		if(!args[0]) return message.reply(`Please include your question to ask the \`magic 8ball\`.`);
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`Magic 8 Ball`)

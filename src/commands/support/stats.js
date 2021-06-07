@@ -4,6 +4,7 @@ module.exports = {
 	name: "stats",
 	description: "Shows information about the bot: `prefix`, `server count`, `user count`, `uptime` and so much more!",
 	aliases: ["about", "botinfo"],
+	arguments: 0,
 	async execute(message, args, prefix, client) {
 
 		const ping = Math.round(client.ws.ping);

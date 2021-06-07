@@ -3,13 +3,14 @@ module.exports = {
 	name: 'coinflip',
 	description: 'Flip a coin! Very good for making decisions.',
 	aliases: ["cf", "coinflipper"],
+	arguments: 0,
 	async execute(message) {
 
 		const flip = Math.floor((Math.random() * 100) + 0);
 		let ans = `heads`;
 
-		if(flip % 2 == 0) ans = `tails`;
-		if(flip == 73) ans = `its side! Impressive`;
+		if(flip % 2 == 0) { ans = `tails`; }
+		if(flip == 73) { ans = `its side! Impressive`; }
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`Coin Flipper`)

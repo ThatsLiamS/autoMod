@@ -3,6 +3,7 @@ module.exports = {
 	name: 'leave',
 	description: "Forces autoMod to leave the server :sob:",
 	ownerOnly: true,
+	arguments: 0,
 	async execute(message) {
 
 		const embed = new Discord.MessageEmbed()

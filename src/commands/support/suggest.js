@@ -4,10 +4,10 @@ module.exports = {
 	name: "suggest",
 	description: "Suggest a new feature for autoMod",
 	usage: '<detailed suggestion>',
+	arguments: 2,
 	async execute(message, args, prefix, client) {
 
 		let errorMessage = false;
-		if(!args[0]) return message.reply("Please include your suggestion");
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
@@ -29,8 +29,9 @@ module.exports = {
 			errorMessage = true;
 			message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`); }).catch();
 		}
-		if(errorMessage == true) return;
-		message.reply(`Thanks for your suggestion. It has been sent to my developer`).catch(() => { message.author.send(`Thanks for your suggestion. It has been sent to my developer`); }).catch();
-		message.delete().catch();
+		if(errorMessage == false) {
+			message.reply(`Thanks for your suggestion. It has been sent to my developer`).catch(() => { message.author.send(`Thanks for your suggestion. It has been sent to my developer`); }).catch();
+			message.delete().catch();
+		}
 	}
 };

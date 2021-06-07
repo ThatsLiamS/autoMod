@@ -13,13 +13,18 @@ module.exports = {
 	description: "Provides the ability to toggle certain features off, to help suit your server!\n\nThe features are: `word-filter` ~~and `ghost-ping`",
 	usage: '<feature>',
 	permissions: ["administrator"],
+	arguments: 1,
 	async execute(message, args, prefix, client, firestore) {
 
-		if(!args[0]) return message.reply(`Please include the features you want to disable! To view the features do \`${prefix}help disable\``);
+		if(args[0] == "word-filter") {
+			disable.get('wordFilter').execute(message, args, prefix, client, firestore);
+		}
+		else if(args[0] == "ghost-ping") {
+			disable.get('ghostPing').execute(message, args, prefix, client, firestore);
+		}
 
-		if(args[0] == "word-filter") disable.get('wordFilter').execute(message, args, prefix, client, firestore);
-		else if(args[0] == "ghost-ping") disable.get('ghostPing').execute(message, args, prefix, client, firestore);
-
-		else return message.reply(`That is not a valid feature! To view the features do \`${prefix}help disable\``);
+		else {
+			return message.reply(`That is not a valid feature! To view the features do \`${prefix}help disable\``);
+		}
 	}
 };

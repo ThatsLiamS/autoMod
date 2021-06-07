@@ -18,20 +18,27 @@ module.exports = {
 
 					if(cmd.permissions) {
 						await cmd.permissions.forEach(permission => {
-							if(!message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.member.hasPermission('ADMINISTRATOR')) {
-								message.channel.send(`You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\``);
+							if(!message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.member.hasPermission('ADMINISTRATOR') && error == false) {
+								message.channel.send(`You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\``).catch();
 								error = true;
 							}
 						});
 					}
 
-					if(cmd.arguments) {
+					if(cmd.arguments && error === false) {
 						const number = cmd.arguments;
 						if(number >= 1) {
 							if(!args[number - 1]) {
-								message.channel.send(`Incorrect usage, make sure it follows the format: \`${prefix}${cmd.name} ${cmd.usage}\``);
+								message.channel.send(`Incorrect usage, make sure it follows the format: \`${prefix}${cmd.name} ${cmd.usage}\``).catch();
 								error = true;
 							}
+						}
+					}
+
+					if(cmd.ownerOnly && error === false) {
+						if(message.author.id !== message.guild.ownerID) {
+							message.channel.send(`You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\``).catch();
+							error = true;
 						}
 					}
 
@@ -43,7 +50,6 @@ module.exports = {
 								guild: message.guild.id, wordFilter: { on: false, channel: `n/a`, level: `soft` }, ghostping: { on: false, everyone: false, logs: { on: false, channel: `n/a` } }, welcome: { on: false, channel: `n/a`, embed: { title: `n/a`, message: `n/a`, color: `n/a`, footer: `n/a` } }, logs: { on: false, channel: `n/a` }
 							});
 						}
-
 
 						cmd.execute(message, args, prefix, client, firestore);
 						logs(client, message, `${command} Command`);

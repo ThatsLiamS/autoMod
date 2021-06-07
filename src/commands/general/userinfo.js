@@ -36,6 +36,9 @@ module.exports = {
 		});
 		if(roles.length < 1) { roles = "none"; }
 
+		let listOfRoles = member.roles.cache.sort((a, b) => b.position - a.position);
+		message.channel.send(listOfRoles);
+
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${member.user.tag}'s Info`)
 			.setThumbnail(member.user.displayAvatarURL())
