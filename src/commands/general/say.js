@@ -15,6 +15,8 @@ module.exports = {
 		}
 
 		let m3ssage = args.slice(0).join(" ");
-		message.channel.send(m3ssage).catch(() => { message.author.send(`I am not able to send messages in ${message.channel}, please move to another channel`); }).catch();
+		message.channel.send(m3ssage).catch(() => {
+			message.author.send(`I am not able to send messages in ${message.channel}, please move to another channel`).catch();
+		}).catch();
 	}
 };

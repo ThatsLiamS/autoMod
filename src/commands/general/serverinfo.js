@@ -10,7 +10,7 @@ module.exports = {
 		const member = message.member;
 
 		let owner = await message.guild.members.cache.get(message.guild.ownerID);
-		if(!owner) owner = await message.guild.ownerID;
+		if(!owner) { owner = await message.guild.ownerID; }
 
 		const serverEmbed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
@@ -27,7 +27,9 @@ module.exports = {
 			.setTimestamp()
 			.setFooter(`Requested By ${member.user.tag}`);
 
-		message.channel.send(serverEmbed).catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`); }).catch();
+		message.channel.send(serverEmbed).catch(() => {
+			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
+		}).catch();
 
 	}
 };

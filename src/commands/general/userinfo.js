@@ -36,9 +36,6 @@ module.exports = {
 		});
 		if(roles.length < 1) { roles = "none"; }
 
-		let listOfRoles = member.roles.cache.sort((a, b) => b.position - a.position);
-		message.channel.send(listOfRoles);
-
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`${member.user.tag}'s Info`)
 			.setThumbnail(member.user.displayAvatarURL())
@@ -52,6 +49,7 @@ module.exports = {
 			)
 			.setTimestamp()
 			.setFooter(`Requested By ${message.member.user.tag}`);
+
 		message.channel.send(embed).catch(() => {
 			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
 		}).catch();

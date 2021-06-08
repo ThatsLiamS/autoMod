@@ -5,6 +5,7 @@ module.exports = {
 	usage: '<detailed report>',
 	arguments: 2,
 	async execute(message, args, prefix, client) {
+
 		let errorMessage = false;
 		let mes = args.splice(0).join(" ");
 		let member = message.member;
@@ -27,10 +28,14 @@ module.exports = {
 		}
 		catch {
 			errorMessage = true;
-			message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`); }).catch();
+			message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => {
+				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
+			}).catch();
 		}
 		if(errorMessage == false) {
-			message.reply(`Thanks for your report. It has been sent to my developer`).catch(() => { message.author.send(`Thanks for your report. It has been sent to my developer`); }).catch();
+			message.reply(`Thanks for your report. It has been sent to my developer`).catch(() => {
+				message.author.send(`Thanks for your report. It has been sent to my developer`).catch();
+			}).catch();
 			message.delete().catch();
 		}
 	}

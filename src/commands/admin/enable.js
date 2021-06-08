@@ -24,7 +24,7 @@ module.exports = {
 		}
 
 		else {
-			return message.reply(`That is not a valid feature! To view the features do \`${prefix}help enable\``);
+			return message.reply(`That is not a valid feature! To view the features do \`${prefix}help enable\``).catch();
 		}
 	}
 };

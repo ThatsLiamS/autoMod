@@ -12,17 +12,17 @@ module.exports = {
 			.setDescription(`To view the information about a certain Command do \n\`${prefix}help <command>\` For Example \`${prefix}help points\``)
 			.addFields(
 				{ name: 'General Commands', value: `\`${prefix}serverinfo\` \`${prefix}userinfo\` \`${prefix}8ball\` \`${prefix}coinflip\` \`${prefix}say\``, inline: true },
-				{ name: 'Moderation Commands', value: `\`${prefix}clear\` \`${prefix}kick\` \`${prefix}ban\` \`${prefix}warn\` \`${prefix}slowmode\``, inline: true },
+				{ name: 'Moderation Commands', value: `\`${prefix}ban\` \`${prefix}unban\`  \`${prefix}kick\` \`${prefix}clear\` \`${prefix}warn\` \`${prefix}slowmode\``, inline: true },
 			)
 			.addField('Admin Commands', `\`${prefix}leave\` \`${prefix}enable\` \`${prefix}disable\``, true)
-			.addField(`Support Commands`, `\`${prefix}help\` \`${prefix}report\` \`${prefix}suggest\` \`${prefix}links\` \`${prefix}stats\``)
+			.addField(`Support Commands`, `\`${prefix}help\` \`${prefix}report\` \`${prefix}suggest\` \`${prefix}stats\``)
 			.setTimestamp()
 			.setFooter(`Requested By ${member.user.tag}`);
 
 		if(args[0]) {
 			const embed = new Discord.MessageEmbed()
 				.setColor('#0099ff')
-				.setTitle(`${client.user.name} Commands`)
+				.setTitle(`${client.user.username} Commands`)
 				.setThumbnail(client.user.displayAvatarURL());
 
 			const command = args.shift().toLowerCase();

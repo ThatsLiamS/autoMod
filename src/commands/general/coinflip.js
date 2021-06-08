@@ -17,6 +17,9 @@ module.exports = {
 			.setDescription(`The coin landed on ${ans}\n\nPowered by [@CoinFlipper#1767](https://coinflipperbot.glitch.me/)`)
 			.setColor(`#cd7f32`)
 			.setThumbnail(`https://i.imgur.com/4Zw6qky.png`);
-		message.channel.send(embed).catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`); }).catch();
+
+		message.channel.send(embed).catch(() => {
+			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
+		}).catch();
 	}
 };

@@ -33,7 +33,7 @@ module.exports = {
 			let reason = args.slice(1).join(" ");
 			if (reason.length < 1) { reason = "No reason specified"; }
 
-			member.kick({ reason: `Moderator: ${message.author.tag} || Reason: ${reason}` }).catch(() => {
+			member.kick(`Moderator: ${message.author.tag} || Reason: ${reason}`).catch(() => {
 				message.channel.send(`Sorry, an error occured when trying to kick ${member.user.tag}`).catch(() => {
 					message.author.send(`I am unable to kick that member.`);
 				}).catch();

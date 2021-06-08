@@ -35,7 +35,10 @@ module.exports = {
 			.addField(`**My Answer**`, `${possibleAnswers[Math.floor((Math.random() * 19) + 0)]}`)
 			.setColor(`RANDOM`)
 			.setThumbnail(`https://i.imgur.com/SD5OXUV.jpg`);
-		message.channel.send(embed).catch(() => { message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`); }).catch();
+
+		message.channel.send(embed).catch(() => {
+			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
+		}).catch();
 
 	}
 };

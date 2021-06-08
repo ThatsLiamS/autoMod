@@ -18,7 +18,7 @@ module.exports = {
 		}
 		if (!user || errorMessage == true) {
 			return message.channel.send(`Incorrect usage, make sure it follows the format: \`${prefix}warn <@member> [reason]\``).catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`);
+				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
 			}).catch();
 		}
 		const memberTarget = message.guild.members.cache.get(user.id);
