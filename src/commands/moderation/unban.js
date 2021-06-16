@@ -1,5 +1,6 @@
 const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
 const Discord = require('discord.js');
+const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
 	name: 'unban',
@@ -17,17 +18,18 @@ module.exports = {
 			catch(error) { errorMessage = true; }
 		}
 		if (!user || errorMessage == true) {
-			return message.reply(`Incorrect usage, make sure it follows the format: \`${prefix}unban <user ID> [reason]\``).catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`);
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}unban <user ID> [reason]\`` });
+			return;
 		}
 
 		let reason = args.slice(1).join(" ");
-		if (reason.length < 1) { reason = "No reason specified"; }
+		if (reason.length < 1) {
+			reason = "No reason specified";
+		}
 
 		const channelUnbanned = new Discord.MessageEmbed()
 			.setColor('GREEN')
-			.setTitle(`A Member Was Unbanned`)
+			.setTitle(`${user.tag} has been unbanned`)
 			.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
 			.setThumbnail(user.displayAvatarURL())
 			.addFields(
@@ -41,13 +43,11 @@ module.exports = {
 		}
 		catch (error) {
 			errorMessage = true;
-			message.channel.send(`An error occured when trying to unban \`${user.tag}\``).catch(() => {
-				message.author.send(`I am unable to ban that member.`);
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Sorry, an error occured when trying to unban \`${user.tag}\`` });
 		}
 
 		if(errorMessage == false) {
-			message.channel.send(channelUnbanned).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: channelUnbanned });
 		}
 	}
 };

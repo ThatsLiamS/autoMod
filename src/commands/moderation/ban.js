@@ -1,10 +1,11 @@
 const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
+const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
 
 module.exports = {
 	name: 'ban',
 	description: "Permanently removes a member from the server!",
-	usage: '<@member> [reason]',
+	usage: '<@member / id> [reason]',
 	permissions: ["Ban Members"],
 	aliases: ['hackban', "b", "permban", 'forceban'],
 	arguments: 1,
@@ -17,24 +18,23 @@ module.exports = {
 			try { user = await client.users.fetch(args[0]); }
 			catch(error) { errorMessage = true; }
 		}
-		if (!user || errorMessage == true) {
-			return message.reply(`Incorrect usage, make sure it follows the format: \`${prefix}ban <@member> [reason]\``).catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-			}).catch();
-		}
 
+		if (!user || errorMessage == true) {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { contant: `Incorrect usage, make sure it follows the format: \`${prefix}ban <@member> [reason]\`` });
+			return;
+		}
 		if(user.id == message.author.id) {
-			return message.reply("You can not ban yourself").catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Im sorry, but you can not ban yourself.' });
 		}
 
 		let reason = args.slice(1).join(" ");
-		if (reason.length < 1) { reason = "No reason specified"; }
+		if (reason.length < 1) {
+			reason = "No reason specified";
+		}
 
 		const channelBanned = new Discord.MessageEmbed()
 			.setColor('#DC143C')
-			.setTitle(`A Member Was Banned`)
+			.setTitle(`${user.tag} has been banned`)
 			.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
 			.setThumbnail(user.displayAvatarURL())
 			.addFields(
@@ -44,17 +44,18 @@ module.exports = {
 			.setTimestamp();
 
 		try {
-			await message.guild.members.ban(user, { days: 7, reason: `Moderator: ${message.author.tag} || Reason: ${reason}` });
+			await message.guild.members.ban(user, {
+				days: 7,
+				reason: `Moderator: ${message.author.tag} || Reason: ${reason}`
+			});
 		}
 		catch (error) {
 			errorMessage = true;
-			message.channel.send(`An error occured when trying to ban ${user}`).catch(() => {
-				message.author.send(`I am unable to ban that member.`);
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `An error has occured when trying to ban ${user.tag}` });
 		}
 
 		if(errorMessage == false) {
-			message.channel.send(channelBanned).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: channelBanned });
 		}
 	}
 };

@@ -1,11 +1,12 @@
 const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
+const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
 const moment = require('moment');
 
 module.exports = {
 	name: 'userinfo',
 	description: "Displays lots of cool information about the user!",
-	usage: '[@member]',
+	usage: '[@member / id]',
 	aliases: ["whois"],
 	arguments: 0,
 	async execute(message, args, prefix, client) {
@@ -23,9 +24,8 @@ module.exports = {
 		const member = await message.guild.members.cache.get(user.id);
 
 		if(!member) {
-			return message.channel.send('Sorry, an internal error has occured.').catch(() => {
-				message.author.send('Sorry, an internal error has occured.').catch();
-			});
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Sorry, an interal error has occured.' });
+			return;
 		}
 
 		let roles = '';
@@ -50,8 +50,6 @@ module.exports = {
 			.setTimestamp()
 			.setFooter(`Requested By ${message.member.user.tag}`);
 
-		message.channel.send(embed).catch(() => {
-			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-		}).catch();
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
 	}
 };

@@ -1,4 +1,6 @@
+const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
+
 const possibleAnswers = [`As I see it, yes.`,
 	`Ask again later.`,
 	`Better not tell you now.`,
@@ -36,9 +38,7 @@ module.exports = {
 			.setColor(`RANDOM`)
 			.setThumbnail(`https://i.imgur.com/SD5OXUV.jpg`);
 
-		message.channel.send(embed).catch(() => {
-			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-		}).catch();
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
 
 	}
 };

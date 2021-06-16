@@ -1,32 +1,56 @@
+const send = require(`${__dirname}/../../util/send`);
+const Discord = require('discord.js');
+
 module.exports = {
 	name: 'slowmode',
 	description: "Change the slowmode time in the channel!",
-	usage: '<number/off>',
+	usage: '<number / off>',
 	permissions: ["Manage Channels"],
 	aliases: ["sm"],
 	arguments: 1,
-	async execute(message, args) {
+	async execute(message, args, prefix) {
+		let error = false;
 
 		if(args[0] == "off") {
-			try{
-				message.channel.setRateLimitPerUser(0);
-				message.channel.send(`Sucessfully turned the slowmode in ${message.channel} off!`).catch();
-			}
-			catch {
-				message.reply("**I am unable to turn the slowmode off.**").catch();
+			const off = new Discord.MessageEmbed()
+				.setColor('GREEN')
+				.setDescription(`Slowmode has been turned off.`);
+
+			const offError = new Discord.MessageEmbed()
+				.setColor('RED')
+				.setDescription('Sorry, an error occured when trying the slowmode off.');
+
+			message.channel.setRateLimitPerUser(0).catch(async () => {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: offError });
+				error = true;
+			});
+			if(error == false) {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: off });
 			}
 		}
 		else{
 
-			if (isNaN (args[0])) return message.reply("Please provide a number to the slowmode to.").catch();
-			if(Number(args[0]) > 21600) return message.reply("Sorry but slowmode can't be above 6 hours (21,600 seconds)").catch();
+			const yay = new Discord.MessageEmbed()
+				.setColor('GREEN')
+				.setDescription(`I have sucessfully set the slowmode to ${args[0]}s`)
+				.setFooter(`Turn it off by doing '${prefix}slowmode off'`);
 
-			try{
-				message.channel.setRateLimitPerUser(args[0]);
-				message.channel.send(`Sucessfully set the slowmode in ${message.channel} to ${args[0]}!`).catch();
+			const boo = new Discord.MessageEmbed()
+				.setColor('RED')
+				.setDescription(`Sorry, an error occured when setting the slowmode to ${args[0]}s`)
+				.setFooter('Please make sure I have the corerct permissions.');
+
+			if(Number(args[0]) > 21600) {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'I\'m sorry, slowmode can not be longer than 6h (21400 seconds)' });
+				return;
 			}
-			catch{
-				message.channel.send(`**I am unable to set the slowmode to ${args[0]}, sorry ${message.member}!`).catch();
+
+			message.channel.setRateLimitPerUser(args[0]).catch(async () => {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: boo });
+				error = true;
+			});
+			if(error == false) {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: yay });
 			}
 		}
 	}

@@ -1,10 +1,11 @@
 const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
+const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
 
 module.exports = {
 	name: 'kick',
 	description: "Temporarily removes a member from the server!\nNote: They can rejoin if they have a invite code",
-	usage: '<@member> [reason]',
+	usage: '<@member / id> [reason]',
 	permissions: ["Kick Members"],
 	aliases: ["k"],
 	arguments: 1,
@@ -42,7 +43,7 @@ module.exports = {
 
 				const channelkicked = new Discord.MessageEmbed()
 					.setColor('#DC143C')
-					.setTitle(`A Member Was Kicked`)
+					.setTitle(`${member.user.tag} has been kicked`)
 					.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
 					.setThumbnail(member.user.displayAvatarURL())
 					.addFields(

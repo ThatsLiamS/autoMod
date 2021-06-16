@@ -1,3 +1,6 @@
+const send = require(`${__dirname}/../../util/send`);
+const Discord = require('discord.js');
+
 module.exports = {
 	name: 'clear',
 	description: "Bulk delete messages",
@@ -7,15 +10,26 @@ module.exports = {
 	arguments: 1,
 	async execute(message, args) {
 
+		const errormessage = new Discord.MessageEmbed()
+			.setTitle(`Error`)
+			.setColor(`RED`)
+			.setDescription(`An error occured when clearing messages. Please make sure I have permission to manage messages, and the messages are not older than 14 days (Discord API limit)`)
+			.setFooter(`I'm sorry :sob:`);
+
+		const LolTooHigh = new Discord.MessageEmbed()
+			.setTitle(`Too High`)
+			.setColor(`RED`)
+			.setDescription(`I'm sorry but I can not delete more then 100 messages in one command.`)
+			.setFooter(`This is a Discord API limit, we have no control on his.`);
+
 		if (Number(args[0]) > 100) {
-			return message.reply(`I'm sorry, I have a limit of 100 messages per command.`).catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: LolTooHigh });
+			return;
 		}
 
 		await message.delete().catch();
-		message.channel.bulkDelete(args[0]).catch(() => {
-			message.channel.send('I can not delete messages over 14 days old').catch();
+		message.channel.bulkDelete(args[0]).catch(async () => {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: errormessage });
 		}).catch();
 	}
 };

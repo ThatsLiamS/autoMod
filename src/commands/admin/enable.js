@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const send = require(`${__dirname}/../../util/send`);
 
 const fs = require('fs');
 let enable = new Discord.Collection();
@@ -24,7 +25,7 @@ module.exports = {
 		}
 
 		else {
-			return message.reply(`That is not a valid feature! To view the features do \`${prefix}help enable\``).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `That is not a valid feature! To view the features do \`${prefix}help enable\`` });
 		}
 	}
 };

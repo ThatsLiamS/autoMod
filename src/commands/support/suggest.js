@@ -1,4 +1,5 @@
 const Discord = require(`discord.js`);
+const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
 	name: "suggest",
@@ -7,8 +8,6 @@ module.exports = {
 	arguments: 2,
 	async execute(message, args, prefix, client) {
 
-		let errorMessage = false;
-
 		const embed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setDescription(`**${client.user.tag}**\n${args.splice(0).join(" ")}`)
@@ -16,22 +15,16 @@ module.exports = {
 			.setFooter(`ID: ${message.member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
-		try {
-			const webhooks = await channel.fetchWebhooks();
-			const webhook = webhooks.first();
-			let avatarURL = message.guild.iconURL();
-			if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
-			await webhook.send({ username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
 
-		}
-		catch {
-			errorMessage = true;
-			message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-			}).catch();
-		}
-		if(errorMessage == false) {
+		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
+		const webhooks = await channel.fetchWebhooks();
+		const webhook = webhooks.first();
+		let avatarURL = message.guild.iconURL();
+		if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
+
+		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
+
+		if(result == true) {
 			message.reply(`Thanks for your suggestion. It has been sent to my developer`).catch(() => {
 				message.author.send(`Thanks for your suggestion. It has been sent to my developer`).catch();
 			}).catch();

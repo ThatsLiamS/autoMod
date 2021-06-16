@@ -1,4 +1,6 @@
 const Discord = require(`discord.js`);
+const send = require(`${__dirname}/../../util/send`);
+
 module.exports = {
 	name: "report",
 	description: "Sends a bug report to the developers of autoMod",
@@ -6,7 +8,6 @@ module.exports = {
 	arguments: 2,
 	async execute(message, args, prefix, client) {
 
-		let errorMessage = false;
 		let mes = args.splice(0).join(" ");
 		let member = message.member;
 
@@ -17,22 +18,15 @@ module.exports = {
 			.setFooter(`ID: ${member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
-		try {
-			const webhooks = await channel.fetchWebhooks();
-			const webhook = webhooks.first();
-			let avatarURL = message.guild.iconURL();
-			if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
-			await webhook.send({ username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed], });
+		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
+		const webhooks = await channel.fetchWebhooks();
+		const webhook = webhooks.first();
+		let avatarURL = message.guild.iconURL();
+		if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
 
-		}
-		catch {
-			errorMessage = true;
-			message.reply("I'm sorry - An internal error has occured with excuting that command. Please try again later").catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-			}).catch();
-		}
-		if(errorMessage == false) {
+		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
+
+		if(result == true) {
 			message.reply(`Thanks for your report. It has been sent to my developer`).catch(() => {
 				message.author.send(`Thanks for your report. It has been sent to my developer`).catch();
 			}).catch();

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const moment = require('moment');
+const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
 	name: 'serverinfo',
@@ -10,7 +11,9 @@ module.exports = {
 		const member = message.member;
 
 		let owner = await message.guild.members.cache.get(message.guild.ownerID);
-		if(!owner) { owner = await message.guild.ownerID; }
+		if(!owner) {
+			owner = await message.guild.ownerID;
+		}
 
 		const serverEmbed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
@@ -27,9 +30,6 @@ module.exports = {
 			.setTimestamp()
 			.setFooter(`Requested By ${member.user.tag}`);
 
-		message.channel.send(serverEmbed).catch(() => {
-			message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`).catch();
-		}).catch();
-
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: serverEmbed });
 	}
 };

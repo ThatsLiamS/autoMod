@@ -1,3 +1,5 @@
+const send = require(`${__dirname}/../../../util/send`);
+
 module.exports = {
 	name: 'wordFilter',
 	permissions: ["administrator"],
@@ -8,6 +10,7 @@ module.exports = {
 				on: false
 			}
 		});
-		message.reply('The `word-filter` has been turned off.');
+		await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'The `word-filter` has been turned off.' });
+
 	}
 };
