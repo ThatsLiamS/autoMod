@@ -27,9 +27,7 @@ module.exports = {
 		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
 
 		if(result == true) {
-			message.reply(`Thanks for your report. It has been sent to my developer`).catch(() => {
-				message.author.send(`Thanks for your report. It has been sent to my developer`).catch();
-			}).catch();
+			send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Thank you for your report, it has been sent to my developers.' });
 			message.delete().catch();
 		}
 	}

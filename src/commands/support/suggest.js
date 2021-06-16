@@ -15,7 +15,6 @@ module.exports = {
 			.setFooter(`ID: ${message.member.id}`)
 			.setTimestamp();
 
-
 		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
@@ -25,9 +24,7 @@ module.exports = {
 		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
 
 		if(result == true) {
-			message.reply(`Thanks for your suggestion. It has been sent to my developer`).catch(() => {
-				message.author.send(`Thanks for your suggestion. It has been sent to my developer`).catch();
-			}).catch();
+			send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Thank you for your sugestion, it has been sent to my support server.' });
 			message.delete().catch();
 		}
 	}

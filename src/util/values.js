@@ -10,7 +10,7 @@ const developers = {
 };
 
 const bot = {
-	username: 'autoMod#8328',
+	tag: 'autoMod#8328',
 	id: '782985846474932315',
 	server: 'https://discord.gg/2je9aJynqt',
 	invite: 'https://bit.ly/autoMod_invite',

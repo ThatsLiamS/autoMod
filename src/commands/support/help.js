@@ -13,7 +13,7 @@ module.exports = {
 			.setTitle(`${client.user.username} Commands`)
 			.setURL(bot.server)
 			.setThumbnail(client.user.displayAvatarURL())
-			.setDescription(`To view the information about a certain command do \n\`${prefix} help <command>\`. For example \`${prefix} help points\`.`)
+			.setDescription(`To view the information about a certain command do \n\`${prefix}help <command>\`. For example \`${prefix}help points\`.`)
 			.addFields(
 				{ name: '__General__', value: `\`serverinfo\` \`userinfo\` \`8ball\` \`coinflip\` \`say\``, inline: true },
 				{ name: '__Moderation__', value: `\`ban\` \`unban\`  \`kick\` \`clear\` \`warn\` \`slowmode\``, inline: true },

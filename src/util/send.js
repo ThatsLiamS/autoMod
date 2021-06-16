@@ -13,10 +13,8 @@ async function sendChannel(values, object) {
 
 	await channel.send(messageContent).catch(() => {
 		result = false;
-		sendUser(author, {
-			content: `An error occured when sending a message in ${channel}.\nPlease make sure I have permission to \`SEND_MESSAGES\` and \`EMBED_LINKS\`.`
-		});
-	}).catch();
+		sendUser(author, { content: `An error occured when sending a message in ${channel}.\nPlease make sure I have permission to \`SEND_MESSAGES\` and \`EMBED_LINKS\`.` });
+	});
 
 	return result;
 }
@@ -35,13 +33,7 @@ async function sendWebhook(values, object) {
 
 	await webhook.send(webhookContent).catch(() => {
 		result = false;
-		sendChannel({
-			channel: message.channel,
-			user: message.author
-		},
-		{
-			content: `An internal error occured during that command. Please join our support server at ${bot.server}`
-		});
+		sendChannel({ channel: message.channel, user: message.author }, { content: `An internal error occured during that command. Please join our support server at ${bot.server}` });
 	}).catch();
 
 	return result;

@@ -20,22 +20,17 @@ module.exports = {
 			}
 		});
 
-		const channel = client.channels.cache.get('835443077828050966');
+		const channel = client.channels.cache.get('825351526977503283');
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('GREEN')
+			.setTitle('It\'s aliveee!')
 			.addFields(
 				{ name: '__Time:__', value: `${startTime}`, inline: false }
 			)
 			.setFooter("I'm back! Time to moderate");
 
-		send.sendChannel({
-			channel: channel,
-			author: 'n/a'
-		},
-		{
-			embed: embed
-		});
+		await send.sendChannel({ channel: channel, author: 'n/a' }, { embed: embed });
 
 		console.log(`Last restart: ${startTime}\n\nLogged in as ${client.user.tag}! looking over ${serverCount} servers`);
 	}

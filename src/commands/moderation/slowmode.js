@@ -20,9 +20,10 @@ module.exports = {
 				.setColor('RED')
 				.setDescription('Sorry, an error occured when trying the slowmode off.');
 
-			message.channel.setRateLimitPerUser(0).catch(async () => {
+			await message.channel.setRateLimitPerUser(0).catch(async () => {
 				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: offError });
 				error = true;
+				return;
 			});
 			if(error == false) {
 				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: off });
@@ -45,7 +46,7 @@ module.exports = {
 				return;
 			}
 
-			message.channel.setRateLimitPerUser(args[0]).catch(async () => {
+			await message.channel.setRateLimitPerUser(args[0]).catch(async () => {
 				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: boo });
 				error = true;
 			});

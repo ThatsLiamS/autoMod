@@ -2,7 +2,7 @@ const { wordFilter } = require(`${__dirname}/../util/wordFilter`);
 const { logs } = require(`${__dirname}/../util/developer/test`);
 const send = require(`${__dirname}/../util/send`);
 
-const prefix = 'pls';
+const prefix = '!';
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 module.exports = {
