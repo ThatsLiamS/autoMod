@@ -12,9 +12,8 @@ module.exports = {
 		const embed = new Discord.MessageEmbed()
 			.setTitle("Good Bye!")
 			.setDescription(`Goodbye everyone, I am sorry I could no longer be of service to you.\n\nIf you ever want to invite me to your own server or back to this one, click [here](${bot.invite})`);
-		await message.channel.send(embed).catch(() => {
-			message.author.send(`Goodbye! You will be missed`).catch();
-		}).catch();
+
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
 		message.guild.leave();
 	}
 };

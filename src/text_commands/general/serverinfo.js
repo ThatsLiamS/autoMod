@@ -25,7 +25,7 @@ module.exports = {
 				{ name: '**Server Owner**', value: `${owner}`, inline: true },
 				{ name: '**Total Members**', value: `${message.guild.memberCount}`, inline: true },
 				{ name: '**Created**', value: `${moment(message.guild.createdAt).format("DD/MM/YYYY LTS") }`, inline: true },
-				{ name: '**Highest Role**', value: `${message.guild.roles.cache.highest}`, inline: true }
+				{ name: '**Highest Role**', value: `${message.guild.roles.highest}`, inline: true }
 			)
 			.setTimestamp()
 			.setFooter(`Requested By ${member.user.tag}`);

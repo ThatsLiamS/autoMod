@@ -2,26 +2,26 @@ const express = require('express');
 const app = express();
 const port = 3000;
 app.get('/', (req, res) => res.send('Hello World!'));
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs');
-/*
+
 const AutoPoster = require('topgg-autoposter');
 const ap = AutoPoster(`${process.env['TopggToken']}`, client);
 ap.on('posted', () => { });
-*/
+
 const admin = require("firebase-admin"); const serviceAccount = require(`${__dirname}/util/developer/firebase.json`);
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const firestore = admin.firestore();
 
 client.commands = new Discord.Collection();
-const categories = fs.readdirSync(`${__dirname}/commands/`);
+const categories = fs.readdirSync(`${__dirname}/text_commands/`);
 for (const category of categories) {
-	const commandFiles = fs.readdirSync(`${__dirname}/commands/${category}`).filter(File => File.endsWith('.js'));
+	const commandFiles = fs.readdirSync(`${__dirname}/text_commands/${category}`).filter(File => File.endsWith('.js'));
 	for (const file of commandFiles) {
-		const command = require(`${__dirname}/commands/${category}/${file}`);
+		const command = require(`${__dirname}/text_commands/${category}/${file}`);
 		client.commands.set(command.name, command);
 	}
 }

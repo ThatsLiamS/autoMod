@@ -20,7 +20,7 @@ module.exports = {
 			}
 		});
 
-		const channel = client.channels.cache.get('825351526977503283');
+		const channel = client.channels.cache.get('859562190758608956');
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('GREEN')

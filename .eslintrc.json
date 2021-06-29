@@ -15,7 +15,6 @@
 		"indent": ["error", "tab"],
 		"max-nested-callbacks": ["error", { "max": 4 }],
 		"max-statements-per-line": ["error", { "max": 2 }],
-		"no-empty-function": "error",
 		"no-inline-comments": "error",
 		"no-lonely-if": "error",
 		"no-multi-spaces": "error",
@@ -34,7 +33,6 @@
 		"space-in-parens": "error",
 		"space-infix-ops": "error",
 		"space-unary-ops": "error",
-		"spaced-comment": "error",
 		"yoda": "error"
 	}
 }

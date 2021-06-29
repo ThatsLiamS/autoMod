@@ -1,4 +1,4 @@
-# Contains all node packages. Install with 'npm install ci>'
+# Contains all node packages. Install with 'npm ci'
 node_modules/
 
 # Contains testing tools and database information

@@ -10,7 +10,7 @@ module.exports = {
 			GhostPing.detector("messageUpdate", oldMessage, newMessage);
 		}
 		catch(err) {
-			console.log('');
+			client.error = true;
 		}
 
 		wordFilter(newMessage, firestore);
