@@ -45,7 +45,7 @@ module.exports = {
 				)
 				.setFooter('Please make sure to follow the rules.');
 
-			await send.sendUser(member.user, { embed: userMessage });
+			await send.sendUser(member.user, { embeds: [userMessage] });
 
 			const channelMessage = new Discord.MessageEmbed()
 				.setTitle(`${member.user.tag} has been warned`)
@@ -56,7 +56,7 @@ module.exports = {
 					{ name:`**Reason:**`, value:`${reason}` }
 				);
 
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: channelMessage });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [channelMessage] });
 		}
 	}
 };

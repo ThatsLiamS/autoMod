@@ -23,13 +23,13 @@ module.exports = {
 			.setFooter(`This is a Discord API limit, we have no control on his.`);
 
 		if (Number(args[0]) > 100) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: LolTooHigh });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [LolTooHigh] });
 			return;
 		}
 
 		await message.delete().catch();
 		message.channel.bulkDelete(args[0]).catch(async () => {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: errormessage });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [errormessage] });
 		}).catch();
 	}
 };

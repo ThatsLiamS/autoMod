@@ -13,7 +13,7 @@ module.exports = {
 			.setTitle("Good Bye!")
 			.setDescription(`Goodbye everyone, I am sorry I could no longer be of service to you.\n\nIf you ever want to invite me to your own server or back to this one, click [here](${bot.invite})`);
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [embed] });
 		message.guild.leave();
 	}
 };

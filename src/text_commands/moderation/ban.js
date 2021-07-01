@@ -55,7 +55,7 @@ module.exports = {
 		}
 
 		if(errorMessage == false) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: channelBanned });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [channelBanned] });
 		}
 	}
 };

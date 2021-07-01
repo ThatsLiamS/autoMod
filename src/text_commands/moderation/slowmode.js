@@ -21,12 +21,12 @@ module.exports = {
 				.setDescription('Sorry, an error occured when trying the slowmode off.');
 
 			await message.channel.setRateLimitPerUser(0).catch(async () => {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: offError });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [offError] });
 				error = true;
 				return;
 			});
 			if(error == false) {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: off });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [off] });
 			}
 		}
 		else{
@@ -47,11 +47,11 @@ module.exports = {
 			}
 
 			await message.channel.setRateLimitPerUser(args[0]).catch(async () => {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: boo });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [boo] });
 				error = true;
 			});
 			if(error == false) {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: yay });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [yay] });
 			}
 		}
 	}

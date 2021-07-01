@@ -7,6 +7,7 @@ module.exports = {
 	aliases: ["repeat"],
 	usage: '<message>',
 	arguments: 1,
+	error: true,
 	async execute(message, args) {
 
 		let messageContent = Discord.Util.cleanContent(args.slice(0).join(" "), message);
@@ -22,6 +23,6 @@ module.exports = {
 			return;
 		}
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { content: `> ${messageContent}\n\n-  **${message.author.username}**` });
+		await send.sendChannel({ channel: message.channel, author: message.author }, { content: `${messageContent}\n\n-  **${message.author.username}**` });
 	}
 };

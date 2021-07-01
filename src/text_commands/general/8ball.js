@@ -38,7 +38,7 @@ module.exports = {
 			.setColor(`RANDOM`)
 			.setThumbnail(`https://i.imgur.com/SD5OXUV.jpg`);
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [embed] });
 
 	}
 };

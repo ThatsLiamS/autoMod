@@ -30,6 +30,6 @@ module.exports = {
 			.setTimestamp()
 			.setFooter(`Requested By ${member.user.tag}`);
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: serverEmbed });
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [serverEmbed] });
 	}
 };

@@ -26,6 +26,7 @@ module.exports = {
 			.setColor(`#cd7f32`)
 			.setThumbnail(`https://i.imgur.com/4Zw6qky.png`);
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+		const yes = await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [embed] });
+		console.log(yes);
 	}
 };

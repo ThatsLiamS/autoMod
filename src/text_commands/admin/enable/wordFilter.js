@@ -6,7 +6,10 @@ module.exports = {
 	async execute(message, args, prefix, client, firestore) {
 
 		let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
-		if(!channel) return message.reply('Channel not found.');
+		if(!channel) {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Channel not found.` });
+			return;
+		}
 
 		let level = 'soft';
 

@@ -6,12 +6,7 @@ async function sendChannel(values, object) {
 
 	let result = true;
 
-	let messageContent = {};
-
-	if(object.content) { messageContent.content = object.content; }
-	if(object.embed) { messageContent.embed = object.embed; }
-
-	await channel.send(messageContent).catch(() => {
+	await channel.send(object).catch(() => {
 		result = false;
 		sendUser(author, { content: `An error occured when sending a message in ${channel}.\nPlease make sure I have permission to \`SEND_MESSAGES\` and \`EMBED_LINKS\`.` });
 	});

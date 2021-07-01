@@ -33,7 +33,7 @@ module.exports = {
 			const file = client.text_commands.get(command) || client.text_commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
 
 			if(!file || file.name == "help" || file.developerOnly == true) {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: realhelp });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [realhelp] });
 				return;
 			}
 
@@ -71,10 +71,10 @@ module.exports = {
 				embed.addFields({ name: `__Permissions:__`, value: `\`Server Owner\``, inline: true });
 			}
 
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [embed] });
 		}
 		else {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: realhelp });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [realhelp] });
 		}
 	}
 };

@@ -29,6 +29,6 @@ module.exports = {
 				{ name: `**Bot's Stats:**`, value:`Ping: \`${ping}ms\`\nUptime: \`${uptime}\n\nShard: ${shard}`, inline: false },
 			);
 
-		await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+		await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [embed] });
 	}
 };
