@@ -10,57 +10,56 @@ module.exports = {
 	async execute(message, client, firestore) {
 		if (!message.author.bot && message.guild === null) { return; }
 
-		let allowed = false;
-
 		const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
 		if (prefixRegex.test(message.content)) {
 
 			const [, matchedPrefix] = message.content.match(prefixRegex);
 			const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
-			const command = args.shift().toLowerCase();
+			const commandName = args.shift().toLowerCase();
 
-			if(!command) {
+			if(!commandName) {
 				if(!message.content.startsWith(prefix)) {
-					client.commands.get('about').execute(message, args, prefix, client);
+					client.text_commands.get('about').execute(message, args, prefix, client);
 				}
 			}
 
-			if (command.length !== 0) {
-				const cmd = client.commands.get(command) || client.commands.find(file => file.aliases && file.aliases.includes(command));
+			if (commandName.length !== 0) {
+				const cmd = client.text_commands.get(commandName) || client.text_commands.find(file => file.aliases && file.aliases.includes(commandName));
 				if (cmd) {
+					let allowed = true;
 
 					if(cmd.error && cmd.error == true) {
-						allowed = true;
+						allowed = false;
 						await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Sorry, this command is currently out of order. Please try again later!' });
 					}
 
-					if(cmd.permissions && allowed === false) {
+					if(cmd.permissions && allowed === true) {
 						for(const permission of cmd.permissions) {
 							if(allowed === false && !message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.member.hasPermission('ADMINISTRATOR')) {
 								await send.sendChannel({ channel: message.channel, author: message.author }, { content: `You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\`` });
-								allowed = true;
+								allowed = false;
 							}
 						}
 					}
 
-					if(cmd.arguments && allowed === false) {
+					if(cmd.arguments && allowed === true) {
 						const number = cmd.arguments;
 						if(number >= 1) {
 							if(!args[number - 1]) {
 								await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}${cmd.name} ${cmd.usage}\`` });
-								allowed = true;
+								allowed = false;
 							}
 						}
 					}
 
-					if(cmd.ownerOnly && allowed === false) {
+					if(cmd.ownerOnly && allowed === true) {
 						if(message.author.id !== message.guild.ownerID) {
 							await send.sendChannel({ channel: message.channel, author: message.author }, { content: `You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\`` });
-							allowed = true;
+							allowed = false;
 						}
 					}
 
-					if(allowed == false) {
+					if(allowed == true) {
 
 						let Ref = await firestore.collection(`servers`).doc(`${message.guild.id}`).get();
 						if (!Ref.data()) {
@@ -70,7 +69,7 @@ module.exports = {
 						}
 
 						cmd.execute(message, args, prefix, client, firestore);
-						logs(client, message, `${command} Command`);
+						logs(client, message, `${commandName}: Text Command`);
 
 					}
 				}

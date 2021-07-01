@@ -1,12 +1,14 @@
 const Discord = require('discord.js');
-const send = require(`${__dirname}/../../util/send`);
-const { bot } = require(`${__dirname}/../../util/values`);
+const { bot } = require(`${__dirname}/../util/values`);
+
+const prefix = '!';
 
 module.exports = {
 	name: 'help',
 	arguments: 0,
-	async execute(message, args, prefix, client) {
-		const member = await message.member;
+	async execute(interaction, client) {
+
+		const option = interaction.options.get("command");
 
 		const realhelp = new Discord.MessageEmbed()
 			.setColor('#0099ff')
@@ -20,20 +22,19 @@ module.exports = {
 				{ name: '__Admin__', value: `\`enable\` \`disable\` \`leave\``, inline: true },
 				{ name: '__Support__', value: '`help` `report` `suggest` `about`', inline: false },
 			)
-			.setTimestamp()
-			.setFooter(`Requested By ${member.user.tag}`);
+			.setTimestamp();
 
-		if(args[0]) {
+		if(option) {
 			const embed = new Discord.MessageEmbed()
 				.setColor('#0099ff')
 				.setThumbnail(client.user.displayAvatarURL())
 				.setURL(bot.server);
 
-			const command = args.shift().toLowerCase();
+			const command = option.value.toLowerCase();
 			const file = client.text_commands.get(command) || client.text_commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
 
-			if(!file || file.name == "help" || file.developerOnly == true) {
-				await send.sendChannel({ channel: message.channel, author: message.author }, { embed: realhelp });
+			if(!file || file.name == "help") {
+				await interaction.reply({ embeds: [realhelp] });
 				return;
 			}
 
@@ -71,10 +72,11 @@ module.exports = {
 				embed.addFields({ name: `__Permissions:__`, value: `\`Server Owner\``, inline: true });
 			}
 
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: embed });
+			await interaction.reply({ embeds: [embed] });
+
 		}
 		else {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embed: realhelp });
+			await interaction.reply({ embeds: [realhelp] });
 		}
 	}
 };
