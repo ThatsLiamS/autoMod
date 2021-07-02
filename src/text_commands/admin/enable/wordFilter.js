@@ -1,11 +1,12 @@
 const send = require(`${__dirname}/../../../util/send`);
+const mention = require(`${__dirname}/../../../util/mention`);
 
 module.exports = {
 	name: 'wordFilter',
 	permissions: ["administrator"],
 	async execute(message, args, prefix, client, firestore) {
 
-		let channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[1]);
+		let channel = mention.getChannel(message.guild, args[1]) || message.guild.channels.cache.get(args[1]);
 		if(!channel) {
 			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Channel not found.` });
 			return;

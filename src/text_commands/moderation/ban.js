@@ -1,4 +1,4 @@
-const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
+const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
 
@@ -13,7 +13,7 @@ module.exports = {
 
 		let errorMessage = false;
 
-		let user = await getMentionedMember(client, args[0]);
+		let user = await mention.getUser(client, args[0]);
 		if(!user) {
 			try { user = await client.users.fetch(args[0]); }
 			catch(error) { errorMessage = true; }

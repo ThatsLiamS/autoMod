@@ -1,4 +1,4 @@
-const { getMentionedMember } = require(`${__dirname}/../../util/mention`);
+const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
 
@@ -13,33 +13,29 @@ module.exports = {
 
 		let errorMessage = false;
 
-		let user = await getMentionedMember(client, args[0]);
+		let user = await mention.getUser(client, args[0]);
 		if(!user) {
 			try { user = await client.users.fetch(args[0]); }
 			catch(error) { errorMessage = true; }
 		}
 		if (!user || errorMessage == true) {
-			return message.channel.send(`Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\``).catch(() => {
-				message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`);
-			}).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\`` });
+			return;
 		}
 		const member = message.guild.members.cache.get(user.id);
 		if(member) {
 			if(member.id == message.author.id) {
-				return message.channel.send("You can not kick yourself").catch(() => {
-					message.author.send(`I am unable to send messages in ${message.channel}, please move to another channel`);
-				}).catch();
+				await send.sendChannel({ channel: message.channel, author: message.author }, { content: "You can not kick yourself" });
+				return;
 			}
 
 			let reason = args.slice(1).join(" ");
 			if (reason.length < 1) { reason = "No reason specified"; }
 
-			member.kick(`Moderator: ${message.author.tag} || Reason: ${reason}`).catch(() => {
-				message.channel.send(`Sorry, an error occured when trying to kick ${member.user.tag}`).catch(() => {
-					message.author.send(`I am unable to kick that member.`);
-				}).catch();
-				errorMessage = true;
-			}).then(() => {
+			member.kick(`Moderator: ${message.author.tag} || Reason: ${reason}`).catch(async () => {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Sorry, an error occured when trying to kick ${member.user.tag}` });
+
+			}).catch().then(() => {
 
 				const channelkicked = new Discord.MessageEmbed()
 					.setColor('#DC143C')
@@ -53,12 +49,12 @@ module.exports = {
 					.setTimestamp();
 
 				if(errorMessage == false) {
-					message.channel.send(channelkicked).catch();
+					send.sendChannel({ channel: message.channel, author: message.author }, { contents: [channelkicked] });
 				}
 			});
 		}
 		else {
-			message.channel.send(`Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\``).catch();
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\`` });
 		}
 	}
 };
