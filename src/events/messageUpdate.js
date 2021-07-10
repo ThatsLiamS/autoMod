@@ -6,12 +6,7 @@ module.exports = {
 	name: 'messageUpdate',
 	async execute(oldMessage, newMessage, client, firestore) {
 
-		try{
-			GhostPing.detector("messageUpdate", oldMessage, newMessage);
-		}
-		catch(err) {
-			client.error = true;
-		}
+		GhostPing.detector("messageUpdate", oldMessage, newMessage).catch(() => {});
 
 		wordFilter(newMessage, firestore);
 	}

@@ -20,13 +20,7 @@ async function sendWebhook(values, object) {
 	const webhook = values.webhook;
 	const message = values.message;
 
-	let webhookContent = {};
-
-	if(object.username) { webhookContent.username = object.username; }
-	if(object.avatarURL) { webhookContent.avatarURL = object.avatarURL; }
-	if(object.username) { webhookContent.username = object.username; }
-
-	await webhook.send(webhookContent).catch(() => {
+	await webhook.send(object).catch(() => {
 		result = false;
 		sendChannel({ channel: message.channel, user: message.author }, { content: `An internal error occured during that command. Please join our support server at ${bot.server}` });
 	}).catch();

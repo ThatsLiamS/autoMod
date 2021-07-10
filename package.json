@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ThatsLiamS/autoMod.git"
+    "url": "git+https://github.com/ThatsLiamS-Development/autoMod.git"
   },
   "keywords": [
     "JavaScript",
@@ -20,12 +20,12 @@
   "author": "ThatsLiamS",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ThatsLiamS/autoMod/issues"
+    "url": "https://github.com/ThatsLiamS-Development/autoMod/issues"
   },
-  "homepage": "https://github.com/ThatsLiamS/autoMod#readme",
+  "homepage": "https://github.com/ThatsLiamS-Development/autoMod#readme",
   "dependencies": {
     "ci": "^2.1.1",
-    "discord.js": "^12.5.3",
+    "discord.js": "^13.0.0-dev.64f093f.1625054868",
     "discord.js-ghost-ping": "^1.3.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.9.0",

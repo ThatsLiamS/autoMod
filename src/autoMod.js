@@ -4,10 +4,11 @@ const port = 3000;
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
 
-const myIntents = ['GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_WEBHOOKS'];
-
 const Discord = require('discord.js');
-const client = new Discord.Client({ intents: myIntents });
+const client = new Discord.Client({
+	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_WEBHOOKS'],
+	repliedUser: false
+});
 const fs = require('fs');
 /*
 const AutoPoster = require('topgg-autoposter');

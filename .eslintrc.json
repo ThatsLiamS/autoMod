@@ -21,7 +21,6 @@
 		"no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1, "maxBOF": 0 }],
 		"no-shadow": ["error", { "allow": ["err", "resolve", "reject"] }],
 		"no-trailing-spaces": ["error"],
-		"no-var": "error",
 		"object-curly-spacing": ["error", "always"],
 		"semi": ["error", "always"],
 		"space-before-blocks": "error",
@@ -32,7 +31,6 @@
 		}],
 		"space-in-parens": "error",
 		"space-infix-ops": "error",
-		"space-unary-ops": "error",
-		"yoda": "error"
+		"space-unary-ops": "error"
 	}
 }

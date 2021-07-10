@@ -18,7 +18,7 @@ module.exports = {
 			.setFooter(`ID: ${member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
+		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 		let avatarURL = message.guild.iconURL();

@@ -24,7 +24,9 @@ module.exports = {
 			}
 
 			if (commandName.length !== 0) {
-				const cmd = client.text_commands.get(commandName) || client.text_commands.find(file => file.aliases && file.aliases.includes(commandName));
+				const cmd = client.text_commands.get(commandName)
+					|| client.text_commands.find(file => file.aliases && file.aliases.includes(commandName));
+
 				if (cmd) {
 					let allowed = true;
 
@@ -35,7 +37,10 @@ module.exports = {
 
 					if(cmd.permissions && allowed === true) {
 						for(const permission of cmd.permissions) {
-							if(allowed === false && !message.member.hasPermission(permission.trim().toUpperCase().replace(" ", "_")) && !message.member.hasPermission('ADMINISTRATOR')) {
+							if(allowed === true
+								&& !message.member.permissions.has(permission.trim().toUpperCase().replace(" ", "_"))
+								&& !message.member.permissions.has('ADMINISTRATOR')) {
+
 								await send.sendChannel({ channel: message.channel, author: message.author }, { content: `You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\`` });
 								allowed = false;
 							}
@@ -55,6 +60,13 @@ module.exports = {
 					if(cmd.ownerOnly && allowed === true) {
 						if(message.author.id !== message.guild.ownerID) {
 							await send.sendChannel({ channel: message.channel, author: message.author }, { content: `You do not have permission to use this command. To find out more information, do \`${prefix}help ${cmd.name}\`` });
+							allowed = false;
+						}
+					}
+
+					if(cmd.developerOnly && allowed === true) {
+						if(message.author.id !== '732667572448657539') {
+							await send.sendChannel({ channel: message.channel, author: message.author }, { content: `You do not have permission to use this command. Only the developer can run this command.` });
 							allowed = false;
 						}
 					}

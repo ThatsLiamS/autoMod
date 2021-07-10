@@ -12,14 +12,11 @@ module.exports = {
 		const users = await client.guilds.cache.reduce((acc, g) => acc + g.memberCount, 0);
 
 		const time = new Date();
-		const startTime = `${time.getHours()}:${time.getMinutes()}, ${time.getDate()}/${time.getMonth()}/${time.getFullYear()} UTC`;
+		const startTime = `${time.getHours()}:${time.getMinutes().length}, ${time.getDate()}/${time.getMonth()}/${time.getFullYear()} UTC`;
 
-		await client.user.setPresence({
+		client.user.setPresence({
 			status: "online",
-			activity: {
-				name: `/help`,
-				type: `PLAYING`
-			}
+			activities: [{ type: `WATCHING`, name: `Over Your Server! do /help` }]
 		});
 
 		const channel = client.channels.cache.get('859562190758608956');
