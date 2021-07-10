@@ -6,7 +6,7 @@ const prefix = '!';
 const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 module.exports = {
-	name: 'message',
+	name: 'messageCreate',
 	async execute(message, client, firestore) {
 		if (!message.author.bot && message.guild === null) { return; }
 

@@ -1,6 +1,6 @@
 const { logs } = require(`${__dirname}/../util/developer/test`);
 module.exports = {
-	name: 'interaction',
+	name: 'interactionCreate',
 	async execute(interaction, client) {
 
 		if (interaction.isCommand()) {
