@@ -81,7 +81,7 @@ module.exports = {
 						}
 
 						cmd.execute(message, args, prefix, client, firestore);
-						logs(client, message, `${commandName}: Text Command`);
+						logs(client, message, `Text Command: ${commandName}`);
 
 					}
 				}

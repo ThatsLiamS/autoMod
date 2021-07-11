@@ -78,6 +78,6 @@ module.exports = {
 				{ name: `**Shard ID:**`, value:`\`${shard}\``, inline: true },
 			);
 
-		await interaction.reply({ embeds: [embed] });
+		await interaction.followUp({ embeds: [embed] });
 	}
 };

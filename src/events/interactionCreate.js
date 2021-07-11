@@ -9,7 +9,7 @@ module.exports = {
 
 			if(file) {
 				file.execute(interaction, client);
-				logs(client, interaction, `${command}: Slash Command`);
+				logs(client, interaction, `Slash Command: ${command}`);
 			}
 		}
 	}
