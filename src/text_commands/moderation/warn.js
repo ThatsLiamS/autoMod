@@ -1,5 +1,6 @@
-const mention = require(`${__dirname}/../../util/mention`);
 const Discord = require('discord.js');
+
+const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
@@ -29,8 +30,7 @@ module.exports = {
 				return;
 			}
 
-			let reason = args.slice(1).join(" ");
-			if(!reason) { reason = "No reason specified"; }
+			const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
 			if(reason.length > 1024) {
 				await send.sendChannel({ channel: message.channel, author: message.author }, { content: `The reason specified was too long. Please keep reasons under 1024 characters` });
 				return;

@@ -1,6 +1,7 @@
+const Discord = require('discord.js');
+
 const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
-const Discord = require('discord.js');
 
 module.exports = {
 	name: 'ban',
@@ -27,9 +28,10 @@ module.exports = {
 			await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Im sorry, but you can not ban yourself.' });
 		}
 
-		let reason = args.slice(1).join(" ");
-		if (reason.length < 1) {
-			reason = "No reason specified";
+		const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
+		if(reason.length > 1024) {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `The reason specified was too long. Please keep reasons under 1024 characters` });
+			return;
 		}
 
 		const channelBanned = new Discord.MessageEmbed()

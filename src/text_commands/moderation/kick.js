@@ -1,6 +1,7 @@
+const Discord = require('discord.js');
+
 const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
-const Discord = require('discord.js');
 
 module.exports = {
 	name: 'kick',
@@ -29,13 +30,16 @@ module.exports = {
 				return;
 			}
 
-			let reason = args.slice(1).join(" ");
-			if (reason.length < 1) { reason = "No reason specified"; }
+			const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
+			if(reason.length > 1024) {
+				await send.sendChannel({ channel: message.channel, author: message.author }, { content: `The reason specified was too long. Please keep reasons under 1024 characters` });
+				return;
+			}
 
 			member.kick(`Moderator: ${message.author.tag} || Reason: ${reason}`).catch(async () => {
 				await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Sorry, an error occured when trying to kick ${member.user.tag}` });
 
-			}).catch().then(() => {
+			}).catch().then(async () => {
 
 				const channelkicked = new Discord.MessageEmbed()
 					.setColor('#DC143C')
@@ -49,7 +53,7 @@ module.exports = {
 					.setTimestamp();
 
 				if(errorMessage == false) {
-					send.sendChannel({ channel: message.channel, author: message.author }, { contents: [channelkicked] });
+					await send.sendChannel({ channel: message.channel, author: message.author }, { contents: [channelkicked] });
 				}
 			});
 		}

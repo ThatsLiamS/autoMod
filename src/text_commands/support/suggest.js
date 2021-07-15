@@ -24,7 +24,7 @@ module.exports = {
 		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
 
 		if(result == true) {
-			send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Thank you for your sugestion, it has been sent to my support server.' });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Thank you for your sugestion, it has been sent to my support server.' });
 			message.delete().catch();
 		}
 	}

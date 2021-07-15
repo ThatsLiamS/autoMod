@@ -1,5 +1,6 @@
-const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
+
+const send = require(`${__dirname}/../../util/send`);
 
 const possibleAnswers = [`As I see it, yes.`,
 	`Ask again later.`,

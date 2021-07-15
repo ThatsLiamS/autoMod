@@ -1,47 +1,40 @@
 const { bot } = require(`${__dirname}/values`);
 
 async function sendChannel(values, object) {
+
 	const channel = values.channel;
 	const author = values.user;
 
-	let result = true;
-
-	await channel.send(object).catch(() => {
-		result = false;
+	const message = await channel.send(object).catch(() => {
 		sendUser(author, { content: `An error occured when sending a message in ${channel}.\nPlease make sure I have permission to \`SEND_MESSAGES\` and \`EMBED_LINKS\`.` });
 	});
 
-	return result;
+	return message;
 }
 
 async function sendWebhook(values, object) {
-	let result = true;
 
 	const webhook = values.webhook;
 	const message = values.message;
 
-	await webhook.send(object).catch(() => {
-		result = false;
+	const sent = await webhook.send(object).catch(() => {
 		sendChannel({ channel: message.channel, user: message.author }, { content: `An internal error occured during that command. Please join our support server at ${bot.server}` });
 	}).catch();
 
-	return result;
+	return sent;
 }
 
 async function sendUser(user, object) {
 	let messageContent = {};
-	let result = true;
 
-	if(!user || user == 'n/a') { return result; }
+	if(!user || user == 'n/a') { return; }
 
 	if(object.content) { messageContent.content = object.content; }
 	if(object.embed) { messageContent.embed = object.embed; }
 
-	await user.send(messageContent).catch(() => {
-		result = false;
-	}).catch();
+	const message = await user.send(messageContent).catch(() => { });
 
-	return result;
+	return message;
 }
 
 

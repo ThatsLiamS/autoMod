@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const moment = require('moment');
+
 const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
@@ -11,9 +12,7 @@ module.exports = {
 		const member = message.member;
 
 		let owner = await message.guild.members.cache.get(message.guild.ownerID);
-		if(!owner) {
-			owner = await message.guild.ownerID;
-		}
+		if(!owner) { owner = message.guild.ownerID; }
 
 		const serverEmbed = new Discord.MessageEmbed()
 			.setColor('#0099ff')

@@ -1,8 +1,8 @@
-const mention = require(`${__dirname}/../../util/mention`);
-const send = require(`${__dirname}/../../util/send`);
-
 const Discord = require('discord.js');
 const moment = require('moment');
+
+const mention = require(`${__dirname}/../../util/mention`);
+const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
 	name: 'userinfo',

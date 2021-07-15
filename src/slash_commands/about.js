@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+
 const { developers, bot } = require(`${__dirname}/../util/values`);
 
 const prefix = '!';
@@ -61,7 +62,7 @@ module.exports = {
 		const servers = results[1].reduce((acc, guildCount) => acc + guildCount, 0);
 		const users = results[2].reduce((acc, memberCount) => acc + memberCount, 0);
 
-		const shard = `# ${interaction.guild.shardID + 1} out of ${client.shard.count}`;
+		const shard = `#${Number(interaction.guild.shardID) + 1} out of ${client.shard.count}`;
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle("My Information")

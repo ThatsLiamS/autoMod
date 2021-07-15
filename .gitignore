@@ -1,8 +1,14 @@
-# Contains all node packages. Install with 'npm ci'
+# Dependency directories
 node_modules/
+jspm_packages/
 
-# Contains testing tools and database information
-src/util/developer/
+# Bower dependency directory (https://bower.io/)
+bower_components
 
-# Contains API tokens, server IDs, channel IDs and webhook information
+# dotenv environment variables file
 .env
+.env.test
+.env.production
+
+# Testing files
+src/util/developer/*

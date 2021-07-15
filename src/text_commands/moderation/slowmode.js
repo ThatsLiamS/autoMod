@@ -1,5 +1,6 @@
-const send = require(`${__dirname}/../../util/send`);
 const Discord = require('discord.js');
+
+const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
 	name: 'slowmode',

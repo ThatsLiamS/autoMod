@@ -1,5 +1,6 @@
-const mention = require(`${__dirname}/../../util/mention`);
 const Discord = require('discord.js');
+
+const mention = require(`${__dirname}/../../util/mention`);
 const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
@@ -22,10 +23,7 @@ module.exports = {
 			return;
 		}
 
-		let reason = args.slice(1).join(" ");
-		if (reason.length < 1) {
-			reason = "No reason specified";
-		}
+		const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
 
 		const channelUnbanned = new Discord.MessageEmbed()
 			.setColor('GREEN')
