@@ -6,7 +6,7 @@ module.exports = {
 	permissions: ["administrator"],
 	async execute(message, args, prefix, client, firestore) {
 
-		let channel = mention.getChannel(message.guild, args[1]) || message.guild.channels.cache.get(args[1]);
+		let channel = await mention.getChannel(message.guild, args[1]) || message.guild.channels.cache.get(args[1]);
 		if(!channel) {
 			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Channel not found.` });
 			return;

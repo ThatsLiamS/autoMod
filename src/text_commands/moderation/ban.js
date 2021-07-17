@@ -10,7 +10,7 @@ module.exports = {
 	permissions: ["Ban Members"],
 	aliases: ['hackban', "b", "permban", 'forceban'],
 	arguments: 1,
-	async execute(message, args, prefix, client) {
+	async execute(message, args, prefix, client, firestore) {
 
 		let errorMessage = false;
 
@@ -25,39 +25,77 @@ module.exports = {
 			return;
 		}
 		if(user.id == message.author.id) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { content: 'Im sorry, but you can not ban yourself.' });
+			await send.error({ name: `CommonSense`, message: `Cannot Ban Yourself` }, message.channel, `I am unable to ban ${user.tag}`);
+			return;
 		}
 
-		const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
+		let reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
 		if(reason.length > 1024) {
 			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `The reason specified was too long. Please keep reasons under 1024 characters` });
 			return;
 		}
+		reason = Discord.Util.cleanContent(reason, message);
 
-		const channelBanned = new Discord.MessageEmbed()
-			.setColor('#DC143C')
-			.setTitle(`${user.tag} has been banned`)
+		const db = await firestore.collection(`servers`).doc(`${message.guild.id}`).get();
+		const data = db.data();
+
+		const logsChannel = client.channels.cache.get(data.logs.channel);
+
+		let description = `${user.tag} (${user.id}) has been banned from the server.`;
+		if(logsChannel) { description += `\nThis been logged in ${logsChannel}`; }
+
+		const sendToUser = new Discord.MessageEmbed()
 			.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
-			.setThumbnail(user.displayAvatarURL())
+			.setTitle(`🔨 You have been banned from ${message.guild.name}`)
+			.setColor('#DC143C')
 			.addFields(
-				{ name: '**Who?**', value: `${user} || ${user.tag}`, inline: true },
-				{ name: '**Reason**', value: `${reason}`, inline: true },
+				{ name: '**Moderator**', value: `${message.author.tag} - ${message.author.id}`, inline: false },
+				{ name: '**Reason**', value: `${reason}`, inline: false },
 			)
 			.setTimestamp();
 
+		const userMessage = await send.sendUser(user, { embeds: [sendToUser] });
+		if(!userMessage) { description += '\n\nI was unable to contact the target member.'; }
+
+		const logs = new Discord.MessageEmbed()
+			.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
+			.setTitle(`🔨 Banned - ${user.tag}`)
+			.setColor('#DC143C')
+			.addFields(
+				{ name: '**User**', value: `${user.tag} - ${user.id}`, inline: false },
+				{ name: '**Moderator**', value: `${message.author.tag} - ${message.author.id}`, inline: false },
+				{ name: '**Reason**', value: `${reason}`, inline: false },
+			)
+			.setTimestamp();
+
+		const server = new Discord.MessageEmbed()
+			.setAuthor(`${message.member.user.tag}`, `${message.member.user.displayAvatarURL()}`)
+			.setTitle(`🔨 Banned - ${user.tag}`)
+			.setColor('#DC143C')
+			.setDescription(description)
+			.setTimestamp();
+
 		try {
-			await message.guild.members.ban(user, {
-				days: 7,
-				reason: `Moderator: ${message.author.tag} || Reason: ${reason}`
-			});
+
+			await message.guild.members.ban(user, { days: 7, reason: `Moderator: ${message.author.tag} --  reason: ${reason}` });
 		}
-		catch (error) {
-			errorMessage = true;
-			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `An error has occured when trying to ban ${user.tag}` });
+		catch(err) {
+
+			await send.error(err, message.channel, `I am unable to ban ${user.tag}`);
+			return;
 		}
 
-		if(errorMessage == false) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [channelBanned] });
+
+		if(logsChannel && message.channel.id == logsChannel.id) {
+			await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
 		}
+		else if(logsChannel) {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [server] });
+			await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
+		}
+		else {
+			await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
+		}
+
 	}
 };

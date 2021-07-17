@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const { bot } = require(`${__dirname}/values`);
 
 async function sendChannel(values, object) {
@@ -25,21 +26,31 @@ async function sendWebhook(values, object) {
 }
 
 async function sendUser(user, object) {
-	let messageContent = {};
 
-	if(!user || user == 'n/a') { return; }
+	if(!user || user == 'n/a') { return false; }
 
-	if(object.content) { messageContent.content = object.content; }
-	if(object.embed) { messageContent.embed = object.embed; }
-
-	const message = await user.send(messageContent).catch(() => { });
+	const message = await user.send(object).catch(() => {});
 
 	return message;
 }
 
+async function error(err, channel, desc) {
+
+	const embed = new Discord.MessageEmbed()
+		.setTitle(`An error has occured`)
+		.setColor('RED')
+		.setDescription(desc)
+		.addFields(
+			{ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false },
+		);
+
+	const message = await channel.send({ embeds: [embed] });
+	return message ? message : false;
+}
 
 module.exports = {
 	sendChannel,
 	sendWebhook,
-	sendUser
+	sendUser,
+	error
 };
