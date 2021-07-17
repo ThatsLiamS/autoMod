@@ -24,7 +24,7 @@ module.exports = {
 		const Successful = new Discord.MessageEmbed()
 			.setTitle('Logs successfully set')
 			.setColor('GREEN')
-			.setDescription(`All my moderato logs will now be sent to ${channel}`)
+			.setDescription(`All my moderaton logs will now be sent to ${channel}`)
 			.setFooter(`Requested by ${message.author.tag}`)
 			.setTimestamp();
 

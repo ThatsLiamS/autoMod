@@ -23,7 +23,12 @@ module.exports = {
 			return;
 		}
 
-		const reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
+		let reason = args[1] ? args.slice(1).join(" ") : "No reason specified";
+		if(reason.length > 1024) {
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `The reason specified was too long. Please keep reasons under 1024 characters` });
+			return;
+		}
+		reason = Discord.Util.cleanContent(reason, message);
 
 		const channelUnbanned = new Discord.MessageEmbed()
 			.setColor('GREEN')

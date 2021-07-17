@@ -21,8 +21,8 @@ module.exports = {
 		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
-		let avatarURL = message.guild.iconURL();
-		if (!avatarURL) avatarURL = "https://i.imgur.com/yLv2YVnh.jpg";
+
+		const avatarURL = message.guild.iconURL() ? message.guild.iconURL() : "https://i.imgur.com/yLv2YVnh.jpg";
 
 		const result = await send.sendWebhook({ webhook: webhook, message: message }, { username: `${message.guild.name}`, avatarURL: `${avatarURL}`, embeds: [embed] });
 

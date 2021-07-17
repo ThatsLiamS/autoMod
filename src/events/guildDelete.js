@@ -10,8 +10,7 @@ module.exports = {
 			channel1.send("Unable to rename the **Servers:** channel");
 		});
 
-		let owner = await client.users.fetch(guild.ownerID);
-		if(!owner) { owner = guild.OwnerID; }
+		const owner = await guild.fetchOwner();
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('RED')

@@ -8,11 +8,10 @@ module.exports = {
 	description: 'Displays lots of cool information about the server!',
 	aliases: ["server"],
 	arguments: 0,
-	async execute(message,) {
+	async execute(message) {
 		const member = message.member;
 
-		let owner = await message.guild.members.cache.get(message.guild.ownerID);
-		if(!owner) { owner = message.guild.ownerID; }
+		const owner = await message.guild.fetchOwner();
 
 		const serverEmbed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
