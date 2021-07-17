@@ -1,5 +1,3 @@
-const Discord = require('discord.js');
-
 const send = require(`${__dirname}/../../util/send`);
 
 module.exports = {
@@ -9,28 +7,24 @@ module.exports = {
 	permissions: ["Manage Messages"],
 	aliases: ["purge"],
 	arguments: 1,
-	async execute(message, args) {
+	async execute(message, args, prefix) {
 
-		const errormessage = new Discord.MessageEmbed()
-			.setTitle(`Error`)
-			.setColor(`RED`)
-			.setDescription(`An error occured when clearing messages. Please make sure I have permission to manage messages, and the messages are not older than 14 days (Discord API limit)`)
-			.setFooter(`I'm sorry :sob:`);
+		const number = args[0];
 
-		const LolTooHigh = new Discord.MessageEmbed()
-			.setTitle(`Too High`)
-			.setColor(`RED`)
-			.setDescription(`I'm sorry but I can not delete more then 100 messages in one command.`)
-			.setFooter(`This is a Discord API limit, we have no control on his.`);
-
-		if (Number(args[0]) > 100) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [LolTooHigh] });
+		if(isNaN(number)) {
+			await send.error({ name: `TypeError`, message: `Argument Must Be Number` }, message.channel, `Usage: ${prefix}${this.name} ${this.usage}`);
 			return;
 		}
 
-		await message.delete().catch();
-		message.channel.bulkDelete(args[0]).catch(async () => {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [errormessage] });
-		}).catch();
+		if(number < 1 || 100 < number) {
+			await send.error({ name: `TypeError`, message: `Number Out Of Bounds` }, message.channel, `Usage: ${prefix}${this.name} ${this.usage}`);
+			return;
+		}
+
+		message.channel.bulkDelete(number).catch(async (err) => {
+			await send.error(err, message.channel, `Unable to delete **${number}** messages.`);
+			return;
+		});
+
 	}
 };

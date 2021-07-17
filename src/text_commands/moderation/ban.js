@@ -21,7 +21,7 @@ module.exports = {
 		}
 
 		if (!user || errorMessage == true) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { contant: `Incorrect usage, make sure it follows the format: \`${prefix}ban <@member> [reason]\`` });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}${this.name} ${this.usage}\`` });
 			return;
 		}
 		if(user.id == message.author.id) {
@@ -94,7 +94,7 @@ module.exports = {
 			await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
 		}
 		else {
-			await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [logs] });
 		}
 
 	}

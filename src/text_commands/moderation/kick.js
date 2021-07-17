@@ -20,7 +20,7 @@ module.exports = {
 			catch(error) { errorMessage = true; }
 		}
 		if (!user || errorMessage == true) {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\`` });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}${this.name} ${this.usage}\`` });
 			return;
 		}
 		const member = message.guild.members.cache.get(user.id);
@@ -89,12 +89,12 @@ module.exports = {
 				await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
 			}
 			else {
-				await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [logs] });
 			}
 
 		}
 		else {
-			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}kick <@member> [reason]\`` });
+			await send.sendChannel({ channel: message.channel, author: message.author }, { content: `Incorrect usage, make sure it follows the format: \`${prefix}${this.name} ${this.usage}\`` });
 		}
 	}
 };

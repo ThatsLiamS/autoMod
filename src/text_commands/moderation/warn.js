@@ -81,7 +81,7 @@ module.exports = {
 				await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
 			}
 			else {
-				await send.sendChannel({ channel: logsChannel, author: message.author }, { embeds: [logs] });
+				await send.sendChannel({ channel: message.channel, author: message.author }, { embeds: [logs] });
 			}
 		}
 		else {
