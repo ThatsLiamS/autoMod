@@ -10,11 +10,11 @@ const client = new Discord.Client({
 	repliedUser: false
 });
 const fs = require('fs');
-/*
-const AutoPoster = require('topgg-autoposter');
+
+const { AutoPoster } = require('topgg-autoposter');
 const ap = AutoPoster(`${process.env['TopggToken']}`, client);
 ap.on('posted', () => { });
-*/
+
 const admin = require("firebase-admin"); const serviceAccount = require(`${__dirname}/util/developer/firebase.json`);
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const firestore = admin.firestore();
