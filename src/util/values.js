@@ -22,6 +22,12 @@ const bot = {
 			tag: 'Coin Flipper#1767',
 			id: '668850031012610050',
 			website: 'https://coinflipper.pages.dev/'
+		},
+		kekbot: {
+			username: 'kekbot',
+			tag: 'kekbot#5882',
+			id: '734007071686787123',
+			website: 'https://kekweb.bagelwastaken.repl.co/'
 		}
 	}
 };
