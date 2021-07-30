@@ -44,8 +44,8 @@ function makeGrid(results) {
 }
 
 module.exports = {
-	name: "about",
-	description: "Slash command that shows cool information about the bot!",
+	name: 'about',
+	description: 'Shows lots of cool information about the bot!',
 	async execute(interaction, client) {
 
 		await interaction.defer({ ephemeral: false });

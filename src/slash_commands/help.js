@@ -6,7 +6,10 @@ const prefix = '!';
 
 module.exports = {
 	name: 'help',
-	arguments: 0,
+	description: 'View all of my commands and extra details for individual commands!',
+	options: [
+		{ name: 'command', description: 'Enter a command', type: 'STRING', required: false },
+	],
 	async execute(interaction, client) {
 
 		const option = interaction.options.get("command");
