@@ -6,7 +6,7 @@ app.listen(port, () => console.log(`App listening at http://localhost:${port}`))
 
 const Discord = require('discord.js');
 const client = new Discord.Client({
-	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS', 'GUILD_WEBHOOKS'],
+	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_WEBHOOKS'],
 	repliedUser: false
 });
 const fs = require('fs');
@@ -49,7 +49,7 @@ async function sendError(error) {
 	const embed = new Discord.MessageEmbed()
 		.setDescription(`${error}`);
 
-	await channel.send(embed);
+	await channel.send({ embeds: [embed] });
 }
 
 process.on('uncaughtException', async (err) => {

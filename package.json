@@ -25,10 +25,10 @@
 	"homepage": "https://github.com/ThatsLiamS-Development/autoMod#readme",
 	"dependencies": {
 		"ci": "^2.1.1",
-		"discord.js": "^13.0.0-dev.2675b08.1627603447",
-		"discord.js-ghost-ping": "^2.0.0",
+		"discord.js": "^13.0.0-dev.t1627831263.774f5b7",
+		"discord.js-ghost-ping": "^2.0.1",
 		"express": "^4.17.1",
-		"firebase-admin": "^9.9.0",
+		"firebase-admin": "^9.11.0",
 		"moment": "^2.29.1",
 		"topgg-autoposter": "^2.0.0"
 	},
