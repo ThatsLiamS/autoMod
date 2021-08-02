@@ -6,8 +6,9 @@ module.exports = {
 	name: 'leave',
 	description: "Forces autoMod to leave the server :winky_face:",
 	ownerOnly: true,
-	arguments: 0,
 	async execute(interaction) {
+
+		await interaction.defer({ ephemeral: false });
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle("Good Bye!")

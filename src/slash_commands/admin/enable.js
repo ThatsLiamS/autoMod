@@ -4,15 +4,16 @@ module.exports = {
 	name: 'enable',
 	description: "Provides the ability to enable features.",
 	options: [
-		{ name: 'Feature', description: 'Select the feature to enable!', type: 'STRING', required: true, choices: [ { name: 'logs', value: 'logs' }, { name: 'word_filter', value: 'word_filter' }, ], },
-		{ name: 'Channel', description: 'Select where the logs should go!', type: 'CHANNEL', required: true },
+		{ name: 'feature', description: 'Select the feature to enable!', type: 'STRING', required: true, choices: [ { name: 'logs', value: 'logs' }, { name: 'word_filter', value: 'word_filter' }, ], },
+		{ name: 'channel', description: 'Select where the logs should go!', type: 'CHANNEL', required: true },
 	],
+	permissions: ["administrator"],
 	async execute(interaction, client, firestore) {
 
 		await interaction.defer({ ephemeral: false });
 
-		const feature = interaction.options.getString("Feature");
-		const channel = interaction.options.getChannel("Channel");
+		const feature = interaction.options.getString("feature");
+		const channel = interaction.options.getChannel("channel");
 
 		if(feature == 'logs') {
 
@@ -27,7 +28,7 @@ module.exports = {
 				.setTitle('Logs successfully set')
 				.setColor('GREEN')
 				.setDescription(`All my moderation logs will now be sent to ${channel}`)
-				.setFooter(`Requested by ${interaction.author.tag}`)
+				.setFooter(`Requested by ${interaction.member.user.username}`)
 				.setTimestamp();
 
 			interaction.followUp({ embeds: [Successful] });
@@ -46,7 +47,7 @@ module.exports = {
 				.setTitle('Word Filter has been enabled')
 				.setColor('GREEN')
 				.setDescription(`Successfully enabled the word filter, all infringements will be sent to ${channel}`)
-				.setFooter(`Requested by ${interaction.author.tag}`)
+				.setFooter(`Requested by ${interaction.member.user.username}`)
 				.setTimestamp();
 
 			interaction.followUp({ embeds: [Successful] });
