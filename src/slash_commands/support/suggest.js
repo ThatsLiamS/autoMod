@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 
+const config = require(`${__dirname}/../../../config`);
+
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest a new command or feature!.',
@@ -19,7 +21,7 @@ module.exports = {
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
+		const channel = client.channels.cache.get(`${config.channels.suggest}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 

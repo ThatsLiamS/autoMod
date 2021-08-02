@@ -1,6 +1,8 @@
 const Discord = require(`discord.js`);
 const send = require(`${__dirname}/../../util/send`);
 
+const config = require(`${__dirname}/../../../config`);
+
 module.exports = {
 	name: "suggest",
 	description: "Suggest a new feature for autoMod",
@@ -15,7 +17,7 @@ module.exports = {
 			.setFooter(`ID: ${message.member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
+		const channel = client.channels.cache.get(`${config.channels.suggest}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 		let avatarURL = message.guild.iconURL();

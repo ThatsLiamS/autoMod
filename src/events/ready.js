@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const send = require(`${__dirname}/../util/send`);
 
+const config = require(`${__dirname}/../../config`);
+
 const getMemberCount = () => {
 	return this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
 };
@@ -27,7 +29,7 @@ module.exports = {
 			activities: [{ type: `WATCHING`, name: `Over Your Server! do /help` }]
 		});
 
-		const channel = client.channels.cache.get('859562190758608956');
+		const channel = client.channels.cache.get(`${config.channels.uptime}`);
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('GREEN')

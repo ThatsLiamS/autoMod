@@ -1,6 +1,8 @@
 const Discord = require(`discord.js`);
 const send = require(`${__dirname}/../../util/send`);
 
+const config = require(`${__dirname}/../../../config`);
+
 module.exports = {
 	name: "report",
 	description: "Sends a bug report to the developers of autoMod",
@@ -18,7 +20,7 @@ module.exports = {
 			.setFooter(`ID: ${member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
+		const channel = client.channels.cache.get(`${config.channels.report}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 

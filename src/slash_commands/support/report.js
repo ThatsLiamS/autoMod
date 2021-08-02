@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 
+const config = require(`${__dirname}/../../../config`);
+
 module.exports = {
 	name: 'report',
 	description: 'Submit a bug report to the Developers.',
@@ -21,7 +23,7 @@ module.exports = {
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
+		const channel = client.channels.cache.get(`${config.channels.report}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 
@@ -36,7 +38,6 @@ module.exports = {
 			await interaction.followUp({ embeds: [error] });
 			return;
 		});
-
 
 		await interaction.followUp({ content: 'Thank you for your report, it has been sent to my developers.' });
 

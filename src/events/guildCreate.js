@@ -1,14 +1,10 @@
 const Discord = require('discord.js');
 
+const config = require(`${__dirname}/../../config`);
+
 module.exports = {
 	name: 'guildCreate',
 	async execute(guild, client, firestore) {
-
-		const channel = client.channels.cache.get(process.env.VoiceServerCounter);
-		channel.setName(`Servers: ${client.guilds.cache.size}`).catch(() => {
-			let channel1 = client.channels.cache.get(process.env.SupportReportID);
-			channel1.send("Unable to rename the **Servers:** channel");
-		});
 
 		const owner = await guild.fetchOwner();
 
@@ -25,7 +21,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		client.channels.cache.get(`${process.env.SupportServerlogID}`).send(embed);
+		client.channels.cache.get(`${config.channels.logs.servers}`).send({ embeds: [embed] });
 
 		const Ref = await firestore.collection(`servers`).doc(`${guild.id}`).get();
 		if (!Ref.data()) {

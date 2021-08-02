@@ -46,9 +46,10 @@ for (const file of eventFiles) {
 	else client.on(event.name, (...args) => event.execute(...args, client, firestore));
 }
 
+const config = require(`${__dirname}/../config`);
 async function sendError(error) {
 
-	const channel = client.channels.cache.get('868455901659541565');
+	const channel = client.channels.cache.get(`${config.channels.errors}`);
 	const embed = new Discord.MessageEmbed()
 		.setDescription(`${error}`);
 
