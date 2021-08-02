@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const moment = require('moment');
 
 const config = require(`${__dirname}/../../config`);
 
@@ -17,7 +18,7 @@ module.exports = {
 				{ name: '**ID**', value: `${guild.id}`, inline: true },
 				{ name: '**Owner**', value: `${owner}`, inline: true },
 				{ name: '**Members**', value: `${guild.memberCount}`, inline: true },
-				{ name: '**Created**', value: `${guild.createdAt}`, inline: true },
+				{ name: '**Created**', value: `${moment(guild.createdAt).format("DD/MM/YYYY LTS")}`, inline: true },
 			)
 			.setTimestamp();
 
