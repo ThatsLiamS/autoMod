@@ -11,7 +11,7 @@ There are many other **verified** moderation bots out there, so why choose autoM
 
 ## **Useful Links**
 - [Invite](https://bit.ly/autoMod_invite)
-- [Support Server](https://discord.gg/2je9aJynqt) 
-- [Privacy Policy](https://github.com/ThatsLiamS/autoMod/blob/main/legal/Privacy_Policy.md) 
+- [Support Server](https://discord.gg/2je9aJynqt)
+- [Privacy Policy](https://github.com/ThatsLiamS/autoMod/blob/main/legal/Privacy_Policy.md)
 - [Terms of Service](https://github.com/ThatsLiamS/autoMod/blob/main/legal/Terms_of_Service.md)
-- [GitHub Repository](https://github.com/ThatsLiamS/autoMod) 
+- [GitHub Repository](https://github.com/ThatsLiamS/autoMod)
