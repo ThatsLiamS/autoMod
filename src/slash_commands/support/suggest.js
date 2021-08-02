@@ -1,27 +1,25 @@
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'report',
-	description: 'Submit a bug report to the Developers.',
+	name: 'suggest',
+	description: 'Suggest a new command or feature!.',
 	options: [
-		{ name: 'command', description: 'Where does the issue take place?', type: 'STRING', required: true },
-		{ name: 'description', description: 'General explanation of the bug along with steps to reproduce.', type: 'STRING', required: true },
+		{ name: 'description', description: 'Provide an in-depth explantation of your suggestion', type: 'STRING', required: true },
 	],
 	async execute(interaction, client) {
 
 		await interaction.defer({ ephemeral: true });
 
-		const description = interaction.options.get("description").value;
-		const command = interaction.options.get("command").value;
+		const description = interaction.options.getString("description");
 
 		const embed = new Discord.MessageEmbed()
-			.setColor('RED')
-			.setDescription(`**${command}**\n${description}`)
+			.setColor('#0099ff')
+			.setDescription(`**${client.user.tag}**\n${description}`)
 			.setAuthor(`${interaction.member.user.tag}`, `${interaction.member.user.displayAvatarURL()}`)
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
 
-		const channel = client.channels.cache.get(`${process.env.SupportReportID}`);
+		const channel = client.channels.cache.get(`${process.env.SupportSuggestID}`);
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 
@@ -31,15 +29,14 @@ module.exports = {
 			const error = new Discord.MessageEmbed()
 				.setTitle('An error occured')
 				.setColor('RED')
-				.setDescription(`Sorry, I was unable to submit your report\n**${err.message}**`);
+				.setDescription(`Sorry, I was unable to submit your suggestion\n**${err.message}**`);
 
 			await interaction.send({ embeds: [error] });
 			return;
 		});
 
 
-		await interaction.followUp({ content: 'Thank you for your report, it has been sent to my developers.' });
-		interaction.delete().catch();
+		await interaction.followUp({ content: 'Thank you for your suggestion, it has been sent to my developers.' });
 
 	}
 };

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const { bot } = require(`${__dirname}/../util/values`);
+const { bot } = require(`${__dirname}/../../util/values`);
 
 const prefix = '!';
 
@@ -12,7 +12,7 @@ module.exports = {
 	],
 	async execute(interaction, client) {
 
-		const option = interaction.options.get("command");
+		const option = interaction.options.getString("command");
 
 		const realhelp = new Discord.MessageEmbed()
 			.setColor('#0099ff')
@@ -34,7 +34,7 @@ module.exports = {
 				.setThumbnail(client.user.displayAvatarURL())
 				.setURL(bot.server);
 
-			const command = option.value.toLowerCase();
+			const command = option.toLowerCase();
 			const file = client.text_commands.get(command) || client.text_commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
 
 			if(!file || file.name == "help") {

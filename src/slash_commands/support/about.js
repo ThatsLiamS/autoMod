@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const { developers, bot } = require(`${__dirname}/../util/values`);
+const { developers, bot } = require(`${__dirname}/../../util/values`);
 
 const prefix = '!';
 

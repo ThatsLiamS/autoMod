@@ -1,20 +1,22 @@
 const Discord = require('discord.js');
 
 module.exports = {
-	name: 'suggest',
-	description: 'Suggest a new command or feature!.',
+	name: 'report',
+	description: 'Submit a bug report to the Developers.',
 	options: [
-		{ name: 'description', description: 'Provide an in-depth explantation of your suggestion', type: 'STRING', required: true },
+		{ name: 'command', description: 'Where does the issue take place?', type: 'STRING', required: true },
+		{ name: 'description', description: 'General explanation of the bug along with steps to reproduce.', type: 'STRING', required: true },
 	],
 	async execute(interaction, client) {
 
 		await interaction.defer({ ephemeral: true });
 
-		const description = interaction.options.get("description").value;
+		const description = interaction.options.getString("description");
+		const command = interaction.options.getString("command");
 
 		const embed = new Discord.MessageEmbed()
-			.setColor('#0099ff')
-			.setDescription(`**${client.user.tag}**\n${description}`)
+			.setColor('RED')
+			.setDescription(`**${command}**\n${description}`)
 			.setAuthor(`${interaction.member.user.tag}`, `${interaction.member.user.displayAvatarURL()}`)
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
@@ -29,15 +31,14 @@ module.exports = {
 			const error = new Discord.MessageEmbed()
 				.setTitle('An error occured')
 				.setColor('RED')
-				.setDescription(`Sorry, I was unable to submit your suggestion\n**${err.message}**`);
+				.setDescription(`Sorry, I was unable to submit your report\n**${err.name}: ${err.message}**`);
 
-			await interaction.send({ embeds: [error] });
+			await interaction.followUp({ embeds: [error] });
 			return;
 		});
 
 
-		await interaction.followUp({ content: 'Thank you for your suggestion, it has been sent to my developers.' });
-		interaction.delete().catch();
+		await interaction.followUp({ content: 'Thank you for your report, it has been sent to my developers.' });
 
 	}
 };
