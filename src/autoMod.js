@@ -20,8 +20,8 @@ admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const firestore = admin.firestore();
 
 client.text_commands = new Discord.Collection();
-const categories = fs.readdirSync(`${__dirname}/text_commands/`);
-for (const category of categories) {
+const t_categories = fs.readdirSync(`${__dirname}/text_commands/`);
+for (const category of t_categories) {
 	const commandFiles = fs.readdirSync(`${__dirname}/text_commands/${category}`).filter(File => File.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`${__dirname}/text_commands/${category}/${file}`);
@@ -30,10 +30,13 @@ for (const category of categories) {
 }
 
 client.slash_commands = new Discord.Collection();
-const commandFiles = fs.readdirSync(`${__dirname}/slash_commands/`).filter(File => File.endsWith('.js'));
-for (const file of commandFiles) {
-	const command = require(`${__dirname}/slash_commands/${file}`);
-	client.slash_commands.set(command.name, command);
+const s_categories = fs.readdirSync(`${__dirname}/slash_commands/`);
+for (const category of s_categories) {
+	const commandFiles = fs.readdirSync(`${__dirname}/slash_commands/${category}`).filter(File => File.endsWith('.js'));
+	for (const file of commandFiles) {
+		const command = require(`${__dirname}/slash_commands/${category}/${file}`);
+		client.slash_commands.set(command.name, command);
+	}
 }
 
 const eventFiles = fs.readdirSync(`${__dirname}/events`).filter(file => file.endsWith('.js'));
