@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const { bot } = require(`${__dirname}/../../util/values`);
+const config = require(`${__dirname}/../../../config`);
 
 module.exports = {
 	name: 'coinflip',
@@ -16,7 +16,7 @@ module.exports = {
 
 		const embed = new Discord.MessageEmbed()
 			.setTitle(`Coin Flipper`)
-			.setDescription(`The coin landed on ${flip}\n\nPowered by [@${bot.partners.CoinFlipper.tag}](${bot.partners.CoinFlipper.website})`)
+			.setDescription(`The coin landed on ${flip}\n\nPowered by [@${config.partners.CoinFlipper.tag}](${config.partners.CoinFlipper.website})`)
 			.setColor(`#cd7f32`)
 			.setThumbnail(`https://i.imgur.com/4Zw6qky.png`);
 

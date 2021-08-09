@@ -3,10 +3,11 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'disable',
 	description: "Provides the ability to disable features.",
+	permissions: ["administrator"],
+	usage: '<feature>',
 	options: [
 		{ name: 'feature', description: 'Select the feature to disable!', type: 'STRING', required: true, choices: [ { name: 'logs', value: 'logs' }, { name: 'word_filter', value: 'word_filter' }, ], },
 	],
-	permissions: ["administrator"],
 	async execute(interaction, client, firestore) {
 
 		await interaction.defer({ ephemeral: false });

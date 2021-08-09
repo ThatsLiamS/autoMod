@@ -6,9 +6,7 @@ async function sendErr(err, interaction, desc) {
 		.setTitle(`An error has occured`)
 		.setColor('RED')
 		.setDescription(desc)
-		.addFields(
-			{ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false },
-		);
+		.addFields({ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false });
 
 	await interaction.followUp({ embeds: [embed] });
 }
@@ -17,6 +15,7 @@ module.exports = {
 	name: 'purge',
 	description: "Bulk delete messages",
 	permissions: ["Manage Messages"],
+	usage: '<number>',
 	options: [
 		{ name: 'amount', description: 'How many messages do I delete!', type: 'INTEGER', required: true },
 	],

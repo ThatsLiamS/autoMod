@@ -6,9 +6,7 @@ async function sendErr(err, interaction, desc) {
 		.setTitle(`An error has occured`)
 		.setColor('RED')
 		.setDescription(desc)
-		.addFields(
-			{ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false },
-		);
+		.addFields({ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false });
 
 	await interaction.followUp({ embeds: [embed] });
 }
@@ -17,6 +15,7 @@ module.exports = {
 	name: 'slowmode',
 	description: "Change the slowmode time in the channel!",
 	permissions: ["Manage Channels"],
+	usage: '<number>',
 	options: [
 		{ name: 'amount', description: 'How long should slowmode be? (In seconds)!', type: 'INTEGER', required: true },
 	],

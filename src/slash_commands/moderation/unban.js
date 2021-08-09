@@ -6,9 +6,7 @@ async function sendErr(err, interaction, desc) {
 		.setTitle(`An error has occured`)
 		.setColor('RED')
 		.setDescription(desc)
-		.addFields(
-			{ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false },
-		);
+		.addFields({ name: `__Error:__`, value: `**${err.name}: ${err.message}**`, inline: false });
 
 	await interaction.followUp({ embeds: [embed] });
 }
@@ -17,6 +15,7 @@ module.exports = {
 	name: 'unban',
 	description: "Unbans a member from the server and allows them to rejoin!",
 	permissions: ["Ban Members"],
+	usage: '<user Id> [reason]',
 	options: [
 		{ name: 'user', description: 'Who are you unbanning? (ID ONLY)!', type: 'STRING', required: true },
 		{ name: 'reason', description: 'Tell us why', type: 'STRING', required: false },

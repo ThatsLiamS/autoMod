@@ -5,6 +5,7 @@ const config = require(`${__dirname}/../../../config`);
 module.exports = {
 	name: 'report',
 	description: 'Submit a bug report to the Developers.',
+	usage: '<detailed report>',
 	options: [
 		{ name: 'command', description: 'Where does the issue take place?', type: 'STRING', required: true },
 		{ name: 'description', description: 'General explanation of the bug along with steps to reproduce.', type: 'STRING', required: true },

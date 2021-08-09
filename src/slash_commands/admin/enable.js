@@ -3,11 +3,12 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'enable',
 	description: "Provides the ability to enable features.",
+	permissions: ["administrator"],
+	usage: '<feature> <channel>',
 	options: [
 		{ name: 'feature', description: 'Select the feature to enable!', type: 'STRING', required: true, choices: [ { name: 'logs', value: 'logs' }, { name: 'word_filter', value: 'word_filter' }, ], },
 		{ name: 'channel', description: 'Select where the logs should go!', type: 'CHANNEL', required: true },
 	],
-	permissions: ["administrator"],
 	async execute(interaction, client, firestore) {
 
 		await interaction.defer({ ephemeral: false });

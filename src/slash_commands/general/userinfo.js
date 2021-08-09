@@ -4,6 +4,7 @@ const moment = require('moment');
 module.exports = {
 	name: 'userinfo',
 	description: "Displays lots of cool information about the user!",
+	usage: '[user]',
 	options: [
 		{ name: 'member', description: 'Mention a member in the server', type: 'USER', required: false },
 	],

@@ -35,7 +35,7 @@ module.exports = {
 				.setURL(bot.server);
 
 			const command = option.toLowerCase();
-			const file = client.text_commands.get(command) || client.text_commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+			const file = client.interactions.get(command) || client.interactions.find(cmd => cmd.aliases && cmd.aliases.includes(command));
 
 			if(!file || file.name == "help") {
 				await interaction.reply({ embeds: [realhelp] });

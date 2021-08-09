@@ -5,6 +5,7 @@ const config = require(`${__dirname}/../../../config`);
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest a new command or feature!.',
+	usage: '<detailed suggestion>',
 	options: [
 		{ name: 'description', description: 'Provide an in-depth explantation of your suggestion', type: 'STRING', required: true },
 	],
@@ -36,7 +37,6 @@ module.exports = {
 			await interaction.send({ embeds: [error] });
 			return;
 		});
-
 
 		await interaction.followUp({ content: 'Thank you for your suggestion, it has been sent to my developers.' });
 

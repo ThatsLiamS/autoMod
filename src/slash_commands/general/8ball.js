@@ -26,6 +26,7 @@ const possibleAnswers = [
 module.exports = {
 	name: '8ball',
 	description: 'Ask a question, and get an answer from the all-knowing, magic 8ball!',
+	usage: '<question>',
 	options: [
 		{ name: 'question', description: 'Submit your question!', type: 'STRING', required: true },
 	],

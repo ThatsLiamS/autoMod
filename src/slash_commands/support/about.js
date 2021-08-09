@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const { developers, bot } = require(`${__dirname}/../../util/values`);
+const config = require(`${__dirname}/../../../config`);
 
 const prefix = '!';
 
@@ -67,14 +67,14 @@ module.exports = {
 		const embed = new Discord.MessageEmbed()
 			.setTitle("My Information")
 			.setColor(`GREEN`)
-			.setDescription(`Hey, I'm **[${bot.tag}](${bot.invite})**! My prefix is: \`${prefix}\`\nYou can also mention me as a prefix!\n\n\`\`\`\n${makeGrid(results)}\`\`\``)
+			.setDescription(`Hey, I'm **[${client.user.tag}](${config.invite})**! My prefix is: \`${prefix}\`\nYou can also mention me as a prefix!\n\n\`\`\`\n${makeGrid(results)}\`\`\``)
 			.addFields(
 
 				{ name: `**Total Servers:**`, value:`${servers}`, inline: true },
 				{ name: `**Total Users:**`, value: `${users}`, inline: true },
 				{ name: `**Total Commands:**`, value: `18`, inline: true },
 
-				{ name: `**Developer:**`, value:`**[${developers.ThatsLiamS.tag}](${developers.ThatsLiamS.profile})**`, inline: true },
+				{ name: `**Developer:**`, value:`**[${config.developers.ThatsLiamS.tag}](${config.developers.ThatsLiamS.profile})**`, inline: true },
 				{ name: `**Uptime:**`, value:`\`${uptime}\``, inline: true },
 				{ name: `**Shard ID:**`, value:`\`${shard}\``, inline: true },
 			);
