@@ -1,12 +1,39 @@
 {
-    "channels": {
-        "report": "821157435602370581",
-        "suggest": "821153396328366080",
-        "errors": "868455901659541565",
-        "uptime": "859562190758608956",
-        "logs": {
-            "commands": "821518160939319336",
-            "servers": "821159866764623882"
-        }
-    }
+	"prefix": "!",
+
+	"server": "https://discord.gg/2je9aJynqt",
+	"invite": "https://bit.ly/autoMod_invite",
+	"github": "https://github.com/ThatsLiamS/autoMod",
+
+	"developers": {
+		"array": ["ThatsLiamS"],
+
+		"ThatsLiamS": {
+			"username": "ThatsLiamS",
+			"tag": "ThatsLiamS#6950",
+			"id": "732667572448657539",
+			"profile": "https://github.com/ThatsLiamS"
+		}
+	},
+
+	"partners": {
+		"CoinFlipper": {
+			"username": "Coin Flipper",
+			"tag": "Coin Flipper#1767",
+			"id": "668850031012610050",
+			"website": "https://coinflipper.pages.dev/"
+		},
+		"kekbot": {
+			"username": "kekbot",
+			"tag": "kekbot#5882",
+			"id": "734007071686787123",
+			"website": "https://kekweb.bagelwastaken.repl.co/"
+		}
+	},
+
+	"channels": {
+		"report": "821157435602370581",
+		"suggest": "821153396328366080",
+		"errors": "868455901659541565"
+	}
 }
