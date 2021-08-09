@@ -9,6 +9,3 @@ bower_components
 .env
 .env.test
 .env.production
-
-# Testing files
-src/util/developer/*

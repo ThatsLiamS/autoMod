@@ -1,11 +1,10 @@
-const { logs } = require(`${__dirname}/../util/developer/test`);
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction, client, firestore) {
 
 		if (interaction.isCommand()) {
 			const commandName = interaction.commandName;
-			const cmd = client.slash_commands.get(commandName);
+			const cmd = client.interactions.get(commandName);
 
 			let allowed = true;
 
@@ -36,7 +35,6 @@ module.exports = {
 
 				if(allowed == true) {
 					cmd.execute(interaction, client, firestore);
-					logs(client, interaction, `Slash Command: ${commandName}`);
 				}
 			}
 		}

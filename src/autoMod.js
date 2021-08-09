@@ -29,13 +29,13 @@ for (const category of t_categories) {
 	}
 }
 
-client.slash_commands = new Discord.Collection();
+client.interactions = new Discord.Collection();
 const s_categories = fs.readdirSync(`${__dirname}/slash_commands/`);
 for (const category of s_categories) {
 	const commandFiles = fs.readdirSync(`${__dirname}/slash_commands/${category}`).filter(File => File.endsWith('.js'));
 	for (const file of commandFiles) {
 		const command = require(`${__dirname}/slash_commands/${category}/${file}`);
-		client.slash_commands.set(command.name, command);
+		client.interactions.set(command.name, command);
 	}
 }
 
@@ -50,20 +50,13 @@ const config = require(`${__dirname}/../config`);
 async function sendError(error) {
 
 	const channel = client.channels.cache.get(`${config.channels.errors}`);
-	const embed = new Discord.MessageEmbed()
-		.setDescription(`${error}`);
+	const embed = new Discord.MessageEmbed().setDescription(`${error}`);
 
 	await channel.send({ embeds: [embed] });
 }
 
-process.on('uncaughtException', async (err) => {
-	await sendError(err);
-});
-process.on('warning', async (err) => {
-	await sendError(err);
-});
-process.on('uncaughtExceptionMonitor', async (err) => {
-	await sendError(err);
-});
+process.on('uncaughtException', async (err) => { await sendError(err); });
+process.on('warning', async (err) => { await sendError(err); });
+process.on('uncaughtExceptionMonitor', async (err) => { await sendError(err); });
 
 client.login(process.env['AutomodToken']);

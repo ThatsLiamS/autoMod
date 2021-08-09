@@ -6,7 +6,7 @@ async function wordFilter(message, firestore) {
 
 	const contains = profanities.reduce((acc, res) => acc || message.content.toLowerCase().split(' ').includes(res), false);
 
-	if(contains && contains == true) {
+	if(contains) {
 		let member = await message.member;
 
 		let document = await firestore.collection(`servers`).doc(`${message.guild.id}`).get();
@@ -18,7 +18,7 @@ async function wordFilter(message, firestore) {
 
 		if(document.data().wordFilter.on == true) {
 			message.delete().catch();
-			message.channel.send(`${member}'s message was deleted`).catch(() => { message.author.send(`I saw your swear, Please refrain from this in the future.`); }).catch();
+			message.channel.send({ content: `${member}'s message was deleted` }).catch(() => { message.author.send({ content: `I saw your swear, Please refrain from this in the future.` }); }).catch();
 
 			const embed = new Discord.MessageEmbed()
 				.setColor('#DC143C')
@@ -32,9 +32,9 @@ async function wordFilter(message, firestore) {
 				.setTimestamp().setFooter(`Bot Created By @ThatsLiamS#6590`);
 
 			const channel = message.guild.channels.cache.get(document.data().wordFilter.channel);
-			if(!channel) { return message.channel.send('I could not find The logging channel.'); }
+			if(!channel) { return; }
 
-			channel.send(embed).catch(() => { message.channel.send(`I failed to log this in ${channel}`); }).catch();
+			channel.send({ embeds: [embed] }).catch(() => { message.channel.send({ content: `I failed to log this in ${channel}` }); }).catch();
 
 		}
 	}

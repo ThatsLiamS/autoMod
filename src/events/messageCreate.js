@@ -1,5 +1,4 @@
 const { wordFilter } = require(`${__dirname}/../util/wordFilter`);
-const { logs } = require(`${__dirname}/../util/developer/test`);
 const send = require(`${__dirname}/../util/send`);
 
 const prefix = '!';
@@ -81,7 +80,6 @@ module.exports = {
 						}
 
 						cmd.execute(message, args, prefix, client, firestore);
-						logs(client, message, `Text Command: ${commandName}`);
 
 					}
 				}

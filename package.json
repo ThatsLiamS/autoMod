@@ -13,7 +13,9 @@
 	"keywords": [
 		"JavaScript",
 		"discord",
-		"discord",
+		"discord bot",
+		"moderation",
+		"autoMod",
 		"bot",
 		"ThatsLiamS"
 	],
@@ -24,9 +26,8 @@
 	},
 	"homepage": "https://github.com/ThatsLiamS-Development/autoMod#readme",
 	"dependencies": {
-		"ci": "^2.1.1",
-		"discord.js": "^13.0.0-dev.t1627831263.774f5b7",
-		"discord.js-ghost-ping": "^2.0.1",
+		"discord.js": "^13.0.1",
+		"discord.js-ghost-ping": "^2.0.3",
 		"express": "^4.17.1",
 		"firebase-admin": "^9.11.0",
 		"moment": "^2.29.1",
