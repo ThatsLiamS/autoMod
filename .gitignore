@@ -2,10 +2,8 @@
 node_modules/
 jspm_packages/
 
-# Bower dependency directory (https://bower.io/)
-bower_components
+# Workspace enviroment files
+.vscode/
 
 # dotenv environment variables file
 .env
-.env.test
-.env.production
