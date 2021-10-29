@@ -10,11 +10,11 @@ const Discord = require('discord.js');
 const client = new Discord.Client({
 	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_WEBHOOKS'],
 	partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
-	repliedUser: false
+	repliedUser: false,
 });
 
 
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env['Database'])) });
 const firestore = admin.firestore();
 
