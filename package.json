@@ -10,15 +10,7 @@
 		"type": "git",
 		"url": "git+https://github.com/ThatsLiamS-Development/autoMod.git"
 	},
-	"keywords": [
-		"JavaScript",
-		"discord",
-		"discord bot",
-		"moderation",
-		"autoMod",
-		"bot",
-		"ThatsLiamS"
-	],
+	"keywords": [],
 	"author": "ThatsLiamS",
 	"license": "MIT",
 	"bugs": {
@@ -26,14 +18,14 @@
 	},
 	"homepage": "https://github.com/ThatsLiamS-Development/autoMod#readme",
 	"dependencies": {
-		"discord.js": "^13.0.1",
+		"discord.js": "^13.3.0",
 		"discord.js-ghost-ping": "^2.0.3",
 		"express": "^4.17.1",
-		"firebase-admin": "^9.11.0",
+		"firebase-admin": "^10.0.0",
 		"moment": "^2.29.1",
 		"topgg-autoposter": "^2.0.0"
 	},
 	"devDependencies": {
-		"eslint": "^7.32.0"
+		"eslint": "^8.1.0"
 	}
 }
