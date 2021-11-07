@@ -10,7 +10,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client({
 	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_WEBHOOKS'],
 	partials: ['CHANNEL', 'MESSAGE', 'REACTION'],
-	repliedUser: false,
 });
 
 
@@ -20,17 +19,6 @@ const firestore = admin.firestore();
 
 
 const fs = require('fs');
-
-client.commands = new Discord.Collection();
-const categories = fs.readdirSync(`${__dirname}/commands/`);
-for (const category of categories) {
-	const commandFiles = fs.readdirSync(`${__dirname}/commands/${category}`).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const command = require(`${__dirname}/commands/${category}/${file}`);
-		client.commands.set(command.name, command);
-	}
-}
-
 const eventFiles = fs.readdirSync(`${__dirname}/events`).filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
 	const event = require(`${__dirname}/events/${file}`);
