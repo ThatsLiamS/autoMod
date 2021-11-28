@@ -62,8 +62,8 @@ module.exports = {
 					channel.send({ embeds: [logEmbed] });
 				}
 
-				interaction.followUp({ content: `${user.tag} has been kicked.` });
+				interaction.followUp({ content: `${user.tag} has been kicked.`, ephermal: true });
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.', ephermal: true }));
 	},
 };

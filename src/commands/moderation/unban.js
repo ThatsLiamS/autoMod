@@ -19,7 +19,7 @@ module.exports = {
 		await interaction.deferReply({ ephermal: true });
 
 		const id = interaction.options.getString('user');
-		const user = await client.users.fetch(id).catch();
+		const user = await client.users.fetch(id).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
 			return;
@@ -68,8 +68,8 @@ module.exports = {
 					channel.send({ embeds: [logEmbed] });
 				}
 
-				interaction.followUp({ content: `${user.tag} has been unbanned.` });
+				interaction.followUp({ content: `${user.tag} has been unbanned.`, ephermal: true });
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.', ephermal: true }));
 	},
 };

@@ -67,8 +67,8 @@ module.exports = {
 			const channel = interaction.guild.channels.cache.get(serverData['logs'].id);
 			channel.send({ embeds: [logEmbed] });
 		}
-		user.send({ embeds: [userEmbed] }).catch();
+		user.send({ embeds: [userEmbed] }).catch(() => { return; });
 
-		interaction.followUp({ content: `${user.tag} has been warned.` });
+		interaction.followUp({ content: `${user.tag} has been warned.`, ephermal: true });
 	},
 };

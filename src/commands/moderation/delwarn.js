@@ -18,7 +18,7 @@ module.exports = {
 		await interaction.deferReply({ ephermal: true });
 
 		const id = interaction.options.getString('user');
-		const user = await client.users.fetch(id).catch();
+		const user = await client.users.fetch(id).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
 			return;
@@ -29,17 +29,17 @@ module.exports = {
 		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
 		const serverData = collection.data() || defaultData['guilds'];
 
-		if (!serverData['moderation logs'][user.id]) {
+		if (serverData['moderation logs'][user.id] == undefined) {
 			interaction.followUp({ content: 'That user has no recorded actions.' });
 			return;
 		}
 
 		serverData['moderation logs'][user.id] = serverData['moderation logs'][user.id]
-			.filter((doc) => !doc.case == caseNumber);
+			.filter((doc) => (doc.case == caseNumber) == false);
 
 		await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
 
-		interaction.followUp({ content: 'That action has been deleted.' });
+		interaction.followUp({ content: 'That action has been deleted.', ephermal: true });
 
 	},
 };

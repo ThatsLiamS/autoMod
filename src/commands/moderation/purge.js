@@ -22,8 +22,8 @@ module.exports = {
 		}
 
 		interaction.channel.bulkDelete(number, true)
-			.then(m => interaction.followUp({ content: `Deleted **${m.size}** messages.` }))
-			.catch(() => interaction.followUp({ content: 'Sorry, an error occured when deleting the messages:\nplease check my permissions.' }));
+			.then(m => interaction.followUp({ content: `Deleted **${m.size}** messages.`, ephermal: true }))
+			.catch(() => interaction.followUp({ content: 'Sorry, an error occured when deleting the messages:\nplease check my permissions.', ephermal: true }));
 
 	},
 };
