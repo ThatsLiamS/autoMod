@@ -22,8 +22,8 @@ module.exports = {
 		}
 
 		interaction.channel.setRateLimitPerUser(number)
-			.then(() => interaction.follow({ content: 'Successfully set the slowmode.' }))
-			.catch(interaction.follow({ content: 'Sorry, an error has occured, please double check my permissions.' }));
+			.then(() => interaction.followUp({ content: 'Successfully set the slowmode.' }))
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
 
 	},
 };
