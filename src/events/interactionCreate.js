@@ -2,7 +2,7 @@ module.exports = {
 	name: 'interactionCreate',
 	once: false,
 
-	execute: async (interaction, client, firebase) => {
+	execute: async (interaction, client, firestore) => {
 
 		/* Is interaction a command? */
 		if (interaction.isCommand()) {
@@ -34,7 +34,7 @@ module.exports = {
 			}
 
 			/* Execute the command file */
-			await cmd.execute({ interaction, client, firebase });
+			await cmd.execute({ interaction, client, firestore });
 
 		}
 
