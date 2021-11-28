@@ -35,7 +35,7 @@ module.exports = {
 		interaction.guild.members.ban(user, { days: 0, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
 			.then(async () => {
 
-				const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
+				const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
 				const serverData = collection.data() || defaultData['guilds'];
 
 				if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
@@ -62,8 +62,8 @@ module.exports = {
 					channel.send({ embeds: [logEmbed] });
 				}
 
-				interaction.followUp({ content: `${user.tag} has been banned.` });
+				interaction.followUp({ content: `${user.tag} has been banned.`, ephermal: true });
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.', ephermal: true }));
 	},
 };
