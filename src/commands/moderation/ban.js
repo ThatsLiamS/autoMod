@@ -64,6 +64,6 @@ module.exports = {
 
 				interaction.followUp({ content: `${user.tag} has been banned.` });
 			})
-			.catch(interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.' }));
 	},
 };
