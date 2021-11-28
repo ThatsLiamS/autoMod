@@ -7,12 +7,12 @@ module.exports = {
 
 	execute: async (client) => {
 
-		console.log(`Shard ${client.shard.ids} ready`);
+		console.log(`Shard ${client.shard.ids[0] + 1} ready`);
 
 		/* Set client status */
 		client.user.setPresence({
 			status: 'online',
-			activities: [{ type: 'WATCHING', name: 'over Your Server! do /help for more.' }],
+			activities: [{ type: 'WATCHING', name: 'over your server! do /help for more.' }],
 		});
 
 		/* Registering slash commands */
