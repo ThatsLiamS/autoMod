@@ -1,5 +1,7 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { readdirSync } = require('fs');
+
+const emojis = require('./../../utils/emojis');
 
 module.exports = {
 	name: 'help',
@@ -50,7 +52,7 @@ module.exports = {
 				.setColor('#0099FF')
 				.setTitle(client.user.username + ' Commands')
 				.setURL('https://discord.gg/2je9aJynqt')
-				.setDescription('To view the information about a certain command do\n`/help <command>`, for example `/help points`.')
+				.setDescription('To view the information about a certain command do `/help <command>`.')
 				.setThumbnail(client.user.displayAvatarURL())
 				.setTimestamp();
 
@@ -62,7 +64,15 @@ module.exports = {
 				embed.addField(`__${category.charAt(0).toUpperCase() + category.slice(1)}__`, `\`${commands.join('` `')}\``, false);
 			}
 
-			interaction.followUp({ embeds: [embed], ephemeral: true });
+			const row = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+						.setStyle('LINK').setLabel('Support Server').setURL('https://automod.liamskinner.co.uk/support').setEmoji(emojis.link),
+					new MessageButton()
+						.setStyle('LINK').setLabel('Invite').setURL('https://automod.liamskinner.co.uk/invite').setEmoji(emojis.invite),
+				);
+
+			interaction.followUp({ embeds: [embed], components: [row], ephemeral: true });
 
 		}
 
