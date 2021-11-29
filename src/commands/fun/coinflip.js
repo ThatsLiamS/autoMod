@@ -9,7 +9,8 @@ module.exports = {
 	ownerOnly: false,
 
 	error: false,
-	execute: ({ interaction }) => {
+	execute: async ({ interaction }) => {
+		await interaction.deferReply();
 
 		const embed = new MessageEmbed()
 			.setColor('#CD7F32')
@@ -32,7 +33,7 @@ module.exports = {
 				.setThumbnail('https://assets.liamskinner.co.uk/coin/side.png');
 		}
 
-		interaction.reply({ embeds: [embed], ephemeral: true });
+		interaction.followUp({ embeds: [embed], ephemeral: false });
 
 	},
 };

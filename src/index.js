@@ -1,3 +1,7 @@
+const time = new Date();
+console.log(`Last restart: ${time.getHours()}:${time.getMinutes()}, ${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()} UTC`);
+
+
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
 

@@ -9,17 +9,17 @@ module.exports = {
 	ownerOnly: false,
 
 	error: false,
-	execute: ({ interaction }) => {
+	execute: async ({ interaction }) => {
+		await interaction.deferReply();
 
 		const random = Math.floor(Math.random() * 6) + 1;
-
 		const embed = new MessageEmbed()
 			.setTitle('Dice roll')
 			.setColor()
 			.setDescription(`You rolled a ${random}!`)
-			.setImage(`https://assets.liamskinner.co.uk/dice/${random}.png`);
+			.setThumbnail(`https://assets.liamskinner.co.uk/dice/${random}.png`);
 
-		interaction.reply({ embeds: [embed], ephemeral: true });
+		interaction.followUp({ embeds: [embed], ephemeral: false });
 
 	},
 };

@@ -17,7 +17,7 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, client }) => {
-		await interaction.deferReply({ ephemeral: true });
+		await interaction.deferReply({ ephemeral: false });
 
 		const cmdName = interaction.options.getString('command');
 		const cmd = client.commands.get(cmdName);
@@ -43,7 +43,7 @@ module.exports = {
 				embed.addField('__Error:__', 'This command is currently unavailable, please try again later.', false);
 			}
 
-			interaction.followUp({ embeds: [embed], ephemeral: true });
+			interaction.followUp({ embeds: [embed], ephemeral: false });
 
 		}
 		else {
@@ -51,8 +51,8 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor('#0099FF')
 				.setTitle(client.user.username + ' Commands')
-				.setURL('https://discord.gg/2je9aJynqt')
-				.setDescription('To view the information about a certain command do `/help <command>`.')
+				.setURL('https://automod.liamskinner.co.uk/invite')
+				.setDescription('To view the information about a certain command\ndo `/help <command>`.')
 				.setThumbnail(client.user.displayAvatarURL())
 				.setTimestamp();
 
@@ -72,7 +72,7 @@ module.exports = {
 						.setStyle('LINK').setLabel('Invite').setURL('https://automod.liamskinner.co.uk/invite').setEmoji(emojis.invite),
 				);
 
-			interaction.followUp({ embeds: [embed], components: [row], ephemeral: true });
+			interaction.followUp({ embeds: [embed], components: [row], ephemeral: false });
 
 		}
 

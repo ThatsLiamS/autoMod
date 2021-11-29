@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
-const makeGrid = require('./../../utils/makeGrid');
+const makeGrid = require('../../utils/makeGrid');
 
 module.exports = {
-	name: 'botinfo',
+	name: 'about',
 	description: 'Shows lots of cool information about the bot!',
 	usage: '',
 
@@ -27,7 +27,7 @@ module.exports = {
 			.addFields(
 				{ name: '**Total Servers:**', value: results[1].reduce((acc, guildCount) => acc + guildCount, 0).toString(), inline: true },
 				{ name: '**Total Users:**', value: results[2].reduce((acc, memberCount) => acc + memberCount, 0).toString(), inline: true },
-				{ name: '**Total Commands:**', value: '18', inline: true },
+				{ name: '**Total Commands:**', value: '19', inline: true },
 
 				{ name: '**Uptime:**', value: `\`${Math.floor(client.uptime / 86400000)}d ${Math.floor(client.uptime / 3600000) % 24}h ${Math.floor(client.uptime / 60000) % 60}m ${Math.floor(client.uptime / 1000) % 60}s\``, inline: true },
 				{ name: '**Shard ID:**', value: `\`#${Number(interaction.guild.shardId) + 1} out of ${client.shard.count}\``, inline: true },

@@ -10,8 +10,8 @@ module.exports = {
 
 	options: [
 		{ name: 'feature', description: 'Select which feature to enable', type: 'STRING', choices: [
-			{ name: 'ghostping', value: 'Ghost Ping detector' },
-			{ name: 'logs', value: 'Moderation Logs' },
+			{ name: 'Ghost Ping detector', value: 'ghostping' },
+			{ name: 'Moderation Logs', value: 'logs' },
 		], required: true },
 		{ name: 'channel', description: 'Which channel should logs be sent?', type: 'CHANNEL', required: true },
 	],
@@ -36,6 +36,7 @@ module.exports = {
 		}
 
 		await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
+		interaction.followUp({ content: 'The feature has been enabled.' });
 
 	},
 };
