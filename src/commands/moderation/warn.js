@@ -45,7 +45,7 @@ module.exports = {
 		const serverData = collection.data() || defaultData['guilds'];
 
 		if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
-		const caseNumber = serverData['moderation logs'][user.id].length;
+		const caseNumber = Number(serverData['moderation logs']['case']) + 1;
 
 		const object = {
 			type: 'warn',

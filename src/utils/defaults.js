@@ -14,6 +14,7 @@ module.exports['guilds'] = {
 
 	/* Logs of all moderation actions */
 	'moderation logs': {
+		case: 0,
 	},
 
 };
