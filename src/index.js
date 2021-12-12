@@ -5,7 +5,7 @@ console.log(`Last restart: ${time.getHours()}:${time.getMinutes()}, ${time.getDa
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
 
-const manager = new ShardingManager('./src/bot.js', {
+const manager = new ShardingManager('./bot.js', {
 	totalShards: 'auto',
 	token: process.env['BotToken'],
 	respawn: true,
