@@ -1,9 +1,0 @@
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# Workspace enviroment files
-.vscode/
-
-# dotenv environment variables file
-.env
