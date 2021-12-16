@@ -7,13 +7,14 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: false,
 
 	error: false,
 	execute: async ({ interaction }) => {
 
 		const embed = new MessageEmbed()
 			.setColor('#CD7F32')
-			.setAuthor(interaction.member.user.username, interaction.member.displayAvatarURL())
+			.setAuthor(interaction.user.username, interaction.ser.displayAvatarURL())
 			.setTitle('Coin Flipper!')
 			.setFooter('Powered by Coin Flipper#1767')
 			.setTimestamp();

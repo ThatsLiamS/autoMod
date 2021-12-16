@@ -8,6 +8,7 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'user', description: 'User to get information for', type: 'USER', required: false },

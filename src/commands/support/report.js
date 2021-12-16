@@ -7,6 +7,7 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'description', description: 'Explain the bug/issue in great detail.', type: 'STRING', required: true },
@@ -19,7 +20,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setDescription(`**${client.user.tag}**\n${interaction.options.getString('description')}`)
-			.setAuthor(interaction.member.user.username, interaction.member.user.displayAvatarURL())
+			.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
 

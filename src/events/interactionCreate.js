@@ -20,10 +20,17 @@ module.exports = {
 			if (cmd['permissions'] != []) {
 				for (const permission of cmd['permissions']) {
 					/* Loops through and check permissions agasint the user */
-					if (!interaction.member.permissions.has(permission)) {
+					if (!interaction.member.permissions.has(permission.replce(' ', '_').toUpperCase())) {
 						interaction.followUp({ content: 'Sorry, you do not have permission to run this command.', ephemeral: true });
 						return;
 					}
+				}
+			}
+			/* Is the command limited to servers only */
+			if (cmd['guildOnly'] == true) {
+				if (!interaction.member.id == interaction.guild.ownerId) {
+					interaction.followUp({ content: 'Sorry, this command can only be used within a server.', ephemeral: true });
+					return;
 				}
 			}
 			/* Is the command limited to the owner */

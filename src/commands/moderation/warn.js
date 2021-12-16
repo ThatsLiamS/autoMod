@@ -8,6 +8,7 @@ module.exports = {
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'user', description: 'Who are you wanting to warn?', type: 'USER', required: true },

@@ -5,6 +5,7 @@ module.exports = {
 
 	permissions: ['Manage Channels'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'time', description: 'How long should it be? (in seconds)', type: 'INTEGER', required: true },

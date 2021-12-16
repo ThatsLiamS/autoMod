@@ -5,6 +5,7 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: false,
 
 	options: [
 		{ name: 'message', description: 'What should I say?', type: 'STRING', required: true },

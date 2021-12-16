@@ -12,6 +12,7 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'id', description: 'Server ID to get information for', type: 'STRING', required: false },

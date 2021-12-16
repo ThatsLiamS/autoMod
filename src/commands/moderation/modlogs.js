@@ -8,6 +8,7 @@ module.exports = {
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'user', description: 'User\'s Discord ID', type: 'STRING', required: true },

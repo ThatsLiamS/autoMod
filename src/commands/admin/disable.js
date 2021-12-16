@@ -7,6 +7,7 @@ module.exports = {
 
 	permissions: ['Administrator'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'feature', description: 'Select which feature to disable', type: 'STRING', choices: [

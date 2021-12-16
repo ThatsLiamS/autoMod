@@ -5,6 +5,7 @@ module.exports = {
 
 	permissions: ['Manage Messages'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'amount', description: 'How many messages do I delete?', type: 'INTEGER', required: true },

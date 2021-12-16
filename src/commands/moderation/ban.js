@@ -8,6 +8,7 @@ module.exports = {
 
 	permissions: ['Ban Members'],
 	ownerOnly: false,
+	guildOnly: true,
 
 	options: [
 		{ name: 'user', description: 'Who are you wanting to ban?', type: 'USER', required: true },

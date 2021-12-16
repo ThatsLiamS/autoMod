@@ -10,6 +10,7 @@ module.exports = {
 
 	permissions: [],
 	ownerOnly: false,
+	guildOnly: false,
 
 	options: [
 		{ name: 'command', description: 'Shos details about how to use a command', type: 'STRING', required: false },
