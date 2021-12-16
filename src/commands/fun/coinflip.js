@@ -10,7 +10,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction }) => {
-		await interaction.deferReply();
 
 		const embed = new MessageEmbed()
 			.setColor('#CD7F32')

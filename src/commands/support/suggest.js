@@ -26,6 +26,6 @@ module.exports = {
 		const webhook = new WebhookClient({ url: process.env['SuggestionWebhook'] });
 		webhook.send({ username: interaction.guild.name, avatarURL, embeds: [embed] });
 
-		interaction.reply({ content: 'Your suggestion has been sent to my developers.', ephemeral: true });
+		interaction.followUp({ content: 'Your suggestion has been sent to my developers.', ephemeral: true });
 	},
 };

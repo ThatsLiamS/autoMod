@@ -16,7 +16,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, firestore }) => {
-		await interaction.deferReply({ ephermal: true });
 
 		const user = interaction.options.getUser('user');
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
@@ -39,11 +38,11 @@ module.exports = {
 				const serverData = collection.data() || defaultData['guilds'];
 
 				if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
-				const caseNumber = Number(serverData['moderation logs']['case']) + 1;
+				serverData['moderation logs']['case'] = Number(serverData['moderation logs']['case']) + 1;
 
 				const object = {
 					type: 'kick',
-					case: caseNumber,
+					case: serverData['moderation logs']['case'],
 					reason: reason,
 
 					username: user.tag,
@@ -58,7 +57,7 @@ module.exports = {
 				await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
 
 				if (serverData['logs']['on'] == true) {
-					const channel = interaction.guild.channels.cache.get(serverData['logs'].id);
+					const channel = interaction.guild.channels.cache.get(serverData['logs'].channel);
 					channel.send({ embeds: [logEmbed] });
 				}
 

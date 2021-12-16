@@ -19,7 +19,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, client }) => {
-		await interaction.deferReply();
 
 		const id = interaction.options.getString('id') || interaction.guild;
 		const guild = client.guilds.cache.get(id) || interaction.guild;

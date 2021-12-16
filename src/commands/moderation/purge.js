@@ -12,7 +12,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction }) => {
-		await interaction.deferReply({ ephermal: true });
 
 		const number = Number(interaction.options.getInteger('amount'));
 

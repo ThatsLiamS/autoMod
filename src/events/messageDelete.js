@@ -26,7 +26,7 @@ module.exports = {
 					.setColor('#C0C0C0')
 					.addFields(
 						{ name: '__Who?__', value: `**Author:** ${message.author}\n**Channel:** ${message.channel}`, inline: true },
-						{ name: '__Mentions__', value: `${mentions.join(' ')}`, inline: true },
+						{ name: '__Mentions__', value: `${mentions.join(' ')}!`, inline: true },
 					)
 					.setFooter('Do not ghost ping, that\'s mean.')
 					.setTimestamp();

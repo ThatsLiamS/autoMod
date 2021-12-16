@@ -15,7 +15,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction }) => {
-		await interaction.deferReply();
 
 		const member = interaction.options.getMember('user') || interaction.member;
 		const user = await member.user.fetch(true);

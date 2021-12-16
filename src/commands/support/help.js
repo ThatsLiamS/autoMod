@@ -17,7 +17,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, client }) => {
-		await interaction.deferReply({ ephemeral: false });
 
 		const cmdName = interaction.options.getString('command');
 		const cmd = client.commands.get(cmdName);
@@ -27,7 +26,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor('#0099FF')
 				.setTitle(cmd.name.charAt(0).toUpperCase() + cmd.name.slice(1) + ' Command')
-				.setURL('https://discord.gg/2je9aJynqt')
+				.setURL('https://automod.liamskinner.co.uk/invite')
 				.setDescription(cmd.description)
 				.setTimestamp();
 
@@ -58,7 +57,7 @@ module.exports = {
 
 			for (const category of ['general', 'fun', 'moderation', 'admin', 'support']) {
 
-				const commandFiles = readdirSync(__dirname + './../../commands/' + category).filter(file => file.endsWith('.js'));
+				const commandFiles = readdirSync(__dirname + '/../../commands/' + category).filter(file => file.endsWith('.js'));
 				const commands = commandFiles.map(f => f.slice(0, f.length - 3));
 
 				embed.addField(`__${category.charAt(0).toUpperCase() + category.slice(1)}__`, `\`${commands.join('` `')}\``, false);

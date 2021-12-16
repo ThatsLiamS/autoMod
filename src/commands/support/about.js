@@ -11,7 +11,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, client }) => {
-		await interaction.deferReply();
 
 		const promises = [
 			client.shard.fetchClientValues('ws.ping'),

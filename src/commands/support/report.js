@@ -26,6 +26,6 @@ module.exports = {
 		const webhook = new WebhookClient({ url: process.env['ReportWebhook'] });
 		webhook.send({ username: interaction.guild.name, avatarURL, embeds: [embed] });
 
-		interaction.reply({ content: 'Thank you for helping us make autoMod even better.', ephemeral: true });
+		interaction.followUp({ content: 'Thank you for helping us make autoMod even better.', ephemeral: true });
 	},
 };

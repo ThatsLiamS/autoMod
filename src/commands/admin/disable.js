@@ -17,7 +17,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, firestore }) => {
-		await interaction.deferReply();
 
 		const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
 		const serverData = collection.data() || defaultData['guilds'];

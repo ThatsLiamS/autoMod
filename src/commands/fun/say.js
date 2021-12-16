@@ -13,7 +13,7 @@ module.exports = {
 	error: false,
 	execute: async ({ interaction }) => {
 
-		interaction.reply({
+		interaction.followUp({
 			content: interaction.options.getString('message'),
 			allowedMentions: { parse: [], users: [], roles: [] },
 			ephemeral: false,

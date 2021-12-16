@@ -16,7 +16,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {
-		await interaction.deferReply({ ephermal: true });
 
 		const id = interaction.options.getString('user');
 		const user = await client.users.fetch(id).catch(() => { return; });

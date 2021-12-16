@@ -10,7 +10,6 @@ module.exports = {
 
 	error: false,
 	execute: async ({ interaction }) => {
-		await interaction.deferReply();
 
 		const random = Math.floor(Math.random() * 6) + 1;
 		const embed = new MessageEmbed()
