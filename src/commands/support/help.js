@@ -13,7 +13,7 @@ module.exports = {
 	guildOnly: false,
 
 	options: [
-		{ name: 'command', description: 'Shos details about how to use a command', type: 'STRING', required: false },
+		{ name: 'command', description: 'Shows details about how to use a command', type: 'STRING', required: false },
 	],
 
 	error: false,
@@ -31,7 +31,7 @@ module.exports = {
 				.setDescription(cmd.description)
 				.setTimestamp();
 
-			embed.addField('__Usage:__', '/' + cmd.name + (cmd.usgae ? ' ' + cmd.usage : ''), false);
+			embed.addField('__Usage:__', '/' + cmd.name + (cmd.usage ? ' ' + cmd.usage : ''), false);
 
 			if (cmd.permissions[0] && cmd.ownerOnly == false) {
 				embed.addField('__Permissions:__', '`' + cmd.permissions.join('` `') + '`', false);
