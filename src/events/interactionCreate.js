@@ -6,7 +6,7 @@ module.exports = {
 
 		/* Is interaction a command? */
 		if (interaction.isCommand()) {
-			await interaction.referReply();
+			await interaction.deferReply();
 
 			const cmd = client.commands.get(interaction.commandName);
 			if (!cmd) return;
@@ -28,7 +28,7 @@ module.exports = {
 			}
 			/* Is the command limited to servers only */
 			if (cmd['guildOnly'] == true) {
-				if (!interaction.member.id == interaction.guild.ownerId) {
+				if (!interaction.guild) {
 					interaction.followUp({ content: 'Sorry, this command can only be used within a server.', ephemeral: true });
 					return;
 				}
