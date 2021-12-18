@@ -15,7 +15,6 @@ module.exports = {
 		const random = Math.floor(Math.random() * 6) + 1;
 		const embed = new MessageEmbed()
 			.setTitle('Dice roll')
-			.setColor()
 			.setDescription(`You rolled a ${random}!`)
 			.setThumbnail(`https://assets.liamskinner.co.uk/dice/${random}.png`);
 
