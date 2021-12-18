@@ -10,7 +10,7 @@ module.exports = {
 
 
 		/* Ghost Ping Detector */
-		if (!oldMessage.mentions.members.size == 0 || !oldMessage.mentions.roles.size == 0) {
+		if (oldMessage.mentions.members.size !== 0 || oldMessage.mentions.roles.size !== 0) {
 
 			const oldArray = [];
 			oldMessage.mentions.members.forEach((member) => {
