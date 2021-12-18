@@ -62,7 +62,7 @@ module.exports = {
 		}
 
 		const embed = pages[pageNumber - 1] ? pages[pageNumber - 1] : pages[0];
-		interaction.followUp({ embeds: [embed], ephermal: true });
+		interaction.followUp({ embeds: [embed], ephemeral: true });
 
 	},
 };
