@@ -24,7 +24,7 @@ module.exports = {
 		const id = interaction.options.getString('id') || interaction.guild;
 		const guild = client.guilds.cache.get(id) || interaction.guild;
 
-		const ageTimestamp = new Date() - guild.createdTimestamp;
+		const ageTimestamp = new Date().getTime() - guild.createdTimestamp;
 		const age = `${Math.floor(ageTimestamp / 86400000)}d ${Math.floor(ageTimestamp / 3600000) % 24}h ${Math.floor(ageTimestamp / 60000) % 60}m ${Math.floor(ageTimestamp / 1000) % 60}s`;
 
 

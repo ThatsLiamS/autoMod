@@ -39,7 +39,7 @@ module.exports = {
 
 		await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
 
-		interaction.followUp({ content: 'That action has been deleted.', ephermal: true });
+		interaction.followUp({ content: 'That action has been deleted.', ephemeral: true });
 
 	},
 };

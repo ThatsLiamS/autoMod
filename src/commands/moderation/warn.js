@@ -69,6 +69,6 @@ module.exports = {
 		}
 		user.send({ embeds: [userEmbed] }).catch(() => { return; });
 
-		interaction.followUp({ content: `${user.tag} has been warned.`, ephermal: true });
+		interaction.followUp({ content: `${user.tag} has been warned.`, ephemeral: true });
 	},
 };

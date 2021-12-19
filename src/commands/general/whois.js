@@ -20,7 +20,7 @@ module.exports = {
 		const member = interaction.options.getMember('user') || interaction.member;
 		const user = await member.user.fetch(true);
 
-		const ageTimestamp = new Date() - member.joinedTimestamp;
+		const ageTimestamp = new Date().getTime() - member.joinedTimestamp;
 		const age = `${Math.floor(ageTimestamp / 86400000)}d ${Math.floor(ageTimestamp / 3600000) % 24}h ${Math.floor(ageTimestamp / 60000) % 60}m ${Math.floor(ageTimestamp / 1000) % 60}s`;
 
 		const roles = [];

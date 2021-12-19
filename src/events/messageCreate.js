@@ -12,7 +12,7 @@ module.exports = {
 			await message.react(emojis.no);
 		}
 
-		/* Annoucement Channel */
+		/* Announcement Channel */
 		if (message.channel.id == '821153011890913310') {
 			await message.react('👍');
 			await message.react(emojis.tada);
@@ -20,7 +20,7 @@ module.exports = {
 
 		/* Chain-message Channel */
 		if (message.channel.id == '821162869709864961') {
-			if (!message.content == emojis.agh) message.delete();
+			if (message.content !== emojis.agh) message.delete();
 		}
 
 

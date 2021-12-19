@@ -10,7 +10,7 @@ module.exports = {
 
 
 		/* Ghost Ping Detector */
-		if (!message.mentions.members.size == 0 || !message.mentions.roles.size == 0) {
+		if (message.mentions.members.size !== 0 || message.mentions.roles.size !== 0) {
 
 			const mentions = [];
 

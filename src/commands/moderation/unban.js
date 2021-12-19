@@ -70,6 +70,6 @@ module.exports = {
 
 				interaction.followUp({ content: `${user.tag} has been unbanned.`, ephermal: true });
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occured, please double check my permissions.', ephermal: true }));
+			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 	},
 };
