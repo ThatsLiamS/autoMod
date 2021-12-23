@@ -46,5 +46,18 @@ module.exports = {
 
 		}
 
+		/* Is interaction a button? */
+		if (interaction.isButton()) {
+
+			/* Locating button file */
+			const category = interaction.customId.split('-')[0];
+			const name = interaction.customId.split('-')[1];
+
+			const file = require(`./../buttons/${category}/${name}`);
+
+			/* Execute the button file */
+			await file.execute({ interaction, client, firestore });
+		}
+
 	},
 };

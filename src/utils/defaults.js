@@ -17,4 +17,15 @@ module.exports['guilds'] = {
 		case: 0,
 	},
 
+	/* Tickets data */
+	'tickets': {
+		on: false,
+		logs: '',
+		category: '',
+		case: 1,
+
+		active: [
+		],
+	},
+
 };
