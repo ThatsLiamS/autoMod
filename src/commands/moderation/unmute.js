@@ -3,7 +3,7 @@ const defaultData = require('./../../utils/defaults');
 module.exports = {
 	name: 'unmute',
 	description: 'Removes a temporary timeout for a user.',
-	usage: '<user> <time> [reason]',
+	usage: '<user> [reason]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
