@@ -38,14 +38,12 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setColor('GREEN')
-			.setDescription('Thank you for opening a ticket, staff will be with you shortly.');
+			.setDescription('Thank you for opening a ticket, support will be with you shortly.\nTo close the ticket, react with a 🔒');
 
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setStyle('PRIMARY').setLabel('Lock').setEmoji('🔒').setCustomId('tickets-lock'),
-				new MessageButton()
-					.setStyle('DANGER').setLabel('Delete').setEmoji('🛑').setCustomId('tickets-delete'),
+					.setStyle('PRIMARY').setLabel('Close').setEmoji('🔒').setCustomId('tickets-close'),
 			);
 
 		channel.send({ content: `${interaction.user}`, embeds: [embed], components: [row] });

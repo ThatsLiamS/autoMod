@@ -34,7 +34,7 @@ module.exports = {
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setStyle('SUCCESS').setLabel('Open Ticket').setCustomId('tickets-create'),
+					.setStyle('SUCCESS').setEmoji('📩').setLabel('Open Ticket').setCustomId('tickets-create'),
 			);
 		channel.send({ embeds: [embed], components: [row] });
 
