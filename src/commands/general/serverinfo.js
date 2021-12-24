@@ -30,7 +30,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
-			.setAuthor(`${interaction.member.user.username} (${interaction.member.id})`, interaction.member.displayAvatarURL())
+			.setAuthor({ name: `${interaction.member.user.username} (${interaction.member.id})`, iconURL: interaction.member.displayAvatarURL() })
 			.setTitle(`${guild.name}'s Information`)
 			.setThumbnail(guild.iconURL({ dynamic: true }))
 			.addFields(

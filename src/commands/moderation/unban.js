@@ -28,7 +28,7 @@ module.exports = {
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		const logEmbed = new MessageEmbed()
-			.setAuthor(`${interaction.user.tag}`, `${interaction.user.displayAvatarURL()}`)
+			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle(`Unbanned - ${user.tag}`)
 			.setColor('GREEN')
 			.addFields(

@@ -18,7 +18,7 @@
 	},
 	"homepage": "https://github.com/ThatsLiamS-Development/autoMod#readme",
 	"dependencies": {
-		"discord.js": "^13.3.1",
+		"discord.js": "^13.4.0",
 		"discord.js-ghost-ping": "^2.0.3",
 		"dotenv": "^10.0.0",
 		"express": "^4.17.1",

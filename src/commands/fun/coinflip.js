@@ -14,7 +14,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setColor('#CD7F32')
-			.setAuthor(interaction.user.username, interaction.ser.displayAvatarURL())
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.ser.displayAvatarURL() })
 			.setTitle('Coin Flipper!')
 			.setFooter('Powered by Coin Flipper#1767')
 			.setTimestamp();

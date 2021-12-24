@@ -20,7 +20,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setDescription(`**${client.user.tag}**\n${interaction.options.getString('description')}`)
-			.setAuthor(interaction.user.username, interaction.user.displayAvatarURL())
+			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
 			.setFooter(`ID: ${interaction.member.id}`)
 			.setTimestamp();
 

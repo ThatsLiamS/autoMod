@@ -28,7 +28,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setColor(user.hexAccentColor)
-			.setAuthor(interaction.member.user.username, interaction.member.displayAvatarURL())
+			.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.displayAvatarURL() })
 			.setTitle(`${member.displayName}'s Information`)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.addFields(
