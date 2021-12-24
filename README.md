@@ -1,6 +1,6 @@
 # autoMod
 
-autoMod is a cutting edge, verified Discord moderation bot designed to keep your server a safe place for all members. autoMod comes with many features, such as our toggleable ghost ping detection system, and with many more added all the time.  This repository comes to you from the developer of verified bots, **Coin Flipper** and **kekbot**.
+autoMod is a cutting edge, verified Discord moderation bot designed to keep your server a safe place for all members. autoMod comes with many features, such as our ticket syetem and ghost ping detection system, and with many more added all the time.  This repository comes to you from the developer of verified bots, **Coin Flipper**, **Slothy** and **kekbot**.
 
 ## Support
 
@@ -19,7 +19,7 @@ We currently support two separate ways to report any issues and bugs with autoMo
 
 ## Contributing
 
-Contributions are always welcome! A massive benefit of being an open-source bot is the whole community coming togetherto contribute and improve autoMod.
+Contributions are always welcome! A massive benefit of being an open-source bot is the whole community coming together to contribute and improve autoMod.
 
 See `contributing.md` for ways to get started. Please adhere to this project's `code of conduct`.
 
