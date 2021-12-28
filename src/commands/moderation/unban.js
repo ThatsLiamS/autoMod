@@ -29,7 +29,7 @@ module.exports = {
 
 		const logEmbed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
-			.setTitle(`Unbanned - ${user.tag}`)
+			.setTitle(`Unbanned: ${user.tag}`)
 			.setColor('GREEN')
 			.addFields(
 				{ name: '**User**', value: `${user.tag} (${user.id})`, inline: false },

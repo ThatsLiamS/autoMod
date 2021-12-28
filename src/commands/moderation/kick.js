@@ -23,7 +23,7 @@ module.exports = {
 
 		const logEmbed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
-			.setTitle(`🔨 Kicked - ${user.tag}`)
+			.setTitle(`🔨 Kicked: ${user.tag}`)
 			.setColor('#DC143C')
 			.addFields(
 				{ name: '**User**', value: `${user.tag} (${user.id})`, inline: false },

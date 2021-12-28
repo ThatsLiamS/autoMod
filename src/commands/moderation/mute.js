@@ -63,7 +63,7 @@ module.exports = {
 				if (serverData['logs']['on'] == true) {
 					const embed = new MessageEmbed()
 						.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
-						.setTitle(`⌛ Timeout - ${member.user.tag}`)
+						.setTitle(`⌛ Timeout: ${member.user.tag}`)
 						.setColor('#DC143C')
 						.addFields(
 							{ name: '**User**', value: `${member.user.tag} (${member.id})`, inline: false },
