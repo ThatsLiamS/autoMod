@@ -33,7 +33,7 @@ module.exports = {
 				{ name: '**Shard ID:**', value: `\`#${Number(interaction.guild.shardId) + 1} out of ${client.shard.count}\``, inline: true },
 				{ name: '**Developer:**', value: '**[ThatsLiamS#6950](https://liamskinner.co.uk)**', inline: true },
 			)
-			.setFooter('Do /help to get started.');
+			.setFooter({ text: 'Do /help to get started.' });
 
 		interaction.followUp({ embeds: [embed] });
 

@@ -50,7 +50,7 @@ module.exports = {
 				{ name: '**MFA Level**', value: `${mfaLevel[guild.mfaLevel]}`, inline: true },
 				{ name: '**Nitro Boost Level**', value: `${premiumTier[guild.premiumTier]}`, inline: true },
 			)
-			.setFooter(`Requested by ${interaction.member.user.tag}`)
+			.setFooter({ text: `Requested by ${interaction.member.user.tag}` })
 			.setTimestamp();
 
 		try {

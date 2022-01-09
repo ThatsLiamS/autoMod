@@ -16,7 +16,7 @@ module.exports = {
 			.setColor('#CD7F32')
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.ser.displayAvatarURL() })
 			.setTitle('Coin Flipper!')
-			.setFooter('Powered by Coin Flipper#1767')
+			.setFooter({ text: 'Powered by Coin Flipper#1767' })
 			.setTimestamp();
 
 		const random = Math.floor(Math.random() * 100);

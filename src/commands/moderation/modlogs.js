@@ -48,7 +48,7 @@ module.exports = {
 				.setTitle(`${user.username}'s logs`)
 				.setColor('#DC143C')
 				.setTimestamp()
-				.setFooter(`Page ${x}/${pageData.length}`);
+				.setFooter({ text: `Page ${x}/${pageData.length}` });
 
 			for (const action of pageData[x]) {
 				embed.addFields({

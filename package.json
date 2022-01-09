@@ -18,8 +18,8 @@
 	},
 	"homepage": "https://github.com/ThatsLiamS/autoMod#readme",
 	"dependencies": {
-		"discord.js": "^13.4.0",
-		"discord.js-ghost-ping": "^2.0.3",
+		"discord.js": "^13.5.1",
+		"discord.js-ghost-ping": "^2.1.0",
 		"dotenv": "^10.0.0",
 		"express": "^4.17.1",
 		"firebase-admin": "^10.0.1",

@@ -42,7 +42,7 @@ module.exports = {
 
 				{ name: '**Roles**', value: `${roles.join(' ')}`, inline: false },
 			)
-			.setFooter(`Requested by ${interaction.member.user.tag}, ID ${interaction.member.id}`)
+			.setFooter({ text: `Requested by ${interaction.member.user.tag}, ID ${interaction.member.id}` })
 			.setTimestamp();
 
 		interaction.followUp({ embeds: [embed] });

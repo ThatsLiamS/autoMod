@@ -21,7 +21,7 @@ module.exports = {
 			.setColor('#0099ff')
 			.setDescription(`**${client.user.tag}**\n${interaction.options.getString('description')}`)
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-			.setFooter(`ID: ${interaction.member.id}`)
+			.setFooter({ text: `ID: ${interaction.member.id}` })
 			.setTimestamp();
 
 		const webhook = new WebhookClient({ url: process.env['SuggestionWebhook'] });
