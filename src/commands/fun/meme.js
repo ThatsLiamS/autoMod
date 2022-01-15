@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'meme',
-	description: 'Recvive a meme from r/memes!',
+	description: 'Receive a meme from r/memes!',
 	usage: '',
 
 	permissions: [],

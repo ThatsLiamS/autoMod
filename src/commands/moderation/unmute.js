@@ -5,12 +5,12 @@ module.exports = {
 	description: 'Removes a temporary timeout for a user.',
 	usage: '<user> [reason]',
 
-	permissions: ['Kick Members'],
+	permissions: ['Time Out Members'],
 	ownerOnly: false,
 	guildOnly: true,
 
 	options: [
-		{ name: 'user', description: 'Who are you wanting to unmute?', type: 'USER', required: true },
+		{ name: 'user', description: 'Who do you want to unmute?', type: 'USER', required: true },
 		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
 	],
 

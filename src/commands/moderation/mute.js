@@ -12,7 +12,7 @@ module.exports = {
 	description: 'Sets a temporary timeout for a user.',
 	usage: '<user> <time> [reason]',
 
-	permissions: ['Kick Members'],
+	permissions: ['Time Out Members'],
 	ownerOnly: false,
 	guildOnly: true,
 

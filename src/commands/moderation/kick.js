@@ -11,7 +11,7 @@ module.exports = {
 	guildOnly: true,
 
 	options: [
-		{ name: 'user', description: 'Who are you wanting to kick?', type: 'USER', required: true },
+		{ name: 'user', description: 'Who do you want to kick?', type: 'USER', required: true },
 		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
 	],
 
