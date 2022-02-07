@@ -4,7 +4,7 @@ const defaultData = require('./../../utils/defaults');
 module.exports = {
 	name: 'modlogs',
 	description: 'Shows all moderation actions against a user.',
-	usage: '<user> [page]',
+	usage: '<user ID> [page]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,

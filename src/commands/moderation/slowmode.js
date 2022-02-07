@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'slowmode',
 	description: 'Set the slowmode of a channel.',
-	usage: '<amount>',
+	usage: '<time> [reason]',
 
 	permissions: ['Manage Channels'],
 	ownerOnly: false,
@@ -9,6 +9,7 @@ module.exports = {
 
 	options: [
 		{ name: 'time', description: 'How long should it be? (in seconds)', type: 'INTEGER', required: true },
+		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
 	],
 
 	error: false,

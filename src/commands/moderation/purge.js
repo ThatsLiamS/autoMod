@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'purge',
 	description: 'Mass delete messages',
-	usage: '<amount>',
+	usage: '<amount> [reason]',
 
 	permissions: ['Manage Messages'],
 	ownerOnly: false,
@@ -9,6 +9,7 @@ module.exports = {
 
 	options: [
 		{ name: 'amount', description: 'How many messages do I delete?', type: 'INTEGER', required: true },
+		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
 	],
 
 	error: false,

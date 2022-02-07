@@ -3,7 +3,7 @@ const defaultData = require('./../../utils/defaults');
 module.exports = {
 	name: 'delwarn',
 	description: 'Removes a moderation action against a user.',
-	usage: '<user> [reason]',
+	usage: '<user ID> <case ID>',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
