@@ -57,11 +57,15 @@ module.exports = {
 				.setTimestamp();
 
 			for (const category of ['general', 'fun', 'moderation', 'admin', 'support']) {
+				let description = '';
 
 				const commandFiles = readdirSync(__dirname + '/../../commands/' + category).filter(file => file.endsWith('.js'));
-				const commands = commandFiles.map(f => f.slice(0, f.length - 3));
+				for (const file of commandFiles) {
+					const command = require(`${__dirname}/../../commands/${category}/${file}`);
+					description += `\`/${command.name}${command.usage ? ` ${command.usage}` : ''}\`\n`;
+				}
 
-				embed.addField(`__${category.charAt(0).toUpperCase() + category.slice(1)}__`, `\`${commands.join('` `')}\``, false);
+				embed.addField(`__${category.charAt(0).toUpperCase() + category.slice(1)}__`, description, false);
 			}
 
 			const row = new MessageActionRow()
