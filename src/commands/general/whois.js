@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
@@ -10,9 +11,14 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'User to get information for', type: 'USER', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('whois')
+		.setDescription('Shows information about a user!')
+		.addUserOption(option => option
+			.setName('user')
+			.setDescription('The user to get the information for')
+			.setRequired(false),
+		),
 
 	error: false,
 	execute: async ({ interaction }) => {

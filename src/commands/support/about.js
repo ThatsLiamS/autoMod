@@ -1,4 +1,6 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+
 const makeGrid = require('../../utils/makeGrid');
 
 module.exports = {
@@ -9,6 +11,10 @@ module.exports = {
 	permissions: [],
 	ownerOnly: false,
 	guildOnly: true,
+
+	data: new SlashCommandBuilder()
+		.setName('about')
+		.setDescription('Shows lots of cool information about the bot!'),
 
 	error: false,
 	execute: async ({ interaction, client }) => {

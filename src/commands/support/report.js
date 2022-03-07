@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, WebhookClient } = require('discord.js');
 
 module.exports = {
@@ -9,9 +10,14 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'description', description: 'Explain the bug/issue in great detail.', type: 'STRING', required: true },
-	],
+	data: new SlashCommandBuilder()
+		.setName('report')
+		.setDescription('Report a bug/issue to the developers!')
+		.addStringOption(option => option
+			.setName('description')
+			.setDescription('Explain the issue you are having')
+			.setRequired(true),
+		),
 
 	error: false,
 	execute: ({ interaction, client }) => {

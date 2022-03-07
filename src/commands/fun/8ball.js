@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 
 const possibleAnswers = [
@@ -32,9 +33,14 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: false,
 
-	options: [
-		{ name: 'question', description: 'What is your question?', type: 'STRING', required: true },
-	],
+	data: new SlashCommandBuilder()
+		.setName('8ball')
+		.setDescription('Ask the all knowing, magic 8ball a question!')
+		.addStringOption(option => option
+			.setName('question')
+			.setDescription('What is your question')
+			.setRequired(true),
+		),
 
 	error: false,
 	execute: async ({ interaction }) => {

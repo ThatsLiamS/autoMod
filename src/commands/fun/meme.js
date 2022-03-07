@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -8,6 +9,10 @@ module.exports = {
 	permissions: [],
 	ownerOnly: false,
 	guildOnly: false,
+
+	data: new SlashCommandBuilder()
+		.setName('meme')
+		.setDescription('Receive a meme from r/memes!'),
 
 	error: false,
 	execute: async ({ interaction }) => {

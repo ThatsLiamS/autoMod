@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
@@ -14,9 +15,14 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'id', description: 'Server ID to get information for', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('serverinfo')
+		.setDescription('Shows information about the server!')
+		.addStringOption(option => option
+			.setName('id')
+			.setDescription('The server\'s ID ')
+			.setRequired(false),
+		),
 
 	error: false,
 	execute: async ({ interaction, client }) => {
