@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 
-const emojis = ['', '', '', '', ''];
+const emojis = ['🔴', '🟠', '🟢', '🔵', '🟣'];
 
 module.exports = {
 	name: 'reaction-test',
@@ -19,14 +19,14 @@ module.exports = {
 		.addIntegerOption(option => option
 			.setName('reactions')
 			.setDescription('Amount of reactions to add')
-			.setMin(1).setMax(5)
+			.setMinValue(1).setMaxValue(5)
 			.setRequired(true),
 		)
 		
 		.addIntegerOption(option => option
 			.setName('usercount')
 			.setDescription('How many users to display?')
-			.setMin(1).setMax(5)
+			.setMinValue(1).setMaxValue(5)
 			.setRequired(true),
 		),
 
@@ -39,8 +39,10 @@ module.exports = {
 		/* Create the message and start the reactions */
 		const preparingEmbed = new MessageEmbed()
 			.setTitle('Preparing reaction test!')
-			.setDescription('Please Wait, any reactions before the start are disqualified.');
-		const message = interaction.followUp({ embeds: [preparingEmbed] });
+			.setColor('RED')
+			.setDescription('Please wait while we begin the test!')
+			.setFooter({ text: 'Any reactions before the test starts are disqualified.' });
+		const message = await interaction.followUp({ embeds: [preparingEmbed] });
 
 		for(const emoji of emojis.slice(0, emojiCount)) {
 			await message.react(emoji);
@@ -48,18 +50,49 @@ module.exports = {
 
 		/* Select the emoji and edit the embed */
 		const emoji = emojis[Math.floor(Math.random() * emojiCount)];
-
-		const startingEmbed = new MessageEmbed()
-			.setTitle('Reaction test in progess!')
-			.setDescription(`Click the ${emoji} as fast as you can!\n\nThe first persons to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`)
-		await message.edit({ embeds: [startingEmbed] })
+		setTimeout(async () => {
+			const startingEmbed = new MessageEmbed()
+				.setTitle('Reaction test in progess!')
+				.setColor('GREEN')
+				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe **${userCount == 1 ? 'first user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`)
+			await message.edit({ embeds: [startingEmbed] })
+		}, 3000);
+		
 
 		/* Set up the filter */
-		const filter = (reaction, user) => reaction.emoji.name === '👌';
-		message.awaitReactions({ filter, time: 15_000, maxUsers: userCount })
-			.then(collected => {
-				/*  */
-			});
+		const filter = (reaction, user) => reaction.emoji.name === emoji;
+		const collector = message.createReactionCollector({ filter, time: 10_000, maxUsers: userCount });
 
+		const users = [];
+		collector.on('collect', (reaction, user) => users.push(user));
+		collector.on('end', async collected => {
+
+			/* Formats the fastest reactors */
+			let data = '';
+
+			if (users.length > 0) {
+				for (let x = 1; x <= userCount ; x++) {
+					data = data + `**${x}. ${users[x - 1].tag}**\n<@${users[x - 1].id}>`
+				}
+			}
+			else {
+				data = 'Whoops, seems like nobody reacted.';
+			}
+			
+
+			/* Display the fastest reactors! */
+			const winnersEmbed = new MessageEmbed(message.embeds[0])
+				.setTitle('Reaction test is over!')
+				.setColor('BLUE')
+				.setDescription(`Here's **${userCount == 1 ? 'the first user' : `a list of the people`}** who reacted before anyone else.\n\n${data}`)
+				.setFooter({ text: 'Thanks for playing!' });
+
+			setTimeout(async () => {
+				await message.edit({ embeds: [winnersEmbed] });
+			}, 3000);
+	
+		});	
+		
+		return;
 	},
 };
