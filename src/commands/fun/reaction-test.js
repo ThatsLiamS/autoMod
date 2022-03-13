@@ -35,6 +35,7 @@ module.exports = {
 
 		const emojiCount = interaction.options.getInteger('reactions');
 		const userCount = interaction.options.getInteger('usercount');
+		let active = false;
 
 		/* Create the message and start the reactions */
 		const preparingEmbed = new MessageEmbed()
@@ -54,37 +55,35 @@ module.exports = {
 			const startingEmbed = new MessageEmbed()
 				.setTitle('Reaction test in progess!')
 				.setColor('GREEN')
-				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe **${userCount == 1 ? 'first user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`)
+				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe ** first${userCount == 1 ? 'user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`)
 			await message.edit({ embeds: [startingEmbed] })
+			active = true;
 		}, 3000);
 		
 
 		/* Set up the filter */
-		const filter = (reaction, user) => reaction.emoji.name === emoji;
+		const filter = (reaction, user) => reaction.emoji.name === emoji && !user.bot;
 		const collector = message.createReactionCollector({ filter, time: 10_000, maxUsers: userCount });
 
 		const users = [];
-		collector.on('collect', (reaction, user) => users.push(user));
-		collector.on('end', async collected => {
+		collector.on('collect', (reaction, user) => { if (active) { users.push(user); }});
+		collector.on('end', async () => {
 
 			/* Formats the fastest reactors */
 			let data = '';
-
 			if (users.length > 0) {
 				for (let x = 1; x <= userCount ; x++) {
-					data = data + `**${x}. ${users[x - 1].tag}**\n<@${users[x - 1].id}>`
+					data = data + `**${x}. ${users[x - 1].tag}**\n<@${users[x - 1].id}>\n`
 				}
 			}
-			else {
-				data = 'Whoops, seems like nobody reacted.';
-			}
+			else { data = 'Whoops, seems like nobody reacted.'; }
 			
 
 			/* Display the fastest reactors! */
 			const winnersEmbed = new MessageEmbed(message.embeds[0])
 				.setTitle('Reaction test is over!')
 				.setColor('BLUE')
-				.setDescription(`Here's **${userCount == 1 ? 'the first user' : `a list of the people`}** who reacted before anyone else.\n\n${data}`)
+				.setDescription(`Here's ${userCount == 1 ? 'the **first user' : `a list of the **first ${userCount} people`}** who reacted before anyone else.\n\n${data}`)
 				.setFooter({ text: 'Thanks for playing!' });
 
 			setTimeout(async () => {
