@@ -1,3 +1,5 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -5,19 +7,37 @@ module.exports = {
 	description: 'Removes a temporary timeout for a user.',
 	usage: '<user> [reason]',
 
-	permissions: ['Time Out Members'],
+	permissions: ['Moderator Members'],
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'Who do you want to unmute?', type: 'USER', required: true },
-		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('unmute')
+		.setDescription('Removes a timeout to a user')
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user-id')
+			.setDescription('Removes a timeout to a user')
+			.addStringOption(option => option.setName('user').setDescription('The user ID to unmute').setRequired(true))
+			.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
+		)
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user')
+			.setDescription('Removes a timeout to a user')
+			.addUserOption(option => option.setName('user').setDescription('The user to unmute').setRequired(true))
+			.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
+		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction, client, firestore }) => {
 
-		const member = interaction.options.getMember('user');
+		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
+		const member = await client.users.fetch(userId).catch(() => { return; });
+		if (!member) {
+			interaction.followUp({ content: 'I am unable to find that user.' });
+			return;
+		}
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		member.timeout(null, reason)

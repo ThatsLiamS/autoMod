@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -10,10 +12,11 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'User\'s Discord ID', type: 'STRING', required: true },
-		{ name: 'page', description: 'Page number: default is 1', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('modlogs')
+		.setDescription('Shows all moderation actions against a user.')
+		.addStringOption(option => option.setName('user').setDescription('The user ID to fetch logs for').setRequired(true))
+		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {
@@ -25,7 +28,7 @@ module.exports = {
 			return;
 		}
 
-		const pageNumber = interaction.options.getString('page');
+		const pageNumber = interaction.options.getInteger('page');
 
 		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
 		const serverData = collection.data() || defaultData['guilds'];

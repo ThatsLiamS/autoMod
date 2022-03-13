@@ -1,3 +1,5 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 module.exports = {
 	name: 'purge',
 	description: 'Mass delete messages',
@@ -12,15 +14,19 @@ module.exports = {
 		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
 	],
 
+	data: new SlashCommandBuilder()
+		.setName('purge')
+		.setDescription('Mass deletes messages')
+		.addStringOption(option => option
+			.setName('amount').setDescription('How many messages do I delete')
+			.setMinValue(1).setMaxValue(100)
+			.setRequired(true),
+		),
+
 	error: false,
 	execute: async ({ interaction }) => {
 
 		const number = Number(interaction.options.getInteger('amount'));
-
-		if (number < 0 || number > 100) {
-			interaction.followUp({ content: 'Please specify a number between 1 and 100.' });
-			return;
-		}
 
 		interaction.channel.bulkDelete(number, true)
 			.then(m => interaction.followUp({ content: `Deleted **${m.size}** messages.`, ephemeral: true }))

@@ -1,4 +1,6 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -10,15 +12,43 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'Who do you want to ban?', type: 'USER', required: true },
-		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('ban')
+		.setDescription('Bans a user from the server.')
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user')
+			.setDescription('Bans a user from the server.')
+			.addUserOption(option => option.setName('user').setDescription('The user to ban').setRequired(true))
+			.addIntegerOption(option => option
+				.setName('days').setDescription('Do I purge their messages? (1-7 days)')
+				.setMinValue(1).setMaxValue(7)
+				.setRequired(false))
+			.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
+		)
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user-id')
+			.setDescription('Bans a user from the server.')
+			.addStringOption(option => option.setName('user').setDescription('The user ID to ban').setRequired(true))
+			.addIntegerOption(option => option
+				.setName('days').setDescription('Do I purge their messages? (1-7 days)')
+				.setMinValue(1).setMaxValue(7)
+				.setRequired(false))
+			.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
+		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction, firestore, client }) => {
 
-		const user = interaction.options.getUser('user');
+		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
+		const user = await client.users.fetch(userId).catch(() => { return; });
+		if (!user) {
+			interaction.followUp({ content: 'I am unable to find that user.' });
+			return;
+		}
+
+		const days = interaction.getInteger('days');
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		const logEmbed = new MessageEmbed()
@@ -32,7 +62,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		interaction.guild.members.ban(user, { days: 0, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
+		interaction.guild.members.ban(user, { days, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
 			.then(async () => {
 
 				const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();

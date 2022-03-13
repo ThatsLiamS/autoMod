@@ -1,3 +1,5 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -9,10 +11,11 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'User\'s Discord ID', type: 'STRING', required: true },
-		{ name: 'case', description: 'Case number of the action', type: 'STRING', required: true },
-	],
+	data: new SlashCommandBuilder()
+		.setName('delwarn')
+		.setDescription('Removes a moderation action against a user.')
+		.addStringOption(option => option.setName('user').setDescription('The user ID to delete logs for').setRequired(true))
+		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {

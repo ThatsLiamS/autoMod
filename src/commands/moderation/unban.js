@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -10,10 +12,12 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'Who do you want to unban? (ID ONLY)', type: 'STRING', required: true },
-		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('unban')
+		.setDescription('Unbans a member from the server')
+
+		.addStringOption(option => option.setName('user').setDescription('The user ID to unban').setRequired(true))
+		.addStringOption(option => option.setName('reason').setDescription('Why are we unbanning them?')),
 
 	error: false,
 	execute: async ({ interaction, firestore, client }) => {

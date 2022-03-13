@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 const defaultData = require('./../../utils/defaults');
 
 module.exports = {
@@ -10,15 +12,34 @@ module.exports = {
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'user', description: 'Who do you want to kick?', type: 'USER', required: true },
-		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('kick')
+		.setDescription('kicks a user from the server.')
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user')
+			.setDescription('kicks a user from the server.')
+			.addUserOption(option => option.setName('user').setDescription('The user to kick').setRequired(true))
+			.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
+		)
+
+		.addSubcommand(subcommand => subcommand
+			.setName('by-user-id')
+			.setDescription('kicks a user from the server.')
+			.addStringOption(option => option.setName('user').setDescription('The user ID to kick').setRequired(true))
+			.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
+		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction, firestore, client }) => {
 
-		const user = interaction.options.getUser('user');
+		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
+		const user = await client.users.fetch(userId).catch(() => { return; });
+		if (!user) {
+			interaction.followUp({ content: 'I am unable to find that user.' });
+			return;
+		}
+
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		const logEmbed = new MessageEmbed()

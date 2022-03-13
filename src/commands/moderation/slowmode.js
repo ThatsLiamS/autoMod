@@ -1,24 +1,39 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
+const options = {
+	's': 1000, 'm': 60 * 1000,
+	'h': 3600 * 1000, 'd': 24 * 3600 * 1000,
+	'w': 7 * 24 * 3600 * 1000,
+};
+
 module.exports = {
 	name: 'slowmode',
 	description: 'Set the slowmode of a channel.',
-	usage: '<time> [reason]',
+	usage: '<duration> <units>',
 
 	permissions: ['Manage Channels'],
 	ownerOnly: false,
 	guildOnly: true,
 
-	options: [
-		{ name: 'time', description: 'How long should it be? (in seconds)', type: 'INTEGER', required: true },
-		{ name: 'reason', description: 'Why?', type: 'STRING', required: false },
-	],
+	data: new SlashCommandBuilder()
+		.setName('slowmode')
+		.setDescription('Applies or removes a channel slowmode')
+
+		.addIntegerOption(option => option.setName('duration').setDescription('How long for? (0 to remove)').setRequired(true))
+		.addStringOption(option => option
+			.setName('units').setRequired(true)
+			.setDescription('How long for?')
+			.addChoice('Seconds', 's')
+			.addChoice('Minutes', 'm')
+			.addChoice('Hours', 'h'),
+		),
 
 	error: false,
 	execute: async ({ interaction }) => {
 
-		const number = Number(interaction.options.getInteger('time'));
-
+		const number = Number(interaction.options.getInteger('duration')) * options[interaction.options.getString('units')];
 		if (number > 21600) {
-			interaction.followUp({ content: 'Please specify a number between 0s and 21600s (6 hours).' });
+			interaction.followUp({ content: 'Slowmode cannot be set longer than 6 hours' });
 			return;
 		}
 
