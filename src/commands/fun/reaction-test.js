@@ -22,7 +22,7 @@ module.exports = {
 			.setMinValue(1).setMaxValue(5)
 			.setRequired(true),
 		)
-		
+
 		.addIntegerOption(option => option
 			.setName('usercount')
 			.setDescription('How many users to display?')
@@ -45,7 +45,7 @@ module.exports = {
 			.setFooter({ text: 'Any reactions before the test starts are disqualified.' });
 		const message = await interaction.followUp({ embeds: [preparingEmbed] });
 
-		for(const emoji of emojis.slice(0, emojiCount)) {
+		for (const emoji of emojis.slice(0, emojiCount)) {
 			await message.react(emoji);
 		}
 
@@ -55,43 +55,47 @@ module.exports = {
 			const startingEmbed = new MessageEmbed()
 				.setTitle('Reaction test in progess!')
 				.setColor('GREEN')
-				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe ** first${userCount == 1 ? 'user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`)
-			await message.edit({ embeds: [startingEmbed] })
+				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe ** first ${userCount == 1 ? 'user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`);
+			await message.edit({ embeds: [startingEmbed] });
 			active = true;
 		}, 3000);
-		
+
 
 		/* Set up the filter */
-		const filter = (reaction, user) => reaction.emoji.name === emoji && !user.bot;
+		const users = [];
+
+		const filter = (reaction, user) => reaction.emoji.name === emoji && !user.bot && !users.includes(user);
 		const collector = message.createReactionCollector({ filter, time: 10_000, maxUsers: userCount });
 
-		const users = [];
-		collector.on('collect', (reaction, user) => { if (active) { users.push(user); }});
+		collector.on('collect', (reaction, user) => {
+			if (active) { users.push(user); }
+		});
 		collector.on('end', async () => {
+			const positions = userCount > users.length ? users.length : userCount;
 
 			/* Formats the fastest reactors */
 			let data = '';
 			if (users.length > 0) {
-				for (let x = 1; x <= userCount ; x++) {
-					data = data + `**${x}. ${users[x - 1].tag}**\n<@${users[x - 1].id}>\n`
+				for (let x = 1; x <= positions ; x++) {
+					data = data + `**${x}. ${users[x - 1].username}** (<@${users[x - 1].id}>)\n`;
 				}
 			}
 			else { data = 'Whoops, seems like nobody reacted.'; }
-			
+
 
 			/* Display the fastest reactors! */
 			const winnersEmbed = new MessageEmbed(message.embeds[0])
 				.setTitle('Reaction test is over!')
 				.setColor('BLUE')
-				.setDescription(`Here's ${userCount == 1 ? 'the **first user' : `a list of the **first ${userCount} people`}** who reacted before anyone else.\n\n${data}`)
+				.setDescription(`Here's ${positions == 1 ? 'the **first user' : `a list of the **first ${positions} people`}** who reacted.\n\n${data}`)
 				.setFooter({ text: 'Thanks for playing!' });
 
 			setTimeout(async () => {
 				await message.edit({ embeds: [winnersEmbed] });
 			}, 3000);
-	
-		});	
-		
+
+		});
+
 		return;
 	},
 };
