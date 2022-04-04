@@ -33,7 +33,7 @@ module.exports = {
 			.setTitle('Ticket Closure')
 			.setColor('RED')
 			.setDescription(`${user.tag}'s ticket has been closed by ${interaction.user.username}`)
-			.setFooter(`${user.tag} (${user.id})`);
+			.setFooter({ text: `${user.tag} (${user.id})` });
 
 		logs.send({ embeds: [embed] });
 

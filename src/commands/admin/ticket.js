@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
 	name: 'ticket',
@@ -13,7 +12,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ticket')
 		.setDescription('Contains all the tickets sub-commands!')
-		
+
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
 			.setDescription('Sets up the ticket system')
@@ -31,12 +30,12 @@ module.exports = {
 				.addChoice('Enable Logs', true).addChoice('Disable Logs', false)
 				.setRequired(true)),
 		)
-	
+
 		.addSubcommand(subcommand => subcommand
 			.setName('enable')
 			.setDescription('Enables the ticket system'),
 		)
-		
+
 		.addSubcommand(subcommand => subcommand
 			.setName('disable')
 			.setDescription('Disables the ticket system'),

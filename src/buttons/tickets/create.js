@@ -54,7 +54,7 @@ module.exports = {
 			.setTitle('Ticket Created')
 			.setColor('GREEN')
 			.setDescription(`${interaction.user.tag} has opened a ticket: ${channel}.`)
-			.setFooter(`${interaction.user.tag} (${interaction.user.id})`);
+			.setFooter({ text: `${interaction.user.tag} (${interaction.user.id})` });
 
 		logs.send({ embeds: [embed_log] });
 
