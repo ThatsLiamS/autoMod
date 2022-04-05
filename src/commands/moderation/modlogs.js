@@ -2,11 +2,12 @@ const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'modlogs',
 	description: 'Shows all moderation actions against a user.',
-	usage: '<user ID> [page]',
+	usage: '<user> [page]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -15,14 +16,14 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('modlogs')
 		.setDescription('Shows all moderation actions against a user.')
-		.addStringOption(option => option.setName('user').setDescription('The user ID to fetch logs for').setRequired(true))
+		.addStringOption(option => option.setName('user').setDescription('The user to fetch logs for - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {
 
-		const id = interaction.options.getString('user');
-		const user = await client.users.fetch(id).catch(() => { return; });
+		const userId = mention.getUserId({ string: interaction.options.getString('user') });
+		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
 			return;

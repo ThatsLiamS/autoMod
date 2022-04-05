@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'ban',
@@ -16,39 +17,25 @@ module.exports = {
 		.setName('ban')
 		.setDescription('Bans a user from the server.')
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user')
-			.setDescription('Bans a user from the server.')
-			.addUserOption(option => option.setName('user').setDescription('The user to ban').setRequired(true))
-			.addIntegerOption(option => option
-				.setName('days').setDescription('Do I purge their messages? (1-7 days)')
-				.setMinValue(1).setMaxValue(7)
-				.setRequired(false))
-			.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
+		.addStringOption(option => option.setName('user').setDescription('The user to ban - @mention or ID').setRequired(true))
+		.addIntegerOption(option => option
+			.setName('days').setDescription('Do I purge their messages?')
+			.setMinValue(0).setMaxValue(7)
+			.setRequired(false),
 		)
-
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user-id')
-			.setDescription('Bans a user from the server.')
-			.addStringOption(option => option.setName('user').setDescription('The user ID to ban').setRequired(true))
-			.addIntegerOption(option => option
-				.setName('days').setDescription('Do I purge their messages? (1-7 days)')
-				.setMinValue(1).setMaxValue(7)
-				.setRequired(false))
-			.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
-		),
+		.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
 
 	error: false,
 	execute: async ({ interaction, firestore, client }) => {
 
-		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
+		const userId = mention.getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'I am unable to find that user.' });
 			return;
 		}
 
-		const days = interaction.getInteger('days');
+		const days = interaction.getInteger('days') || 0;
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		const logEmbed = new MessageEmbed()

@@ -1,11 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'unmute',
 	description: 'Removes a temporary timeout for a user.',
-	usage: '<user> [reason]',
+	usage: '<member> [reason]',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,
@@ -15,27 +16,16 @@ module.exports = {
 		.setName('unmute')
 		.setDescription('Removes a timeout to a user')
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user-id')
-			.setDescription('Removes a timeout to a user')
-			.addStringOption(option => option.setName('user').setDescription('The user ID to unmute').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
-		)
-
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user')
-			.setDescription('Removes a timeout to a user')
-			.addUserOption(option => option.setName('user').setDescription('The user to unmute').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
-		),
+		.addStringOption(option => option.setName('member').setDescription('The member to unmute - @mention or ID').setRequired(true))
+		.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
 
 	error: false,
-	execute: async ({ interaction, client, firestore }) => {
+	execute: async ({ interaction, firestore }) => {
 
-		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
-		const member = await client.users.fetch(userId).catch(() => { return; });
+		const userId = mention.getUserId({ string: interaction.options.getString('member') });
+		const member = interaction.guild.members.cache.get(userId);
 		if (!member) {
-			interaction.followUp({ content: 'I am unable to find that user.' });
+			interaction.followUp({ content: 'I am unable to find that member.' });
 			return;
 		}
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';

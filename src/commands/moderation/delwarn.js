@@ -1,11 +1,12 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'delwarn',
 	description: 'Removes a moderation action against a user.',
-	usage: '<user ID> <case ID>',
+	usage: '<user> <case ID>',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -14,14 +15,14 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('delwarn')
 		.setDescription('Removes a moderation action against a user.')
-		.addStringOption(option => option.setName('user').setDescription('The user ID to delete logs for').setRequired(true))
+		.addStringOption(option => option.setName('user').setDescription('The user to delete logs for - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {
 
-		const id = interaction.options.getString('user');
-		const user = await client.users.fetch(id).catch(() => { return; });
+		const userId = mention.getUserId({ string: interaction.options.getString('user') });
+		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
 			return;

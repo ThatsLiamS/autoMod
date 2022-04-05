@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 const options = {
 	's': 1000, 'm': 60 * 1000,
@@ -12,7 +13,7 @@ const options = {
 module.exports = {
 	name: 'mute',
 	description: 'Sets a temporary timeout for a user.',
-	usage: '<user> <time> [reason]',
+	usage: '<member> <time> [reason]',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,
@@ -22,43 +23,25 @@ module.exports = {
 		.setName('mute')
 		.setDescription('Applies a timeout to a user')
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user-id')
-			.setDescription('Applies a timeout to a user')
-			.addStringOption(option => option.setName('user').setDescription('The user ID to mute').setRequired(true))
-			.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
-			.addStringOption(option => option
-				.setName('units').setRequired(true)
-				.setDescription('How long for?')
-				.addChoice('Seconds', 's')
-				.addChoice('Minutes', 'm').addChoice('Hours', 'h')
-				.addChoice('Days', 'd').addChoice('Weeks', 'w'),
-			)
-			.addStringOption(option => option.setName('reason').setDescription('Why are we muting them?')),
+		.addStringOption(option => option.setName('user').setDescription('The member to mute - @mention or ID').setRequired(true))
+		.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
+		.addStringOption(option => option
+			.setName('units').setRequired(true)
+			.setDescription('How long for?')
+			.addChoice('Seconds', 's')
+			.addChoice('Minutes', 'm').addChoice('Hours', 'h')
+			.addChoice('Days', 'd').addChoice('Weeks', 'w'),
 		)
+		.addStringOption(option => option.setName('reason').setDescription('Why are we muting them?')),
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user')
-			.setDescription('Applies a timeout to a user')
-			.addUserOption(option => option.setName('user').setDescription('The user to mute').setRequired(true))
-			.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
-			.addStringOption(option => option
-				.setName('units').setRequired(true)
-				.setDescription('How long for?')
-				.addChoice('Seconds', 's')
-				.addChoice('Minutes', 'm').addChoice('Hours', 'h')
-				.addChoice('Days', 'd').addChoice('Weeks', 'w'),
-			)
-			.addStringOption(option => option.setName('reason').setDescription('Why are we muting them?')),
-		),
 
 	error: false,
 	execute: async ({ interaction, firestore }) => {
 
-		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
-		const member = interaction.guild.members.cache(userId);
+		const userId = mention.getUserId({ string: interaction.options.getString('member') });
+		const member = interaction.guild.members.cache.get(userId);
 		if (!member) {
-			return interaction.followUp({ content: 'I am unable to find that user.' });
+			return interaction.followUp({ content: 'I am unable to find that member.' });
 		}
 
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';

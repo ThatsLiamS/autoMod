@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'warn',
@@ -16,24 +17,13 @@ module.exports = {
 		.setName('warn')
 		.setDescription('Warns a member')
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user')
-			.setDescription('Warns a member')
-			.addUserOption(option => option.setName('user').setDescription('The user ID to warn').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
-		)
-
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user-id')
-			.setDescription('Warns a member')
-			.addStringOption(option => option.setName('user').setDescription('The user ID to warn').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
-		),
+		.addStringOption(option => option.setName('user').setDescription('The user to warn - @mention or ID').setRequired(true))
+		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
 
 	error: false,
 	execute: async ({ interaction, client, firestore }) => {
 
-		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
+		const userId = mention.getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'I am unable to find that user.' });

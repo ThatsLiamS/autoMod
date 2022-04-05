@@ -2,11 +2,12 @@ const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const defaultData = require('./../../utils/defaults');
+const mention = require('./../../utils/mentions.js');
 
 module.exports = {
 	name: 'kick',
 	description: 'Kicks a member from the server.',
-	usage: '<user> [reason]',
+	usage: '<member> [reason]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -16,27 +17,16 @@ module.exports = {
 		.setName('kick')
 		.setDescription('kicks a user from the server.')
 
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user')
-			.setDescription('kicks a user from the server.')
-			.addUserOption(option => option.setName('user').setDescription('The user to kick').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
-		)
-
-		.addSubcommand(subcommand => subcommand
-			.setName('by-user-id')
-			.setDescription('kicks a user from the server.')
-			.addStringOption(option => option.setName('user').setDescription('The user ID to kick').setRequired(true))
-			.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
-		),
+		.addStringOption(option => option.setName('member').setDescription('The member to kick - @mention or ID').setRequired(true))
+		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
 
 	error: false,
-	execute: async ({ interaction, firestore, client }) => {
+	execute: async ({ interaction, firestore }) => {
 
-		const userId = interaction.options.getSubcommand() == 'by-user' ? interaction.options.getUser('user').id : interaction.options.getUser('user');
-		const user = await client.users.fetch(userId).catch(() => { return; });
-		if (!user) {
-			interaction.followUp({ content: 'I am unable to find that user.' });
+		const userId = mention.getUserId({ string: interaction.options.getString('member') });
+		const member = interaction.guild.members.cache.get(userId);
+		if (!member) {
+			interaction.followUp({ content: 'I am unable to find that member.' });
 			return;
 		}
 
@@ -44,22 +34,22 @@ module.exports = {
 
 		const logEmbed = new MessageEmbed()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
-			.setTitle(`🔨 Kicked: ${user.tag}`)
+			.setTitle(`🔨 Kicked: ${member.user.tag}`)
 			.setColor('#DC143C')
 			.addFields(
-				{ name: '**User**', value: `${user.tag} (${user.id})`, inline: false },
+				{ name: '**User**', value: `${member.user.tag} (${member.user.id})`, inline: false },
 				{ name: '**Moderator**', value: `${interaction.user.tag} (${interaction.user.id})`, inline: false },
 				{ name: '**Reason**', value: `${reason}`, inline: false },
 			)
 			.setTimestamp();
 
-		interaction.guild.members.kick(user, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
+		interaction.guild.members.kick(member, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
 			.then(async () => {
 
 				const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
 				const serverData = collection.data() || defaultData['guilds'];
 
-				if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
+				if (!serverData['moderation logs'][member.id]) serverData['moderation logs'][member.id] = [];
 				serverData['moderation logs']['case'] = Number(serverData['moderation logs']['case']) + 1;
 
 				const object = {
@@ -67,7 +57,7 @@ module.exports = {
 					case: serverData['moderation logs']['case'],
 					reason: reason,
 
-					username: user.tag,
+					username: member.user.tag,
 					time: new Date(),
 
 					moderator: {
@@ -75,7 +65,7 @@ module.exports = {
 						id: interaction.user.id,
 					},
 				};
-				serverData['moderation logs'][user.id] = [object].concat(serverData['moderation logs'][user.id]);
+				serverData['moderation logs'][member.id] = [object].concat(serverData['moderation logs'][member.id]);
 				await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
 
 				if (serverData['logs']['on'] == true) {
@@ -83,7 +73,7 @@ module.exports = {
 					channel.send({ embeds: [logEmbed] });
 				}
 
-				interaction.followUp({ content: `${user.tag} has been kicked.`, ephemeral: true });
+				interaction.followUp({ content: `${member.user.tag} has been kicked.`, ephemeral: true });
 			})
 			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 	},
