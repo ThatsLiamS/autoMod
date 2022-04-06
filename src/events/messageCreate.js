@@ -18,11 +18,5 @@ module.exports = {
 			await message.react(emojis.tada);
 		}
 
-		/* Chain-message Channel */
-		if (message.channel.id == '821162869709864961') {
-			if (message.content !== emojis.agh) message.delete();
-		}
-
-
 	},
 };
