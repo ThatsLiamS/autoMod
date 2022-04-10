@@ -6,7 +6,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'delwarn',
 	description: 'Removes a moderation action against a user.',
-	usage: '<user> <case ID>',
+	usage: '`/dewarn <user> <case ID>`',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,

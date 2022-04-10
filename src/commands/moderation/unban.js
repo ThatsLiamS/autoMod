@@ -6,7 +6,7 @@ const defaultData = require('./../../utils/defaults');
 module.exports = {
 	name: 'unban',
 	description: 'Unbans a member from the server.',
-	usage: '<user ID> [reason]',
+	usage: '`/unban <user ID> [reason]`',
 
 	permissions: ['Ban Members'],
 	ownerOnly: false,

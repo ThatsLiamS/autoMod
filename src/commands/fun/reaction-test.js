@@ -5,8 +5,8 @@ const emojis = ['🔴', '🟠', '🟢', '🔵', '🟣'];
 
 module.exports = {
 	name: 'reaction-test',
-	description: 'Creates a reaction speed test., Then displays first few users to react!',
-	usage: '<reactions> <usercount>',
+	description: 'Creates a reaction speed test. Then displays first few users to react!',
+	usage: '`/reaction-test <reactions> <usercount>`',
 
 	permissions: [],
 	ownerOnly: false,

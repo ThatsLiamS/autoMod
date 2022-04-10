@@ -9,7 +9,7 @@ const verificationLevel = { NONE: 'None.', LOW: 'Low: verified email required.',
 module.exports = {
 	name: 'serverinfo',
 	description: 'Shows information about the server',
-	usage: '[server id]',
+	usage: '`/serverinfo [server id]`',
 
 	permissions: [],
 	ownerOnly: false,

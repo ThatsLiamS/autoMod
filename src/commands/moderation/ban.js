@@ -7,7 +7,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'ban',
 	description: 'Bans a member from the server.',
-	usage: '<user> [reason]',
+	usage: '`/ban <user> [days] [reason]`',
 
 	permissions: ['Ban Members'],
 	ownerOnly: false,

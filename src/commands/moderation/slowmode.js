@@ -9,7 +9,7 @@ const options = {
 module.exports = {
 	name: 'slowmode',
 	description: 'Set the slowmode of a channel.',
-	usage: '<duration> <units>',
+	usage: '`/slowmode <duration> <units>`',
 
 	permissions: ['Manage Channels'],
 	ownerOnly: false,

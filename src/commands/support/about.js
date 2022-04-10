@@ -6,7 +6,7 @@ const makeGrid = require('../../utils/makeGrid');
 module.exports = {
 	name: 'about',
 	description: 'Shows lots of cool information about the bot!',
-	usage: '',
+	usage: '`/about`',
 
 	permissions: [],
 	ownerOnly: false,

@@ -7,7 +7,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kicks a member from the server.',
-	usage: '<member> [reason]',
+	usage: '`/kick <member> [reason]`',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,

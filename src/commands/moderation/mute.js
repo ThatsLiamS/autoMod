@@ -13,7 +13,7 @@ const options = {
 module.exports = {
 	name: 'mute',
 	description: 'Sets a temporary timeout for a user.',
-	usage: '<member> <time> [reason]',
+	usage: '`/mute <member> <duration> <units> [reason]`',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,
@@ -23,7 +23,7 @@ module.exports = {
 		.setName('mute')
 		.setDescription('Applies a timeout to a user')
 
-		.addStringOption(option => option.setName('user').setDescription('The member to mute - @mention or ID').setRequired(true))
+		.addStringOption(option => option.setName('member').setDescription('The member to mute - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
 		.addStringOption(option => option
 			.setName('units').setRequired(true)

@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	name: 'say',
 	description: 'Makes the bot repeat your message!',
-	usage: '<message>',
+	usage: '`/say <message>`',
 
 	permissions: [],
 	ownerOnly: false,

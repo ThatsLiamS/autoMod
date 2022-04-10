@@ -6,7 +6,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'unmute',
 	description: 'Removes a temporary timeout for a user.',
-	usage: '<member> [reason]',
+	usage: '`/unmute <member> [reason]`',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,

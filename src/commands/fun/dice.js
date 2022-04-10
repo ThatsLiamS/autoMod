@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'dice',
 	description: 'Roll a 6 sided die!',
-	usage: '',
+	usage: '`/dice`',
 
 	permissions: [],
 	ownerOnly: false,

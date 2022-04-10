@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = {
 	name: 'whois',
 	description: 'Shows information about a user',
-	usage: '[user]',
+	usage: '`/whois [user]`',
 
 	permissions: [],
 	ownerOnly: false,

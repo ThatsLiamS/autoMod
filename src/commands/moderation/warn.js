@@ -7,7 +7,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'warn',
 	description: 'Warns a member.',
-	usage: '<user> [reason]',
+	usage: '`/warn <user> [reason]`',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -15,7 +15,7 @@ module.exports = {
 
 	data: new SlashCommandBuilder()
 		.setName('warn')
-		.setDescription('Warns a member')
+		.setDescription('Warns a user')
 
 		.addStringOption(option => option.setName('user').setDescription('The user to warn - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),

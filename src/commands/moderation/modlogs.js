@@ -7,7 +7,7 @@ const mention = require('./../../utils/mentions.js');
 module.exports = {
 	name: 'modlogs',
 	description: 'Shows all moderation actions against a user.',
-	usage: '<user> [page]',
+	usage: '`/modlogs <user> [page]`',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,

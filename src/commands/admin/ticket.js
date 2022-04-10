@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	name: 'ticket',
 	description: 'Sets up the ticket system',
-	usage: '',
+	usage: '`/ticket seup <category> <channel> <role>`\n`/ticket logs <channel> <enabled>`\n`/ticket enable`\n`/ticket disable`',
 
 	permissions: ['Manage Guild'],
 	ownerOnly: false,

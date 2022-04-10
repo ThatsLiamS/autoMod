@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	name: 'purge',
 	description: 'Mass delete messages',
-	usage: '<amount>',
+	usage: '`/purge <amount>`',
 
 	permissions: ['Manage Messages'],
 	ownerOnly: false,

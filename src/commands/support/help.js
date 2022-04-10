@@ -7,7 +7,7 @@ const emojis = require('./../../utils/emojis');
 module.exports = {
 	name: 'help',
 	description: 'Provides a list of all my commands!',
-	usage: '[command]',
+	usage: '`/help [command]`',
 
 	permissions: [],
 	ownerOnly: false,
@@ -68,7 +68,7 @@ module.exports = {
 				const commandFiles = readdirSync(__dirname + '/../../commands/' + category).filter(file => file.endsWith('.js'));
 				for (const file of commandFiles) {
 					const command = require(`${__dirname}/../../commands/${category}/${file}`);
-					description += `\`/${command.name}${command.usage ? ` ${command.usage}` : ''}\`\n`;
+					description += `${command.usage}\n`;
 				}
 
 				embed.addField(`__${category.charAt(0).toUpperCase() + category.slice(1)}__`, description, false);
