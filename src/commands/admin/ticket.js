@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Sets up the ticket system',
 	usage: '',
 
-	permissions: ['Administrator'],
+	permissions: ['Manage Guild'],
 	ownerOnly: false,
 	guildOnly: true,
 
