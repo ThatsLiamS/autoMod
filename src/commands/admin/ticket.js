@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	name: 'ticket',
 	description: 'Sets up the ticket system',
-	usage: '`/ticket seup <category> <channel> <role>`\n`/ticket logs <channel> <enabled>`\n`/ticket enable`\n`/ticket disable`',
+	usage: '`/ticket setup <category> <channel> <role>`\n`/ticket logs <channel> <enabled>`\n`/ticket enable`\n`/ticket disable`',
 
 	permissions: ['Manage Guild'],
 	ownerOnly: false,
@@ -27,7 +27,7 @@ module.exports = {
 			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(true))
 			.addStringOption(option => option
 				.setName('enabled').setDescription('Turn it on or off?')
-				.addChoice('Enable Logs', true).addChoice('Disable Logs', false)
+				.addChoice('Enable Logs', 'true').addChoice('Disable Logs', 'false')
 				.setRequired(true)),
 		)
 
@@ -41,7 +41,7 @@ module.exports = {
 			.setDescription('Disables the ticket system'),
 		),
 
-	error: false,
+	error: true,
 	execute: async ({ interaction, client, firestore }) => {
 
 		const subCommandName = interaction.options.getSubcommand();

@@ -35,7 +35,7 @@ module.exports = {
 			return;
 		}
 
-		const days = interaction.getInteger('days') || 0;
+		const days = interaction.options.getInteger('days') || 0;
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
 		const logEmbed = new MessageEmbed()

@@ -1,20 +1,20 @@
 const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-const defaultData = require('./../../utils/defaults');
-const mention = require('./../../utils/mentions.js');
+const defaultData = require('../../utils/defaults');
+const mention = require('../../utils/mentions.js');
 
 module.exports = {
-	name: 'modlogs',
+	name: 'history',
 	description: 'Shows all moderation actions against a user.',
-	usage: '`/modlogs <user> [page]`',
+	usage: '`/history <user> [page]`',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
 	guildOnly: true,
 
 	data: new SlashCommandBuilder()
-		.setName('modlogs')
+		.setName('history')
 		.setDescription('Shows all moderation actions against a user.')
 		.addStringOption(option => option.setName('user').setDescription('The user to fetch logs for - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
