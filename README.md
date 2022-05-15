@@ -24,6 +24,23 @@ Contributions are always welcome! A massive benefit of being an open-source bot 
 See `contributing.md` for ways to get started. Please adhere to this project's `code of conduct`.
 
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env` file.  A copy of this can be found in `example.env`
+
+```.env
+# https://discord.com/developers/applications/CLIENT_ID/bot
+BotToken = "String"
+
+# https://gist.github.com/ThatsLiamS/ab4c35d70c512d7528332db84093165c
+Database = {Object}
+
+# Discord Webhook URLS
+SuggestionWebhook = "String"
+ReportWebhook = "String"
+```
+
+
 ## Authors
 key contributors of autoMod
 - [@ThatsLiamS](https://github.com/ThatsLiamS)
