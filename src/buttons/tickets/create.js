@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const defaultData = require('./../../utils/defaults');
+const defaultData = require('./../../util/defaults.js').guilds;
 
 module.exports = {
 	name: 'create',
@@ -10,7 +10,7 @@ module.exports = {
 		await interaction.reply({ content: 'processing...', ephemeral: true });
 
 		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-		const guildData = collection.data() || defaultData['guilds'];
+		const guildData = collection.data() || defaultData;
 
 		if (guildData.tickets.on == false) {
 			interaction.editReply({ content: 'Tickets have been disabled by the staff.', ephemeral: true });

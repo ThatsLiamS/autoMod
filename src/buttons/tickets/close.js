@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const defaultData = require('./../../utils/defaults');
+const defaultData = require('./../../util/defaults.js').guilds
 
 module.exports = {
 	name: 'close',
@@ -10,7 +10,7 @@ module.exports = {
 		await interaction.deferReply();
 
 		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-		const guildData = collection.data() || defaultData['guilds'];
+		const guildData = collection.data() || defaultData;
 
 		const id = interaction.channel.topic.split(' ')[1];
 		const user = await client.users.fetch(id);
