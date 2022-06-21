@@ -9,11 +9,11 @@ const client = new Discord.Client({
 	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_WEBHOOKS', 'GUILD_MESSAGE_REACTIONS'],
 });
 
-
+/*
 const { AutoPoster } = require('topgg-autoposter');
 const ap = AutoPoster(process.env['API_TOKEN'], client);
 ap.on('posted', () => { });
-
+*/
 
 const admin = require('firebase-admin');
 admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env['Database'])) });

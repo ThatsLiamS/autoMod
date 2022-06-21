@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const defaultData = require('./../../util/defaults.js').guilds
+const defaultData = require('./../../utils/defaults.js').guilds;
 
 module.exports = {
 	name: 'close',

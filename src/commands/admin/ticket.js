@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
-const defaultData = require('./../../util/defaults/guild.js');
+const defaultData = require('./../../utils/defaults.js').guilds;
 
 module.exports = {
 	name: 'ticket',
