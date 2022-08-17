@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'dice',
@@ -12,13 +11,14 @@ module.exports = {
 
 	data: new SlashCommandBuilder()
 		.setName('dice')
-		.setDescription('Roll a 6 sided die!'),
+		.setDescription('Roll a 6 sided die!')
+		.setDMPermission(true),
 
 	error: false,
 	execute: async ({ interaction }) => {
 
 		const random = Math.floor(Math.random() * 6) + 1;
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('Dice roll')
 			.setDescription(`You rolled a ${random}!`)
 			.setThumbnail(`https://assets.liamskinner.co.uk/dice/${random}.png`);

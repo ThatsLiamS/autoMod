@@ -6,6 +6,9 @@ module.exports = {
 
 	execute: async (message) => {
 
+		if (message?.partial) await message.fetch();
+		if (message?.channel?.partial) await message.channel.fetch();
+
 		/* Suggestion Channel */
 		if (message.channel.id == '821153396328366080') {
 			await message.react(emojis.yes);

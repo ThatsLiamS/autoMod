@@ -1,5 +1,5 @@
-const { MessageEmbed } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const {  } = require('@discordjs/builders');
 
 const defaultData = require('../../utils/defaults');
 const mention = require('../../utils/mentions.js');
@@ -16,6 +16,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('history')
 		.setDescription('Shows all moderation actions against a user.')
+		.setDMPermission(false)
+
 		.addStringOption(option => option.setName('user').setDescription('The user to fetch logs for - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
@@ -48,7 +50,7 @@ module.exports = {
 
 		for (let x = 0; x < pageData.length; x++) {
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle(`${user.username}'s logs`)
 				.setColor('#DC143C')
 				.setTimestamp()

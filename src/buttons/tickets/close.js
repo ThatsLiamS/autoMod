@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const defaultData = require('./../../utils/defaults.js').guilds;
 
 module.exports = {
@@ -22,16 +22,16 @@ module.exports = {
 			VIEW_CHANNEL: false,
 		});
 
-		const row = new MessageActionRow()
+		const row = new ActionRowBuilder()
 			.addComponents(
-				new MessageButton()
-					.setStyle('DANGER').setLabel('Delete').setEmoji('🛑').setCustomId('tickets-delete'),
+				new ButtonBuilder()
+					.setStyle(ButtonStyle.Danger).setLabel('Delete').setEmoji('🛑').setCustomId('tickets-delete'),
 			);
 
 		const logs = interaction.guild.channels.cache.get(guildData.tickets.logs);
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('Ticket Closure')
-			.setColor('RED')
+			.setColor('Red')
 			.setDescription(`${user.tag}'s ticket has been closed by ${interaction.user.username}`)
 			.setFooter({ text: `${user.tag} (${user.id})` });
 

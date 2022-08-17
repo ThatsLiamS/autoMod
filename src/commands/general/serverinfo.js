@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 
 const premiumTier = { NONE: 'None', TIER_1: 'Level 1', TIER_2: 'Level 2', TIER_3: 'Level 3' };
@@ -18,11 +17,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('serverinfo')
 		.setDescription('Shows information about the server!')
-		.addStringOption(option => option
-			.setName('id')
-			.setDescription('The server\'s ID ')
-			.setRequired(false),
-		),
+		.setDMPermission(false)
+
+		.addStringOption(option => option.setName('id').setDescription('The server\'s ID ').setRequired(false)),
 
 	error: false,
 	execute: async ({ interaction, client }) => {
@@ -34,7 +31,7 @@ module.exports = {
 		const age = `${Math.floor(ageTimestamp / 86400000)}d ${Math.floor(ageTimestamp / 3600000) % 24}h ${Math.floor(ageTimestamp / 60000) % 60}m ${Math.floor(ageTimestamp / 1000) % 60}s`;
 
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor('#0099ff')
 			.setAuthor({ name: `${interaction.member.user.username} (${interaction.member.id})`, iconURL: interaction.member.displayAvatarURL() })
 			.setTitle(`${guild.name}'s Information`)
@@ -60,9 +57,9 @@ module.exports = {
 			.setTimestamp();
 
 		try {
-			const channel = guild.channels.cache.filter(c => c.type == 'GUILD_NEWS' || c.type == 'GUILD_TEXT').first();
-			const invite = await guild.invites.create(channel.id, { maxAge: 3600, maxUses: 5 }).catch(() => { });
-			embed.setURL(invite.url);
+			const channel = guild.channels.cache.filter(c => c.type == 5 || c.type == 0)?.first();
+			const invite = await guild.invites.create(channel?.id, { maxAge: 3600, maxUses: 5 }).catch(() => { });
+			embed.setURL(invite?.url);
 		}
 		catch (err) {
 			/* ignore it :) */

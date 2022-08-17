@@ -1,5 +1,4 @@
-const { MessageEmbed } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -22,15 +21,16 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('mute')
 		.setDescription('Applies a timeout to a user')
+		.setDMPermission(false)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to mute - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
 		.addStringOption(option => option
-			.setName('units').setRequired(true)
-			.setDescription('How long for?')
-			.addChoice('Seconds', 's')
-			.addChoice('Minutes', 'm').addChoice('Hours', 'h')
-			.addChoice('Days', 'd').addChoice('Weeks', 'w'),
+			.setName('units').setRequired(true).setDescription('How long for?')
+			.addChoices(
+				{ name: 'Seconds', value: 's' }, { name: 'Minutes', value: 'm' }, { name: 'Hours', value: 'h' },
+				{ name: 'Days', value: 'd' }, { name: 'Weeks', value: 'w' },
+			),
 		)
 		.addStringOption(option => option.setName('reason').setDescription('Why are we muting them?')),
 
@@ -74,7 +74,7 @@ module.exports = {
 
 
 				if (serverData['logs']['on'] == true) {
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 						.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 						.setTitle(`⌛ Timeout: ${member.user.tag}`)
 						.setColor('#DC143C')

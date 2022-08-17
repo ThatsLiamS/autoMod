@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults.js');
 
@@ -15,6 +14,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ghostping')
 		.setDescription('Contains all the ghostping sub-commands!')
+		.setDMPermission(false)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
@@ -53,9 +53,9 @@ module.exports = {
 			}
 
 			guildData['ghost ping']['channel'] = channel.id;
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle('Successfully set up!')
-				.setColor('GREEN')
+				.setColor('Green')
 				.setDescription(`The **Ghost Ping Detector** has been set up to ${channel}. Use the \`/ghostping enable\` command to turn it on.`);
 
 			interaction.followUp({ embeds: [embed] });
@@ -64,9 +64,9 @@ module.exports = {
 		if (subCommandName == 'enable') {
 
 			if (!guildData['ghost ping']['channel'] || guildData['ghost ping']['channel'] == '') {
-				const embed = new MessageEmbed()
+				const embed = new EmbedBuilder()
 					.setTitle('An error has occurred!')
-					.setColor('RED')
+					.setColor('Red')
 					.setDescription('The **Ghost Ping Detector** is required to be setup before being enabled. Please run the `/ghostping setup <channel>` command and try again.');
 
 				interaction.followUp({ embeds: [embed] });

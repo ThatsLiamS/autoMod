@@ -1,5 +1,4 @@
-const { MessageEmbed } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -16,6 +15,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('kick')
 		.setDescription('kicks a user from the server.')
+		.setDMPermission(false)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to kick - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
@@ -32,7 +32,7 @@ module.exports = {
 
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle(`🔨 Kicked: ${member.user.tag}`)
 			.setColor('#DC143C')

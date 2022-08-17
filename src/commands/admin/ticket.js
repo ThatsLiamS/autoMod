@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults.js').guilds;
 
@@ -15,6 +14,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ticket')
 		.setDescription('Contains all the tickets sub-commands!')
+		.setDMPermission(false)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
@@ -28,8 +28,8 @@ module.exports = {
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
 			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(true))
-			.addStringOption(option => option
-				.setName('enabled').setDescription('Turn it on or off?').addChoice('Enable Logs', 'true').addChoice('Disable Logs', 'false').setRequired(true)),
+			.addStringOption(option => option.setName('enabled').setDescription('Turn it on or off?').setRequired(true).addChoices(
+				{ name: 'Enable Logs', value: 'true' }, { name: 'Disable Logs', value: 'false' })),
 		)
 
 		.addSubcommand(subcommand => subcommand
@@ -67,25 +67,25 @@ module.exports = {
 			guildData.tickets.role = role.id;
 
 			/* Send the ticketCreate message */
-			const ticketCreate = new MessageEmbed()
+			const ticketCreate = new EmbedBuilder()
 				.setTitle(`${interaction.guild.name} | Support`)
-				.setColor('GREEN')
+				.setColor('Green')
 				.setDescription(`Create a ticket below to speak privately to <@&${role.id}> and our staff team. Abuse or spam tickets will be dealt with accordingly.`);
-			const row = new MessageActionRow().addComponents([
-				new MessageButton().setLabel('Create Ticket').setStyle('SUCCESS').setCustomId('tickets-create'),
+			const row = new ActionRowBuilder().addComponents([
+				new ButtonBuilder().setLabel('Create Ticket').setStyle(ButtonStyle.Success).setCustomId('tickets-create'),
 			]);
 
 			/* Send the ticketCreate message */
-			if (!channel || (channel?.type != 'GUILD_TEXT' && channel?.type != 'GUILD_NEWS')) {
-				interaction.followUp({ content: 'Please mention a valid __text__ channel.' });
+			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
+				interaction.followUp({ content: 'Please mention a valid __**text**__ channel.' });
 				return false;
 			}
 			channel.send({ embeds: [ticketCreate], components: [row] });
 
 			/* Reply to the message */
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle('Ticket System fully set up!')
-				.setColor('GREEN')
+				.setColor('Green')
 				.setDescription(`The **Ticket System** has been set up to <#${category.id}>. Use the \`/ticket enable\` command to turn it on.`);
 			interaction.followUp({ embeds: [embed] });
 		}
@@ -97,8 +97,8 @@ module.exports = {
 			const enabled = interaction.options.getString('enabled') == 'true' ? true : false;
 
 			/* Is the channel valid */
-			if (!channel || (channel?.type != 'GUILD_TEXT' && channel?.type != 'GUILD_NEWS')) {
-				interaction.followUp({ content: 'Please mention a valid __text__ channel.' });
+			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
+				interaction.followUp({ content: 'Please mention a valid __**text**__ channel.' });
 				return false;
 			}
 

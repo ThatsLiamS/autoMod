@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const makeGrid = require('../../utils/makeGrid');
 
@@ -14,7 +13,8 @@ module.exports = {
 
 	data: new SlashCommandBuilder()
 		.setName('about')
-		.setDescription('Shows lots of cool information about the bot!'),
+		.setDescription('Shows lots of cool information about the bot!')
+		.setDMPermission(false),
 
 	error: false,
 	execute: async ({ interaction, client }) => {
@@ -26,9 +26,9 @@ module.exports = {
 		];
 		const results = await Promise.all(promises);
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('My Information')
-			.setColor('GREEN')
+			.setColor('Green')
 			.setDescription('Hey, I\'m **[autoMod#3828](https://automod.liamskinner.com/invite)**!\n```\n' + makeGrid(results) + '```')
 			.addFields(
 				{ name: '**Total Servers:**', value: results[1].reduce((acc, guildCount) => acc + guildCount, 0).toString(), inline: true },

@@ -1,12 +1,7 @@
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => res.send('Hello World!'));
-app.listen(3000, () => { return; });
-
-
-const Discord = require('discord.js');
-const client = new Discord.Client({
-	intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_WEBHOOKS', 'GUILD_MESSAGE_REACTIONS'],
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildMessageReactions],
+	partials: [Partials.Channel, Partials.Message, Partials.Reaction],
 });
 
 /*
@@ -20,10 +15,10 @@ admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env['
 const firestore = admin.firestore();
 
 
-const fs = require('fs');
-const eventFiles = fs.readdirSync(`${__dirname}/events`).filter(file => file.endsWith('.js'));
+const { readdirSync } = require('fs');
+const eventFiles = readdirSync(__dirname + '/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
-	const event = require(`${__dirname}/events/${file}`);
+	const event = require(__dirname + '/events/' + file);
 
 	if (event.once) client.once(event.name, (...args) => event.execute(...args, client));
 	else client.on(event.name, (...args) => event.execute(...args, client, firestore));

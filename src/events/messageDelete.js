@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { filter, validate } = require('./../utils/ghostping');
 
 const defaultData = require('./../utils/defaults').guilds;
@@ -26,7 +26,7 @@ module.exports = {
 
 				if (userData['ghost ping']['on'] == true) {
 
-					const embed = new MessageEmbed()
+					const embed = new EmbedBuilder()
 						.setTitle('Ghost Ping Detected')
 						.setColor('#C0C0C0')
 						.addFields(
@@ -37,6 +37,8 @@ module.exports = {
 						.setTimestamp();
 
 					const channel = client.channels.cache.get(userData['ghost ping']['channel']);
+					if (!channel) return false;
+					
 					channel.send({ embeds: [embed] });
 
 				}

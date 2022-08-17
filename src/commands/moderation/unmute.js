@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -15,6 +15,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('unmute')
 		.setDescription('Removes a timeout to a user')
+		.setDMPermission(false)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to unmute - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),

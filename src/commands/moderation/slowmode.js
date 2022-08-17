@@ -1,9 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 const options = {
-	's': 1000, 'm': 60 * 1000,
-	'h': 3600 * 1000, 'd': 24 * 3600 * 1000,
-	'w': 7 * 24 * 3600 * 1000,
+	's': 1000, 'm': 60 * 1000, 'h': 3600 * 1000,
 };
 
 module.exports = {
@@ -18,14 +16,12 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('slowmode')
 		.setDescription('Applies or removes a channel slowmode')
+		.setDMPermission(false)
 
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for? (0 to remove)').setRequired(true))
 		.addStringOption(option => option
-			.setName('units').setRequired(true)
-			.setDescription('How long for?')
-			.addChoice('Seconds', 's')
-			.addChoice('Minutes', 'm')
-			.addChoice('Hours', 'h'),
+			.setName('units').setRequired(true).setDescription('How long for?').addChoices(
+				{ name: 'Seconds', value: 's' }, { name: 'Minutes', value: 'm' }, { name: 'Hours', value: 'h' })
 		),
 
 	error: false,

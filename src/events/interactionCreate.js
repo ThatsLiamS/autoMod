@@ -1,3 +1,5 @@
+const { InteractionType } = require('discord.js');
+
 module.exports = {
 	name: 'interactionCreate',
 	once: false,
@@ -5,11 +7,11 @@ module.exports = {
 	execute: async (interaction, client, firestore) => {
 
 		/* Is interaction a command? */
-		if (interaction.isCommand()) {
-			await interaction.deferReply();
+		if (interaction.type === InteractionType.ApplicationCommand) {
+			await interaction.deferReply({ ephemeral: false });
 
 			const cmd = client.commands.get(interaction.commandName);
-			if (!cmd) return;
+			if (!cmd) return false;
 
 			/* Is the command working? */
 			if (cmd['error'] == true) {
@@ -24,20 +26,6 @@ module.exports = {
 						interaction.followUp({ content: 'Sorry, you do not have permission to run this command.', ephemeral: true });
 						return;
 					}
-				}
-			}
-			/* Is the command limited to servers only */
-			if (cmd['guildOnly'] == true) {
-				if (!interaction.guild) {
-					interaction.followUp({ content: 'Sorry, this command can only be used within a server.', ephemeral: true });
-					return;
-				}
-			}
-			/* Is the command limited to the owner */
-			if (cmd['ownerOnly'] == true) {
-				if (!interaction.member.id == interaction.guild.ownerId) {
-					interaction.followUp({ content: 'Sorry, only the server owner can run this command.', ephemeral: true });
-					return;
 				}
 			}
 

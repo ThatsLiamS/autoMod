@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'coinflip',
@@ -12,12 +11,13 @@ module.exports = {
 
 	data: new SlashCommandBuilder()
 		.setName('coinflip')
-		.setDescription('Flip a coin!'),
+		.setDescription('Flip a coin!')
+		.setDMPermission(true),
 
 	error: false,
 	execute: async ({ interaction }) => {
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor('#CD7F32')
 			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle('Coin Flipper!')

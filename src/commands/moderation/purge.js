@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'purge',
@@ -12,10 +12,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('purge')
 		.setDescription('Mass deletes messages')
+		.setDMPermission(false)
+
 		.addIntegerOption(option => option
-			.setName('amount').setDescription('How many messages do I delete')
-			.setMinValue(1).setMaxValue(100)
-			.setRequired(true),
+			.setName('amount').setDescription('How many messages do I delete').setMinValue(1).setMaxValue(100).setRequired(true),
 		),
 
 	error: false,

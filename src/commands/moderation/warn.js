@@ -1,5 +1,4 @@
-const { MessageEmbed } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -16,6 +15,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('warn')
 		.setDescription('Warns a user')
+		.setDMPermission(false)
 
 		.addStringOption(option => option.setName('user').setDescription('The user to warn - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
@@ -31,7 +31,7 @@ module.exports = {
 		}
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle(`⚠️ Warned: ${user.tag}`)
 			.setColor('#DC143C')
@@ -42,7 +42,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		const userEmbed = new MessageEmbed()
+		const userEmbed = new EmbedBuilder()
 			.setTitle('⚠️ You have been warned!')
 			.setColor('#DC143C')
 			.addFields(

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -15,6 +15,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('delwarn')
 		.setDescription('Removes a moderation action against a user.')
+		.setDMPermission(false)
+
 		.addStringOption(option => option.setName('user').setDescription('The user to delete logs for - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 

@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const possibleAnswers = [
 	'As I see it, yes.',
@@ -36,20 +35,18 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('8ball')
 		.setDescription('Ask the all knowing, magic 8ball a question!')
-		.addStringOption(option => option
-			.setName('question')
-			.setDescription('What is your question')
-			.setRequired(true),
-		),
+		.setDMPermission(true)
+
+		.addStringOption(option => option.setName('question').setDescription('What is your question').setRequired(true)),
 
 	error: false,
 	execute: async ({ interaction }) => {
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle('Magic 8 Ball')
 			.addField('**Your Question:**', `${interaction.options.getString('question')}`)
 			.addField('**My Answer**', `${possibleAnswers[Math.floor((Math.random() * 19) + 0)]}`)
-			.setColor('RANDOM')
+			.setColor('Gray')
 			.setThumbnail('https://i.imgur.com/SD5OXUV.jpg');
 
 		interaction.followUp({ embeds: [embed] });

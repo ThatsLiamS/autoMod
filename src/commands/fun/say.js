@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'say',
@@ -12,17 +12,18 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('say')
 		.setDescription('Makes me repeat your message!')
-		.addStringOption(option => option
-			.setName('message')
-			.setDescription('What should I say?')
-			.setRequired(true),
-		),
+		.setDMPermission(true)
+
+		.addStringOption(option => option.setName('message').setDescription('What should I say?').setRequired(true)),
 
 	error: false,
 	execute: async ({ interaction }) => {
 
+		const message = interaction.options.getString('message')
+			.split('\n').map((line) => '> ' + line).join('\n');
+
 		interaction.followUp({
-			content: interaction.options.getString('message'),
+			content: `${message}\n\n- ${interaction.user.username}`,
 			allowedMentions: { parse: [], users: [], roles: [] },
 			ephemeral: false,
 		});

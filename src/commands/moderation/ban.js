@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const defaultData = require('./../../utils/defaults');
 const mention = require('./../../utils/mentions.js');
@@ -16,12 +15,11 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ban')
 		.setDescription('Bans a user from the server.')
+		.setDMPermission(false)
 
 		.addStringOption(option => option.setName('user').setDescription('The user to ban - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option
-			.setName('days').setDescription('Do I purge their messages?')
-			.setMinValue(0).setMaxValue(7)
-			.setRequired(false),
+			.setName('days').setDescription('Do I purge their messages?').setMinValue(0).setMaxValue(7).setRequired(false),
 		)
 		.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
 
@@ -38,7 +36,7 @@ module.exports = {
 		const days = interaction.options.getInteger('days') || 0;
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 
-		const logEmbed = new MessageEmbed()
+		const logEmbed = new EmbedBuilder()
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle(`🔨 Banned: ${user.tag}`)
 			.setColor('#DC143C')
