@@ -8,6 +8,10 @@ module.exports = {
 	once: false,
 
 	execute: async (oldMessage, newMessage, client, firestore) => {
+
+		if (newMessage.partial) await newMessage.fetch();
+		if (newMessage.channel.partial) await newMessage.channel.fetch();
+
 		if (oldMessage.author.bot == true) return;
 
 

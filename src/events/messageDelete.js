@@ -8,13 +8,16 @@ module.exports = {
 	once: false,
 
 	execute: async (message, client, firestore) => {
-		if (message.author.bot == true) return;
 
+		if (message.partial) await message.fetch();
+		if (message?.channel.partial) await message.channel.fetch();
+
+		if (message?.author?.bot == true) return;
 
 		/* Ghost Ping Detector */
-		if (message.mentions.members.size !== 0 || message.mentions.roles.size !== 0) {
+		if (message?.mentions?.members?.size !== 0 || message?.mentions?.roles?.size !== 0) {
 
-			if (message.author.bot || message.mentions.members.size == 0 && message.mentions.roles.size == 0) return false;
+			if (message?.author?.bot || message?.mentions?.member?.size == 0 && message?.mentions?.roles?.size == 0) return false;
 
 			let mentions = message.mentions.members.map(member => validate(member, message));
 			mentions = [...message.mentions.roles.map(x => filter(x)), ...mentions];

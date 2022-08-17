@@ -82,7 +82,7 @@ module.exports = {
 
 
 			/* Display the fastest reactors! */
-			const winnersEmbed = EmbedBuilder().from(message.embeds[0])
+			const winnersEmbed = new EmbedBuilder().from(message.embeds[0])
 				.setTitle('Reaction test is over!')
 				.setColor('Blue')
 				.setDescription(`Here's ${positions == 1 ? 'the **first user' : `a list of the **first ${positions} people`}** who reacted.\n\n${data}`)
