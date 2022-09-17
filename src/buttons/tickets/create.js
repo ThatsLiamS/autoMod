@@ -35,7 +35,7 @@ module.exports = {
 					PermissionsBitField.Flags.ViewChannel,
 					PermissionsBitField.Flags.SendMessages,
 					PermissionsBitField.Flags.ReadMessageHistory,
-					PermissionsBitField.Flags.AddReactions
+					PermissionsBitField.Flags.AddReactions,
 				],
 			}],
 		});

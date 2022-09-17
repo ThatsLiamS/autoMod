@@ -58,7 +58,9 @@ module.exports = {
 
 		try {
 			const channel = guild.channels.cache.filter(c => c.type == 5 || c.type == 0)?.first();
-			const invite = await guild.invites.create(channel?.id, { maxAge: 3600, maxUses: 5 }).catch(() => { });
+			const invite = await guild.invites.create(channel?.id, { maxAge: 3600, maxUses: 5 }).catch(() => {
+				/* Do Nothing! */
+			});
 			embed.setURL(invite?.url);
 		}
 		catch (err) {

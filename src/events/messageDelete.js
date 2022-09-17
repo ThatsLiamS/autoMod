@@ -41,7 +41,7 @@ module.exports = {
 
 					const channel = client.channels.cache.get(userData['ghost ping']['channel']);
 					if (!channel) return false;
-					
+
 					channel.send({ embeds: [embed] });
 
 				}

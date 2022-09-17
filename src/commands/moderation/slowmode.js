@@ -21,7 +21,7 @@ module.exports = {
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for? (0 to remove)').setRequired(true))
 		.addStringOption(option => option
 			.setName('units').setRequired(true).setDescription('How long for?').addChoices(
-				{ name: 'Seconds', value: 's' }, { name: 'Minutes', value: 'm' }, { name: 'Hours', value: 'h' })
+				{ name: 'Seconds', value: 's' }, { name: 'Minutes', value: 'm' }, { name: 'Hours', value: 'h' }),
 		),
 
 	error: false,

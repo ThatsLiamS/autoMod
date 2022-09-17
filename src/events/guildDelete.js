@@ -9,7 +9,7 @@ module.exports = {
 
 		const ownerId = guild?.ownerId;
 		const user = ownerId ? await client.users.fetch(ownerId) : null;
-        const owner = user ? user.username : ownerId;
+		const owner = user ? user.username : ownerId;
 
 		const avatarURL = guild?.iconURL() ? guild?.iconURL() : 'https://i.imgur.com/yLv2YVnh.jpg';
 		const embed = new EmbedBuilder()

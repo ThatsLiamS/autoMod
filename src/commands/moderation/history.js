@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const {  } = require('@discordjs/builders');
 
 const defaultData = require('../../utils/defaults');
 const mention = require('../../utils/mentions.js');
