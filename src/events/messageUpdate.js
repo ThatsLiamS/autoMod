@@ -9,14 +9,14 @@ module.exports = {
 
 	execute: async (oldMessage, newMessage, client, firestore) => {
 
-		if (newMessage.partial) await newMessage.fetch();
-		if (newMessage.channel.partial) await newMessage.channel.fetch();
+		if (newMessage?.partial) await newMessage.fetch();
+		if (newMessage?.channel?.partial) await newMessage.channel.fetch();
 
-		if (oldMessage.author.bot == true) return;
+		if (oldMessage?.author?.bot == true || !oldMessage?.author?.bot) return false;
 
 
 		/* Ghost Ping Detector */
-		if (oldMessage.mentions.members.size !== 0 || oldMessage.mentions.roles.size !== 0) {
+		if (oldMessage?.mentions?.members?.size !== 0 || oldMessage?.mentions?.roles?.size !== 0) {
 
 			let oldArray = oldMessage.mentions.members.map(member => validate(member, newMessage));
 			oldArray = [...oldMessage.mentions.roles.map(x => filter(x)), ...oldArray];

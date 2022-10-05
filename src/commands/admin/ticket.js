@@ -27,7 +27,7 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(true))
+			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(false))
 			.addStringOption(option => option.setName('enabled').setDescription('Turn it on or off?').setRequired(true).addChoices(
 				{ name: 'Enable Logs', value: 'true' }, { name: 'Disable Logs', value: 'false' })),
 		)
@@ -52,8 +52,11 @@ module.exports = {
 			return false;
 		}
 
+		/* Fetch the guild's data */
 		const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
 		const guildData = collection.data() || defaultData;
+
+		if (!guildData.tickets) { guildData.tickets = defaultData.tickets; }
 
 		if (subCommandName == 'setup') {
 
