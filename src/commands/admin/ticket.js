@@ -27,9 +27,9 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(false))
 			.addStringOption(option => option.setName('enabled').setDescription('Turn it on or off?').setRequired(true).addChoices(
-				{ name: 'Enable Logs', value: 'true' }, { name: 'Disable Logs', value: 'false' })),
+				{ name: 'Enable Logs', value: 'true' }, { name: 'Disable Logs', value: 'false' }))
+			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(false)),
 		)
 
 		.addSubcommand(subcommand => subcommand
