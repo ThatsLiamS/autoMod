@@ -9,9 +9,6 @@ module.exports = {
 
 	execute: async (message, client, firestore) => {
 
-		if (message?.partial) await message.fetch();
-		if (message?.channel.partial) await message.channel.fetch();
-
 		if (message?.author?.bot == true || !message?.author?.bot) return false;
 
 		/* Ghost Ping Detector */
