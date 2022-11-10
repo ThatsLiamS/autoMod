@@ -6,6 +6,7 @@ module.exports = {
 
 	execute: async (message) => {
 
+		/* Fetch message partials */
 		if (message?.partial) await message.fetch();
 		if (message?.channel?.partial) await message.channel.fetch();
 

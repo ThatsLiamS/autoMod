@@ -10,7 +10,7 @@ module.exports = {
 		console.log(`Shard ${client.shard.ids[0] + 1}/${client.shard.count} ready`);
 
 		/* Set client status */
-		client.user.setPresence({
+		await client.user.setPresence({
 			status: 'online',
 			activities: [{ type: 3, name: 'over your server! do /help for more.' }],
 		});
