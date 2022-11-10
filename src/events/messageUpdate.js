@@ -9,11 +9,11 @@ module.exports = {
 
 	execute: async (oldMessage, newMessage, client, firestore) => {
 
+		/* Fetch Partial Messages */
+		if (oldMessage?.partial) await oldMessage.fetch();
 		if (newMessage?.partial) await newMessage.fetch();
-		if (newMessage?.channel?.partial) await newMessage.channel.fetch();
 
 		if (oldMessage?.author?.bot == true || !oldMessage?.author?.bot) return false;
-
 
 		/* Ghost Ping Detector */
 		if (oldMessage?.mentions?.members?.size !== 0 || oldMessage?.mentions?.roles?.size !== 0) {
