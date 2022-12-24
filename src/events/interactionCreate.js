@@ -4,7 +4,7 @@ module.exports = {
 	name: 'interactionCreate',
 	once: false,
 
-	execute: async (interaction, client, firestore) => {
+	execute: async (interaction, client) => {
 
 		/* Is interaction a command? */
 		if (interaction.type === InteractionType.ApplicationCommand) {
@@ -30,7 +30,7 @@ module.exports = {
 			}
 
 			/* Execute the command file */
-			await cmd.execute({ interaction, client, firestore });
+			await cmd.execute({ interaction, client });
 
 		}
 
@@ -44,7 +44,7 @@ module.exports = {
 			const file = require(`./../buttons/${category}/${name}`);
 
 			/* Execute the button file */
-			await file.execute({ interaction, client, firestore });
+			await file.execute({ interaction, client });
 		}
 
 	},
