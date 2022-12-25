@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults.js');
+const { database } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'modlogs',
@@ -33,7 +32,7 @@ module.exports = {
 		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction }) => {
 
 		const subCommandName = interaction.options.getSubcommand();
 		if (!subCommandName) {
@@ -41,18 +40,17 @@ module.exports = {
 			return false;
 		}
 
-		const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
-		const guildData = collection.data() || defaultData['guilds'];
+		const guildData = await database.getValue(interaction.guild.id);
 
 
 		if (subCommandName == 'setup') {
 			const channel = interaction.options.getChannel('channel');
-			if (!channel || (channel?.type != 'GUILD_TEXT' && channel?.type != 'GUILD_NEWS')) {
+			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
 				interaction.followUp({ content: 'Please mention a valid text channel.' });
 				return false;
 			}
 
-			guildData['logs']['channel'] = channel.id;
+			guildData.Moderation.logs.channel = channel.id;
 			const embed = new EmbedBuilder()
 				.setTitle('Successfully set up!')
 				.setColor('Green')
@@ -63,7 +61,7 @@ module.exports = {
 
 		if (subCommandName == 'enable') {
 
-			if (!guildData['logs']['channel'] || guildData['logs']['channel'] == '') {
+			if (!guildData.Moderation.logs.channel || guildData.Moderation.logs.channel == '') {
 				const embed = new EmbedBuilder()
 					.setTitle('An error has occurred!')
 					.setColor('Red')
@@ -73,27 +71,27 @@ module.exports = {
 				return false;
 			}
 
-			if (guildData['logs']['on'] != true) {
+			if (guildData.Moderation.logs.on != true) {
 				interaction.followUp({ content: 'The **Moderation Logs** are already enabled in this server.' });
 				return false;
 			}
 
-			guildData['logs']['on'] = true;
+			guildData.Moderation.logs.on = true;
 			interaction.followUp({ content: 'The **Moderation Logs** have been enabled.' });
 		}
 
 		if (subCommandName == 'disable') {
 
-			if (guildData['logs']['on'] != true) {
+			if (guildData.Moderation.logs.on != true) {
 				interaction.followUp({ content: 'The **Moderation Logs** are already disabled in this server.' });
 				return false;
 			}
 
-			guildData['logs']['on'] = false;
+			guildData.Moderation.logs.on = false;
 			interaction.followUp({ content: 'The **Moderation Logs** have been disabled.' });
 		}
 
-		await firestore.doc(`/guilds/${interaction.guild.id}`).set(guildData);
+		await database.setValue(interaction.guild.id, guildData);
 		return true;
 
 	},

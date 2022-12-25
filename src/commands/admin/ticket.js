@@ -1,11 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults.js').guilds;
+const { GuildSchema } = require('../../utils/Database Schema.js');
+const { database } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'ticket',
 	description: 'Sets up the ticket system',
-	usage: '`/ticket setup <category> <channel> <role>`\n`/ticket logs <channel> <boolean>`\n`/ticket disable`\n`/ticket enable`',
+	usage: '`/ticket setup <category> <channel> <role>`\n`/ticket logs <channel>`\n`/ticket disable`\n`/ticket enable`',
 
 	permissions: ['Administrator'],
 	ownerOnly: false,
@@ -27,8 +27,6 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
-			.addStringOption(option => option.setName('enabled').setDescription('Turn it on or off?').setRequired(true).addChoices(
-				{ name: 'Enable Logs', value: 'true' }, { name: 'Disable Logs', value: 'false' }))
 			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(false)),
 		)
 
@@ -43,7 +41,7 @@ module.exports = {
 		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction }) => {
 
 		/* Which command was run */
 		const subCommandName = interaction.options.getSubcommand();
@@ -53,10 +51,8 @@ module.exports = {
 		}
 
 		/* Fetch the guild's data */
-		const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
-		const guildData = collection.data() || defaultData;
-
-		if (!guildData.tickets) { guildData.tickets = defaultData.tickets; }
+		const guildData = await database.getValue(interaction.guild.id);
+		if (!guildData.Tickets) guildData.Tickets = GuildSchema.Tickets;
 
 		if (subCommandName == 'setup') {
 
@@ -66,8 +62,8 @@ module.exports = {
 			const role = interaction.options.getRole('role');
 
 			/* Set the data */
-			guildData.tickets.category = category.id;
-			guildData.tickets.role = role.id;
+			guildData.Tickets.settings.category = category.id;
+			guildData.Tickets.settings.role = role.id;
 
 			/* Send the ticketCreate message */
 			const ticketCreate = new EmbedBuilder()
@@ -97,7 +93,6 @@ module.exports = {
 
 			/* Define command arguments */
 			const channel = interaction.options.getChannel('channel');
-			const enabled = interaction.options.getString('enabled') == 'true' ? true : false;
 
 			/* Is the channel valid */
 			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
@@ -106,39 +101,36 @@ module.exports = {
 			}
 
 			/* Set the data */
-			guildData.tickets.logs.active = enabled;
-			guildData.tickets.logs.channel = channel.id;
+			guildData.Tickets.settings.logs = channel.id;
 
 			/* Reply to the message */
-			interaction.followUp({ content: `The **Ticket Logs** have been set to ${enabled} in <#${channel.id}>` });
+			interaction.followUp({ content: `The **Ticket Logs** have been set to <#${channel.id}>` });
 		}
 
 		if (subCommandName == 'enable') {
 
-			if (guildData.tickets.active == true) {
+			if (guildData.Tickets.settings.on == true) {
 				interaction.followUp({ content: 'The **Ticket System** is already enabled.' });
 				return false;
 			}
 
-			guildData.tickets.active = true;
+			guildData.Tickets.settings.on = true;
 			interaction.followUp({ content: 'The **Ticket System** has been enabled.' });
 		}
 
 		if (subCommandName == 'disable') {
 
-			if (guildData.tickets.active == false) {
+			if (guildData.Tickets.settings.on == false) {
 				interaction.followUp({ content: 'The **Ticket System** is already disabled.' });
 				return false;
 			}
 
-			guildData.tickets.active = false;
+			guildData.Tickets.settings.on = false;
 			interaction.followUp({ content: 'The **Ticket System** has been disabled.' });
 		}
 
 		/* Save the newly set data */
-		await firestore.doc(`/guilds/${interaction.guild.id}`).set(guildData);
-
-		/* Return successfully to start cooldown */
+		await database.setValue(interaction.guild.id, guildData);
 		return true;
 	},
 };

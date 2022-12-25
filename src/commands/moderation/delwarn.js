@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults');
-const mention = require('./../../utils/mentions.js');
+const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'delwarn',
@@ -21,9 +19,9 @@ module.exports = {
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
 	error: false,
-	execute: async ({ interaction, client, firestore }) => {
+	execute: async ({ interaction, client }) => {
 
-		const userId = mention.getUserId({ string: interaction.options.getString('user') });
+		const userId = getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
@@ -32,18 +30,17 @@ module.exports = {
 
 		const caseNumber = interaction.options.getString('case');
 
-		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-		const serverData = collection.data() || defaultData['guilds'];
+		const guildData = await database.getValue(interaction.guild.id);
 
-		if (serverData['moderation logs'][user.id] == undefined) {
+		if (guildData.Moderation.cases[user.id] == undefined) {
 			interaction.followUp({ content: 'That user has no recorded actions.' });
 			return;
 		}
 
-		serverData['moderation logs'][user.id] = serverData['moderation logs'][user.id]
+		guildData.Moderation.cases[user.id] = guildData.Moderation.cases[user.id]
 			.filter((doc) => (doc.case == caseNumber) == false);
 
-		await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
+		await database.setValue(interaction.guild.id, guildData);
 
 		interaction.followUp({ content: 'That action has been deleted.', ephemeral: true });
 

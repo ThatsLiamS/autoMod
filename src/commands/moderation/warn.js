@@ -1,7 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults');
-const mention = require('./../../utils/mentions.js');
+const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'warn',
@@ -21,9 +19,9 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
 
 	error: false,
-	execute: async ({ interaction, client, firestore }) => {
+	execute: async ({ interaction, client }) => {
 
-		const userId = mention.getUserId({ string: interaction.options.getString('user') });
+		const userId = getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'I am unable to find that user.' });
@@ -51,15 +49,13 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-		const serverData = collection.data() || defaultData['guilds'];
-
-		if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
-		serverData['moderation logs']['case'] = Number(serverData['moderation logs']['case']) + 1;
+		const guildData = await database.getValue(interaction.guild.id);
+		if (!guildData.Moderation.cases[user.id]) guildData.Moderation.cases[user.id] = [];
+		guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 		const object = {
 			type: 'warn',
-			case: serverData['moderation logs']['case'],
+			case: guildData.Moderation.case,
 			reason: reason,
 
 			username: user.tag,
@@ -70,12 +66,12 @@ module.exports = {
 				id: interaction.user.id,
 			},
 		};
-		serverData['moderation logs'][user.id] = [object].concat(serverData['moderation logs'][user.id]);
-		await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
+		guildData.Moderation.cases[user.id] = [object].concat(guildData.Moderation.cases[user.id]);
+		await database.setValue(interaction.guild.id, guildData);
 
-		if (serverData['logs']['on'] == true) {
-			const channel = interaction.guild.channels.cache.get(serverData['logs'].channel);
-			channel.send({ embeds: [logEmbed] });
+		if (guildData.Moderation.logs.on == true) {
+			const channel = interaction.guild.channels.cache.get(guildData.Moderation.logs.channel);
+			channel?.send({ embeds: [logEmbed] }).catch(() => false);
 		}
 		user.send({ embeds: [userEmbed] }).catch(() => { return; });
 

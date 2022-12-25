@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults');
-const mention = require('./../../utils/mentions.js');
+const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'unmute',
@@ -21,9 +19,9 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction }) => {
 
-		const userId = mention.getUserId({ string: interaction.options.getString('member') });
+		const userId = getUserId({ string: interaction.options.getString('member') });
 		const member = interaction.guild.members.cache.get(userId);
 		if (!member) {
 			interaction.followUp({ content: 'I am unable to find that member.' });
@@ -34,15 +32,13 @@ module.exports = {
 		member.timeout(null, reason)
 			.then(async () => {
 
-				const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-				const serverData = collection.data() || defaultData['guilds'];
-
-				if (!serverData['moderation logs'][member.id]) serverData['moderation logs'][member.id] = [];
-				serverData['moderation logs']['case'] = Number(serverData['moderation logs']['case']) + 1;
+				const guildData = await database.getValue(interaction.guild.id);
+				if (!guildData.Moderation.cases[member.id]) guildData.Moderation.cases[member.id] = [];
+				guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 				const object = {
 					type: 'unmute',
-					case: serverData['moderation logs']['case'],
+					case: guildData.Moderation.case,
 					reason: reason,
 
 					username: member.user.tag,
@@ -53,9 +49,8 @@ module.exports = {
 						id: interaction.user.id,
 					},
 				};
-				serverData['moderation logs'][member.id] = [object].concat(serverData['moderation logs'][member.id]);
-				await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
-
+				guildData.Moderation.cases[member.id] = [object].concat(guildData.Moderation.cases[member.id]);
+				await database.setValue(interaction.guild.id, guildData);
 
 				interaction.followUp({ content: `${member.user.tag} has been unmuted.`, ephemeral: true });
 			})

@@ -1,7 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const defaultData = require('../../utils/defaults');
-const mention = require('../../utils/mentions.js');
+const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'history',
@@ -21,9 +19,9 @@ module.exports = {
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
 	error: false,
-	execute: async ({ interaction, client, firestore }) => {
+	execute: async ({ interaction, client }) => {
 
-		const userId = mention.getUserId({ string: interaction.options.getString('user') });
+		const userId = getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
@@ -32,10 +30,9 @@ module.exports = {
 
 		const pageNumber = interaction.options.getInteger('page');
 
-		const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-		const serverData = collection.data() || defaultData['guilds'];
+		const guildData = await database.getValue(interaction.guild.id);
 
-		if (serverData['moderation logs'][user.id] == undefined) {
+		if (guildData.Moderation.cases[user.id] == undefined) {
 			interaction.followUp({ content: 'That user has no recorded actions.' });
 			return;
 		}
@@ -43,8 +40,8 @@ module.exports = {
 		const pages = [];
 		const pageData = [];
 
-		for (let x = 0; x < serverData['moderation logs'][user.id].length; x += 10) {
-			pageData.push(serverData['moderation logs'][user.id].slice(x, x + 10));
+		for (let x = 0; x < guildData.Moderation.cases[user.id].length; x += 10) {
+			pageData.push(guildData.Moderation.cases[user.id].slice(x, x + 10));
 		}
 
 		for (let x = 0; x < pageData.length; x++) {

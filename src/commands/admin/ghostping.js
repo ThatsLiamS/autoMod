@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults.js');
+const { database } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'ghostping',
@@ -33,7 +32,7 @@ module.exports = {
 		),
 
 	error: false,
-	execute: async ({ interaction, firestore }) => {
+	execute: async ({ interaction }) => {
 
 		const subCommandName = interaction.options.getSubcommand();
 		if (!subCommandName) {
@@ -41,8 +40,7 @@ module.exports = {
 			return false;
 		}
 
-		const collection = await firestore.doc(`/guilds/${interaction.guild.id}`).get();
-		const guildData = collection.data() || defaultData['guilds'];
+		const guildData = await database.getValue(interaction.guild.id);
 
 
 		if (subCommandName == 'setup') {
@@ -52,7 +50,7 @@ module.exports = {
 				return false;
 			}
 
-			guildData['ghost ping']['channel'] = channel.id;
+			guildData.GhostPing.channel = channel.id;
 			const embed = new EmbedBuilder()
 				.setTitle('Successfully set up!')
 				.setColor('Green')
@@ -63,7 +61,7 @@ module.exports = {
 
 		if (subCommandName == 'enable') {
 
-			if (!guildData['ghost ping']['channel'] || guildData['ghost ping']['channel'] == '') {
+			if (!guildData.GhostPing.channel || guildData.GhostPing.channel == '') {
 				const embed = new EmbedBuilder()
 					.setTitle('An error has occurred!')
 					.setColor('Red')
@@ -73,27 +71,27 @@ module.exports = {
 				return false;
 			}
 
-			if (guildData['ghost ping']['on'] != true) {
+			if (guildData.GhostPing.on != true) {
 				interaction.followUp({ content: 'The **Ghost Ping Detector** is already enabled in this server.' });
 				return false;
 			}
 
-			guildData['ghost ping']['on'] = true;
+			guildData.GhostPing.on = true;
 			interaction.followUp({ content: 'The **Ghost Ping Detector** has been enabled.' });
 		}
 
 		if (subCommandName == 'disable') {
 
-			if (guildData['logs']['on'] != true) {
+			if (guildData.GhostPing.on != true) {
 				interaction.followUp({ content: 'The **Ghost Ping Detector** is already disabled in this server.' });
 				return false;
 			}
 
-			guildData['logs']['on'] = false;
+			guildData.GhostPing.on = false;
 			interaction.followUp({ content: 'The **Ghost Ping Detector** has been disabled.' });
 		}
 
-		await firestore.doc(`/guilds/${interaction.guild.id}`).set(guildData);
+		await database.setValue(interaction.guild.id, guildData);
 		return true;
 
 	},

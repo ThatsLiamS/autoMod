@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const makeGrid = require('../../utils/makeGrid');
+const { makeGrid } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'about',

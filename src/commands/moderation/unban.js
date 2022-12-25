@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-
-const defaultData = require('./../../utils/defaults');
+const { database } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'unban',
@@ -20,7 +19,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unbanning them?')),
 
 	error: false,
-	execute: async ({ interaction, firestore, client }) => {
+	execute: async ({ interaction, client }) => {
 
 		const id = interaction.options.getString('user');
 		const user = await client.users.fetch(id).catch(() => { return; });
@@ -45,15 +44,13 @@ module.exports = {
 		interaction.guild.members.unban(user, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
 			.then(async () => {
 
-				const collection = await firestore.collection('guilds').doc(interaction.guild.id).get();
-				const serverData = collection.data() || defaultData['guilds'];
-
-				if (!serverData['moderation logs'][user.id]) serverData['moderation logs'][user.id] = [];
-				serverData['moderation logs']['case'] = Number(serverData['moderation logs']['case']) + 1;
+				const guildData = await database.getValue(interaction.guild.id);
+				if (!guildData.Moderation.cases[user.id]) guildData.Moderation.cases[user.id] = [];
+				guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 				const object = {
 					type: 'unban',
-					case: serverData['moderation logs']['case'],
+					case: guildData.Moderation.case,
 					reason: reason,
 
 					username: user.tag,
@@ -64,12 +61,12 @@ module.exports = {
 						id: interaction.user.id,
 					},
 				};
-				serverData['moderation logs'][user.id] = [object].concat(serverData['moderation logs'][user.id]);
-				await firestore.doc(`/guilds/${interaction.guild.id}`).set(serverData);
+				guildData.Moderation.cases[user.id] = [object].concat(guildData.Moderation.cases[user.id]);
+				await database.setValue(interaction.guild.id, guildData);
 
-				if (serverData['logs']['on'] == true) {
-					const channel = interaction.guild.channels.cache.get(serverData['logs'].channel);
-					channel.send({ embeds: [logEmbed] });
+				if (guildData.Moderation.logs.on == true) {
+					const channel = interaction.guild.channels.cache.get(guildData.Moderation.logs.channel);
+					channel?.send({ embeds: [logEmbed] }).catch(() => false);
 				}
 
 				interaction.followUp({ content: `${user.tag} has been unbanned.`, ephermal: true });
