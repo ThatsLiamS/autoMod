@@ -31,6 +31,7 @@ module.exports = {
 			.setDescription('Disables the modlog system'),
 		),
 
+	cooldown: { time: 15, text: '15 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

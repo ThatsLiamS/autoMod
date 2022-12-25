@@ -16,6 +16,7 @@ module.exports = {
 
 		.addStringOption(option => option.setName('description').setDescription('Explain the issue you are having').setRequired(true)),
 
+	cooldown: { time: 10 * 60, text: '10 minutes' },
 	error: false,
 	execute: ({ interaction, client }) => {
 

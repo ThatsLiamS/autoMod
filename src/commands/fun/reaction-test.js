@@ -28,6 +28,7 @@ module.exports = {
 			.setMinValue(1).setMaxValue(5).setRequired(true),
 		),
 
+	cooldown: { time: 30, text: '30 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

@@ -21,6 +21,7 @@ module.exports = {
 		)
 		.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

@@ -1,4 +1,5 @@
-const { InteractionType } = require('discord.js');
+const { InteractionType, Collection } = require('discord.js');
+const cooldowns = new Collection();
 
 module.exports = {
 	name: 'interactionCreate',
@@ -29,8 +30,27 @@ module.exports = {
 				}
 			}
 
+			/* Work out the appropriate cooldown time */
+			if (!cooldowns.has(cmd.name)) cooldowns.set(cmd.name, new Collection());
+			const timestamps = cooldowns.get(cmd.name);
+			const cooldownAmount = (cmd?.cooldown?.time || 0) * 1000;
+
+			if (timestamps.has(interaction.user.id)) {
+				interaction.reply({ content: 'Please wait to use this command again.' });
+				return false;
+			}
+
 			/* Execute the command file */
-			await cmd.execute({ interaction, client });
+			try {
+				cmd.execute({ interaction, client }).then((res) => {
+					if (res == true) {
+						/* Set and delete the cooldown */
+						timestamps.set(interaction.user.id, new Date());
+						setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+					}
+				}).catch((err) => console.log(err));
+			}
+			catch (err) { console.log(err); }
 
 		}
 
@@ -42,9 +62,15 @@ module.exports = {
 			const name = interaction.customId.split('-')[1];
 
 			const file = require(`./../buttons/${category}/${name}`);
+			if (!file) return false;
 
 			/* Execute the button file */
-			await file.execute({ interaction, client });
+			try {
+				await file.execute({ interaction, client }).then(() => {
+					return true;
+				}).catch((err) => console.log(err));
+			}
+			catch (err) { console.log(err); }
 		}
 
 	},

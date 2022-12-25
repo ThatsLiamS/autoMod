@@ -17,6 +17,7 @@ module.exports = {
 
 		.addUserOption(option => option.setName('user').setDescription('The user to get the information for').setRequired(false)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

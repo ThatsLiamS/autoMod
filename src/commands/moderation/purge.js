@@ -18,6 +18,7 @@ module.exports = {
 			.setName('amount').setDescription('How many messages do I delete').setMinValue(1).setMaxValue(100).setRequired(true),
 		),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

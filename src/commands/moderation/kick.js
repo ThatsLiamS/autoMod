@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('member').setDescription('The member to kick - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

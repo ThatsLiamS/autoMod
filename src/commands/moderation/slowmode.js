@@ -24,6 +24,7 @@ module.exports = {
 				{ name: 'Seconds', value: 's' }, { name: 'Minutes', value: 'm' }, { name: 'Hours', value: 'h' }),
 		),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

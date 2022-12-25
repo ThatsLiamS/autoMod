@@ -19,6 +19,7 @@ module.exports = {
 
 		.addStringOption(option => option.setName('command').setDescription('Shows details about how to use a command').setRequired(false)),
 
+	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

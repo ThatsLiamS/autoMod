@@ -39,6 +39,7 @@ module.exports = {
 
 		.addStringOption(option => option.setName('question').setDescription('What is your question').setRequired(true)),
 
+	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
 	execute: async ({ interaction }) => {
 

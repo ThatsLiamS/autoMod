@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('user').setDescription('The user to warn - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

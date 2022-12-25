@@ -21,6 +21,7 @@ module.exports = {
 
 		.addStringOption(option => option.setName('id').setDescription('The server\'s ID ').setRequired(false)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

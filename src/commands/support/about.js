@@ -15,6 +15,7 @@ module.exports = {
 		.setDescription('Shows lots of cool information about the bot!')
 		.setDMPermission(false),
 
+	cooldown: { time: 15, text: '15 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

@@ -14,6 +14,7 @@ module.exports = {
 		.setDescription('Flip a coin!')
 		.setDMPermission(true),
 
+	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
 	execute: async ({ interaction }) => {
 

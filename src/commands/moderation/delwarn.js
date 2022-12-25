@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('user').setDescription('The user to delete logs for - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

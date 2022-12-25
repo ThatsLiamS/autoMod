@@ -33,6 +33,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we muting them?')),
 
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction }) => {
 

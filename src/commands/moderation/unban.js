@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('user').setDescription('The user ID to unban').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unbanning them?')),
 
+	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
 	execute: async ({ interaction, client }) => {
 

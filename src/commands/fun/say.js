@@ -16,6 +16,7 @@ module.exports = {
 
 		.addStringOption(option => option.setName('message').setDescription('What should I say?').setRequired(true)),
 
+	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
 	execute: async ({ interaction }) => {
 
