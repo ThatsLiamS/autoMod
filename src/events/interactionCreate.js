@@ -1,4 +1,5 @@
 const { InteractionType, Collection } = require('discord.js');
+const { timeFormat } = require('./../utils/functions.js');
 const cooldowns = new Collection();
 
 module.exports = {
@@ -36,7 +37,11 @@ module.exports = {
 			const cooldownAmount = (cmd?.cooldown?.time || 0) * 1000;
 
 			if (timestamps.has(interaction.user.id)) {
-				interaction.reply({ content: 'Please wait to use this command again.' });
+
+				const expiration = Number(timestamps.get(interaction.user.id)) + Number(cooldownAmount);
+				const secondsLeft = Math.floor((Number(expiration) - Number(Date.now())) / 1000);
+
+				interaction.reply({ content: `Please wait ${timeFormat(secondsLeft > 1 ? secondsLeft : 1)} to use this command again.` });
 				return false;
 			}
 
@@ -45,7 +50,7 @@ module.exports = {
 				cmd.execute({ interaction, client }).then((res) => {
 					if (res == true) {
 						/* Set and delete the cooldown */
-						timestamps.set(interaction.user.id, new Date());
+						timestamps.set(interaction.user.id, Date.now());
 						setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 					}
 				}).catch((err) => console.log(err));

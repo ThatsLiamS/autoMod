@@ -77,6 +77,7 @@ const database = {
 	},
 };
 
+
 /**
  * Change a strings length with 2 way padding
  * @function
@@ -120,9 +121,34 @@ const makeGrid = (results) => {
 	return [border, title, border].concat(rows).concat(border).join('\n');
 };
 
+
+/**
+ * Format seconds in it's highest denomination
+ * @function
+ * @author Liam Skinner <me@liamskinner.co.uk>
+ *
+ * @param {number} seconds - time in seconds
+ *
+ * @returns {string}
+**/
+const formatTime = (seconds) => {
+
+	const denominations = [
+		[1, 'Second'],
+		[60, 'Minute'],
+		[60 * 60, 'Hour'],
+	];
+	const type = (seconds < 61 ? 0 : (seconds < 3600 ? 1 : 2));
+	const num = Math.floor(seconds / denominations[type][0]);
+
+	return `${num} ${denominations[type][1]}${num != 1 ? 's' : ''}`;
+};
+
+
 module.exports = {
 	getUserId,
 	database,
 	fitString,
 	makeGrid,
+	formatTime,
 };
