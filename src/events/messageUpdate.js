@@ -11,7 +11,7 @@ module.exports = {
 		if (oldMessage?.partial) await oldMessage.fetch();
 		if (newMessage?.partial) await newMessage.fetch();
 
-		if (oldMessage?.author?.bot == true || !oldMessage?.author?.bot) return false;
+		if (oldMessage?.author?.bot == true || oldMessage?.author?.bot) return false;
 
 		/* Ghost Ping Detector */
 		const res = GhostPing('messageUpdate', oldMessage, newMessage);

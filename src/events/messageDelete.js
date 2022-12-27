@@ -7,7 +7,7 @@ module.exports = {
 
 	execute: async (message) => {
 
-		if (message?.author?.bot == true || !message?.author?.bot) return false;
+		if (message?.author?.bot == true || message?.author?.bot) return false;
 
 		/* Ghost Ping Detector */
 		const res = GhostPing('messageDelete', message);

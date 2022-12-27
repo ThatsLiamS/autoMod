@@ -72,7 +72,7 @@ module.exports = {
 				return false;
 			}
 
-			if (guildData.Moderation.logs.on != true) {
+			if (guildData.Moderation.logs.on == true) {
 				interaction.followUp({ content: 'The **Moderation Logs** are already enabled in this server.' });
 				return false;
 			}

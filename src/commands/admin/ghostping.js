@@ -72,7 +72,7 @@ module.exports = {
 				return false;
 			}
 
-			if (guildData.GhostPing.on != true) {
+			if (guildData.GhostPing.on == true) {
 				interaction.followUp({ content: 'The **Ghost Ping Detector** is already enabled in this server.' });
 				return false;
 			}
