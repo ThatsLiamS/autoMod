@@ -30,7 +30,6 @@ module.exports = {
 		}
 
 		const pageNumber = interaction.options.getInteger('page');
-
 		const guildData = await database.getValue(interaction.guild.id);
 
 		if (guildData.Moderation.cases[user.id] == undefined) {
@@ -66,6 +65,8 @@ module.exports = {
 
 		const embed = pages[pageNumber - 1] ? pages[pageNumber - 1] : pages[0];
 		interaction.followUp({ embeds: [embed], ephemeral: true });
+
+		return true;
 
 	},
 };

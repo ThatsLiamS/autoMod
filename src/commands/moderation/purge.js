@@ -28,5 +28,7 @@ module.exports = {
 			.then(m => interaction.followUp({ content: `Deleted **${m.size}** messages.`, ephemeral: true }))
 			.catch(() => interaction.followUp({ content: 'Sorry, an error occurred when deleting the messages:\nplease check my permissions.', ephemeral: true }));
 
+		return true;
+
 	},
 };

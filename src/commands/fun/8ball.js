@@ -45,12 +45,14 @@ module.exports = {
 
 		const embed = new EmbedBuilder()
 			.setTitle('Magic 8 Ball')
-			.addField('**Your Question:**', `${interaction.options.getString('question')}`)
-			.addField('**My Answer**', `${possibleAnswers[Math.floor((Math.random() * 19) + 0)]}`)
-			.setColor('Gray')
+			.addFields(
+				{ name: '**Your Question:**', value: `${interaction.options.getString('question')}` },
+				{ name: '**My Answer**', value: `${possibleAnswers[Math.floor((Math.random() * possibleAnswers.length))]}` },
+			)
 			.setThumbnail('https://i.imgur.com/SD5OXUV.jpg');
 
 		interaction.followUp({ embeds: [embed] });
+		return true;
 
 	},
 };

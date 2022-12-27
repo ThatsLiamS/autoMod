@@ -30,7 +30,6 @@ module.exports = {
 		}
 
 		const caseNumber = interaction.options.getString('case');
-
 		const guildData = await database.getValue(interaction.guild.id);
 
 		if (guildData.Moderation.cases[user.id] == undefined) {
@@ -44,6 +43,7 @@ module.exports = {
 		await database.setValue(interaction.guild.id, guildData);
 
 		interaction.followUp({ content: 'That action has been deleted.', ephemeral: true });
+		return true;
 
 	},
 };

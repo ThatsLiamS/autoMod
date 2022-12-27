@@ -42,7 +42,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		interaction.guild.members.kick(member, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
+		return interaction.guild.members.kick(member, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
 			.then(async () => {
 
 				const guildData = await database.getValue(interaction.guild.id);
@@ -71,6 +71,7 @@ module.exports = {
 				}
 
 				interaction.followUp({ content: `${member.user.tag} has been kicked.`, ephemeral: true });
+				return true;
 			})
 			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 	},

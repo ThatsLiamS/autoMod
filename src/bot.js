@@ -7,7 +7,7 @@ const client = new Client({
 /*
 const { AutoPoster } = require('topgg-autoposter');
 const ap = AutoPoster(process.env['API_TOKEN'], client);
-ap.on('posted', () => { });
+ap.on('posted', () => false);
 */
 
 const { readdirSync } = require('fs');

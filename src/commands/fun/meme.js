@@ -31,6 +31,7 @@ module.exports = {
 				.setFooter({ text: 'Powered by kekbot#5882' });
 
 			interaction.followUp({ embeds: [embed] });
+			return true;
 		});
 
 	},

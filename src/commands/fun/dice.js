@@ -25,6 +25,7 @@ module.exports = {
 			.setThumbnail(`https://assets.liamskinner.co.uk/dice/${random}.png`);
 
 		interaction.followUp({ embeds: [embed], ephemeral: false });
+		return true;
 
 	},
 };

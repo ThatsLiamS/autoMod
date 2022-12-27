@@ -1,5 +1,5 @@
 const { InteractionType, Collection } = require('discord.js');
-const { timeFormat } = require('./../utils/functions.js');
+const { formatTime } = require('./../utils/functions.js');
 const cooldowns = new Collection();
 
 module.exports = {
@@ -41,7 +41,7 @@ module.exports = {
 				const expiration = Number(timestamps.get(interaction.user.id)) + Number(cooldownAmount);
 				const secondsLeft = Math.floor((Number(expiration) - Number(Date.now())) / 1000);
 
-				interaction.reply({ content: `Please wait ${timeFormat(secondsLeft > 1 ? secondsLeft : 1)} to use this command again.` });
+				interaction.followUp({ content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.` });
 				return false;
 			}
 

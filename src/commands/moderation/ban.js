@@ -46,7 +46,7 @@ module.exports = {
 			)
 			.setTimestamp();
 
-		interaction.guild.members.ban(user, { days, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
+		return interaction.guild.members.ban(user, { days, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
 			.then(async () => {
 
 				const guildData = await database.getValue(interaction.guild.id);
@@ -75,6 +75,7 @@ module.exports = {
 				}
 
 				interaction.followUp({ content: `${user.tag} has been banned.`, ephemeral: true });
+				return true;
 			})
 			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 	},

@@ -40,6 +40,7 @@ module.exports = {
 		}
 
 		interaction.followUp({ embeds: [embed], ephemeral: false });
+		return true;
 
 	},
 };

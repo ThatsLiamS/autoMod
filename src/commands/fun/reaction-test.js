@@ -69,7 +69,7 @@ module.exports = {
 		collector.on('collect', (_reaction, user) => {
 			if (active) { users.push(user); }
 		});
-		collector.on('end', async () => {
+		return collector.on('end', async () => {
 			const positions = userCount > users.length ? users.length : userCount;
 
 			/* Formats the fastest reactors */
@@ -89,12 +89,12 @@ module.exports = {
 				.setDescription(`Here's ${positions == 1 ? 'the **first user' : `a list of the **first ${positions} people`}** who reacted.\n\n${data}`)
 				.setFooter({ text: 'Thanks for playing!' });
 
-			setTimeout(async () => {
+			return setTimeout(async () => {
 				await message.edit({ embeds: [winnersEmbed] });
+				return true;
 			}, 3000);
 
 		});
 
-		return;
 	},
 };

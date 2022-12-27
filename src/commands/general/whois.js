@@ -50,6 +50,7 @@ module.exports = {
 			.setTimestamp();
 
 		interaction.followUp({ embeds: [embed] });
+		return true;
 
 	},
 };

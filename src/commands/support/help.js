@@ -81,6 +81,7 @@ module.exports = {
 				);
 
 			interaction.followUp({ embeds: [embed], components: [row], ephemeral: false });
+			return true;
 
 		}
 

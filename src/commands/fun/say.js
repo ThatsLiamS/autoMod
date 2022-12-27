@@ -29,5 +29,7 @@ module.exports = {
 			ephemeral: false,
 		});
 
+		return true;
+
 	},
 };

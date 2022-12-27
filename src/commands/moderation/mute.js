@@ -46,7 +46,7 @@ module.exports = {
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
 		const time = interaction.options.getInteger('duration') * options[interaction.options.getString('units')];
 
-		member.timeout(time, reason)
+		return member.timeout(time, reason)
 			.then(async () => {
 
 				const guildData = await database.getValue(interaction.guild.id);
@@ -86,6 +86,7 @@ module.exports = {
 
 
 				interaction.followUp({ content: `${member.user.tag} has been muted.`, ephemeral: true });
+				return true;
 			})
 			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 

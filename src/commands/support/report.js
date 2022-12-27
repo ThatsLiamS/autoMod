@@ -18,7 +18,7 @@ module.exports = {
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
 	error: false,
-	execute: ({ interaction, client }) => {
+	execute: async ({ interaction, client }) => {
 
 		const avatarURL = interaction.guild.iconURL() ? interaction.guild.iconURL() : 'https://i.imgur.com/yLv2YVnh.jpg';
 		const embed = new EmbedBuilder()
@@ -32,5 +32,6 @@ module.exports = {
 		webhook.send({ username: interaction.guild.name, avatarURL, embeds: [embed] });
 
 		interaction.followUp({ content: 'Thank you for helping us make autoMod even better.', ephemeral: true });
+		return true;
 	},
 };

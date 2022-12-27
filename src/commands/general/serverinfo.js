@@ -1,9 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 
-const premiumTier = { NONE: 'None', TIER_1: 'Level 1', TIER_2: 'Level 2', TIER_3: 'Level 3' };
-const mfaLevel = { NONE: 'Off', ELEVATED: 'On' };
-const verificationLevel = { NONE: 'None.', LOW: 'Low: verified email required.', MEDIUM: 'Medium: on Discord for 5 minutes.', HIGH: 'High: on the server for 10 minutes.', VERY_HIGH: 'Very High: verified phone number.' };
+const premiumTier = ['None', 'Level 1', 'Level 2', 'Level 3' ];
+const mfaLevel = ['Off', 'On' ];
+const verificationLevel = ['None.', 'Low: verified email required.', 'Medium: on Discord for 5 minutes.', 'High: on the server for 10 minutes.', 'Very High: verified phone number.' ];
 
 module.exports = {
 	name: 'serverinfo',
@@ -69,6 +69,7 @@ module.exports = {
 		}
 
 		interaction.followUp({ embeds: [embed] });
+		return true;
 
 	},
 };
