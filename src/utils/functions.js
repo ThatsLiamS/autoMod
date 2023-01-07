@@ -10,7 +10,6 @@ const { GuildSchema } = require('./Database Schema.js');
  *
  * @param {object} value
  * @param {string} value.string - Discord Mention || UserId
- *
  * @returns {string}
 **/
 const getUserId = ({ string }) => {
@@ -36,7 +35,6 @@ const database = {
 	 * @author Liam Skinner <me@liamskinner.co.uk>
 	 *
 	 * @param {string} documentID The document ID
-	 *
 	 * @returns {object} Database Object
 	**/
 	getValue: async (documentID) => {
@@ -62,7 +60,6 @@ const database = {
 	 *
 	 * @param {string} documentID The document ID
 	 * @param {object} data The new data to set
-	 *
 	 * @returns {boolean} Whether it was successful
 	**/
 	setValue: async (documentID, data) => {
@@ -85,7 +82,6 @@ const database = {
  *
  * @param {string} str
  * @param {number} length - Idea length of the string
- *
  * @returns {string}
 **/
 const fitString = (str, length) => (str + ' '.repeat(length -= str.length));
@@ -96,7 +92,6 @@ const fitString = (str, length) => (str + ' '.repeat(length -= str.length));
  * @author Liam Skinner <me@liamskinner.co.uk>
  *
  * @param {array<array<string>>} results - 2d array of string values
- *
  * @returns {string}
 **/
 const makeGrid = (results) => {
@@ -128,7 +123,6 @@ const makeGrid = (results) => {
  * @author Liam Skinner <me@liamskinner.co.uk>
  *
  * @param {number} seconds - time in seconds
- *
  * @returns {string}
 **/
 const formatTime = (seconds) => {
@@ -144,6 +138,28 @@ const formatTime = (seconds) => {
 	return `${num} ${denominations[type][1]}${num != 1 ? 's' : ''}`;
 };
 
+/**
+ * Calculate time in ms from duration and units
+ * @function
+ * @author Liam Skinner <me@liamskinner.co.uk>
+ *
+ * @param {number} duration
+ * @param {string} units
+ * @returns {number}
+**/
+const calculateTime = (duration, units) => {
+
+	/* Units and they time in ms */
+	const denominations = {
+		's': 1000, 'm': 60 * 1000, 'h': 3600 * 1000,
+		'd': 24 * 3600 * 1000, 'w': 7 * 24 * 3600 * 1000,
+	};
+	const unit = denominations[units];
+
+	return Number(duration * unit);
+};
+
+
 /* Export all fuctions */
 module.exports = {
 	getUserId,
@@ -151,4 +167,5 @@ module.exports = {
 	fitString,
 	makeGrid,
 	formatTime,
+	calculateTime,
 };

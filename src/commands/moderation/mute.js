@@ -1,12 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { database, getUserId } = require('../../utils/functions.js');
-
-const options = {
-	's': 1000, 'm': 60 * 1000,
-	'h': 3600 * 1000, 'd': 24 * 3600 * 1000,
-	'w': 7 * 24 * 3600 * 1000,
-};
+const { database, calculateTime, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
 	name: 'mute',
@@ -56,7 +50,11 @@ module.exports = {
 
 		/* Fetch the other arguments */
 		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
-		const time = interaction.options.getInteger('duration') * options[interaction.options.getString('units')];
+
+		/* Calculate total time in ms */
+		const dur = Number(interaction.options.getInteger('duration'));
+		const units = interaction.options.getString('units');
+		const time = calculateTime(dur, units);
 
 		return member.timeout(time, reason)
 			.then(async () => {

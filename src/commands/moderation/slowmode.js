@@ -1,9 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
-
-const options = {
-	's': 1000, 'm': 60 * 1000, 'h': 3600 * 1000,
-};
+const { calculateTime } = require('./../../utils/functions.js');
 
 module.exports = {
 	name: 'slowmode',
@@ -38,16 +35,19 @@ module.exports = {
 	**/
 	execute: async ({ interaction }) => {
 
-		/* Calculates how long */
-		const number = Number(interaction.options.getInteger('duration')) * options[interaction.options.getString('units')];
-		if (number > 21600) {
+		/* Calculate total time in ms */
+		const dur = Number(interaction.options.getInteger('duration'));
+		const units = interaction.options.getString('units');
+		const time = calculateTime(dur, units);
+
+		if (time > 21600) {
 			/* Higher than the Discord Max */
 			interaction.followUp({ content: 'Slowmode cannot be set longer than 6 hours' });
 			return;
 		}
 
 		/* Attempts to set the rate limit */
-		interaction.channel.setRateLimitPerUser(number)
+		interaction.channel.setRateLimitPerUser(time)
 			.then(() => interaction.followUp({ content: 'Successfully set the slowmode.', ephermal: true }))
 			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
 
