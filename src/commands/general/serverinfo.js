@@ -9,7 +9,7 @@ const verificationLevel = ['None.', 'Low: verified email required.', 'Medium: on
 module.exports = {
 	name: 'serverinfo',
 	description: 'Shows information about the server',
-	usage: '`/serverinfo [server id]`',
+	usage: '/serverinfo [server id]',
 
 	permissions: [],
 	ownerOnly: false,
@@ -23,6 +23,7 @@ module.exports = {
 		.addStringOption(option => option.setName('id').setDescription('The server\'s ID ').setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

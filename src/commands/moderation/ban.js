@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'ban',
 	description: 'Bans a member from the server.',
-	usage: '`/ban <user> [days] [reason]`',
+	usage: '/ban <user> [days] [reason]',
 
 	permissions: ['Ban Members'],
 	ownerOnly: false,
@@ -23,6 +23,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

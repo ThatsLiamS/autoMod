@@ -6,7 +6,7 @@ const emojis = ['🔴', '🟠', '🟢', '🔵', '🟣'];
 module.exports = {
 	name: 'reaction-test',
 	description: 'Creates a reaction speed test. Then displays first few users to react!',
-	usage: '`/reaction-test <reactions> <usercount>`',
+	usage: '/reaction-test <reactions> <usercount>',
 
 	permissions: [],
 	ownerOnly: false,
@@ -30,6 +30,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 30, text: '30 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

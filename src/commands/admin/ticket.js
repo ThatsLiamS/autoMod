@@ -6,7 +6,7 @@ const { database } = require('../../utils/functions.js');
 module.exports = {
 	name: 'ticket',
 	description: 'Sets up the ticket system',
-	usage: '`/ticket setup <category> <channel> <role>`\n`/ticket logs <channel>`\n`/ticket disable`\n`/ticket enable`',
+	usage: '/ticket setup <category> <channel> <role>\n/ticket logs <channel>\n/ticket disable\n/ticket enable`',
 
 	permissions: ['Administrator'],
 	ownerOnly: false,
@@ -42,6 +42,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 15, text: '15 seconds' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

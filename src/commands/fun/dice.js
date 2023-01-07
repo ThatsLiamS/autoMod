@@ -4,7 +4,7 @@ const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('disco
 module.exports = {
 	name: 'dice',
 	description: 'Roll a 6 sided die!',
-	usage: '`/dice`',
+	usage: '/dice',
 
 	permissions: [],
 	ownerOnly: false,
@@ -16,6 +16,7 @@ module.exports = {
 		.setDMPermission(true),
 
 	cooldown: { time: 0, text: 'None (0)' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

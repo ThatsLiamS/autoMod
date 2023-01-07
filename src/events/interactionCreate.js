@@ -19,14 +19,13 @@ module.exports = {
 
 		/* Is interaction a command? */
 		if (interaction.type === InteractionType.ApplicationCommand) {
-			await interaction.deferReply({ ephemeral: false });
 
 			const cmd = client.commands.get(interaction.commandName);
 			if (!cmd) return false;
 
 			/* Is the command working? */
 			if (cmd['error'] == true) {
-				interaction.followUp({ content: 'Sorry, this command is currently unavailable. Please try again later.', ephemeral: true });
+				interaction.reply({ content: 'Sorry, this command is currently unavailable. Please try again later.', ephemeral: true });
 				return;
 			}
 
@@ -35,7 +34,7 @@ module.exports = {
 				for (const permission of cmd['permissions']) {
 					/* Loops through and check permissions against the user */
 					if (!interaction.member.permissions.has(permission.replace(' ', '_').toUpperCase())) {
-						interaction.followUp({ content: 'Sorry, you do not have permission to run this command.', ephemeral: true });
+						interaction.reply({ content: 'Sorry, you do not have permission to run this command.', ephemeral: true });
 						return;
 					}
 				}
@@ -54,9 +53,12 @@ module.exports = {
 				const secondsLeft = Math.floor((Number(expiration) - Number(Date.now())) / 1000);
 
 				/* Alert the user */
-				interaction.followUp({ content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.` });
+				interaction.reply({ content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.` });
 				return false;
 			}
+
+			/* Does the command need deferring */
+			if (cmd['defer']['defer'] == true) await interaction.deferReply({ ephemeral: cmd['defer']['ephemeral'] ? true : false });
 
 			/* Execute the command file */
 			try {

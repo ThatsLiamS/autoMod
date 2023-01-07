@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'unmute',
 	description: 'Removes a temporary timeout for a user.',
-	usage: '`/unmute <member> [reason]`',
+	usage: '/unmute <member> [reason]',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

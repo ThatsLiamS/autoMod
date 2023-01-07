@@ -5,7 +5,7 @@ const { calculateTime } = require('./../../utils/functions.js');
 module.exports = {
 	name: 'slowmode',
 	description: 'Set the slowmode of a channel.',
-	usage: '`/slowmode <duration> <units>`',
+	usage: '/slowmode <duration> <units>',
 
 	permissions: ['Manage Channels'],
 	ownerOnly: false,
@@ -23,6 +23,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

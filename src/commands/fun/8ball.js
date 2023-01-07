@@ -27,7 +27,7 @@ const possibleAnswers = [
 module.exports = {
 	name: '8ball',
 	description: 'Ask the all knowing, magic 8ball a question!',
-	usage: '`/8ball <question>`',
+	usage: '/8ball <question>',
 
 	permissions: [],
 	ownerOnly: false,
@@ -41,6 +41,7 @@ module.exports = {
 		.addStringOption(option => option.setName('question').setDescription('What is your question').setRequired(true)),
 
 	cooldown: { time: 0, text: 'None (0)' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

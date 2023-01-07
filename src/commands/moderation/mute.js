@@ -5,7 +5,7 @@ const { database, calculateTime, getUserId } = require('../../utils/functions.js
 module.exports = {
 	name: 'mute',
 	description: 'Sets a temporary timeout for a user.',
-	usage: '`/mute <member> <duration> <units> [reason]`',
+	usage: '/mute <member> <duration> <units> [reason]',
 
 	permissions: ['Moderator Members'],
 	ownerOnly: false,
@@ -29,6 +29,7 @@ module.exports = {
 
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

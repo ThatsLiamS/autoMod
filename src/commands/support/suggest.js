@@ -4,7 +4,7 @@ const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, WebhookCl
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest an improvement, command or feature!',
-	usage: '`/suggest <detailed description>`',
+	usage: '/suggest <detailed description>',
 
 	permissions: [],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

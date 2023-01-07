@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'delwarn',
 	description: 'Removes a moderation action against a user.',
-	usage: '`/dewarn <user> <case ID>`',
+	usage: '/dewarn <user> <case ID>',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

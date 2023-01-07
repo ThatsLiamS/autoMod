@@ -5,7 +5,7 @@ const { database } = require('../../utils/functions.js');
 module.exports = {
 	name: 'ghostping',
 	description: 'Sets up the ghostping detection system',
-	usage: '`/ghostping setup <channel>`\n`/ghostping enable`\n`/ghostping disable`',
+	usage: '/ghostping setup <channel>\n/ghostping enable\n/ghostping disable',
 
 	permissions: ['Manage Guild'],
 	ownerOnly: false,
@@ -33,6 +33,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 15, text: '15 seconds' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

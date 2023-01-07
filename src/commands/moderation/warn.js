@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'warn',
 	description: 'Warns a member.',
-	usage: '`/warn <user> [reason]`',
+	usage: '/warn <user> [reason]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

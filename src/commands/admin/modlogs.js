@@ -5,7 +5,7 @@ const { database } = require('../../utils/functions.js');
 module.exports = {
 	name: 'modlogs',
 	description: 'Sets up the moderation log system',
-	usage: '`/modlogs setup <channel>`\n`/modlogs enable`\n`/modlogs disable`',
+	usage: '/modlogs setup <channel>\n/modlogs enable\n/modlogs disable',
 
 	permissions: ['Manage Guild'],
 	ownerOnly: false,
@@ -33,6 +33,7 @@ module.exports = {
 		),
 
 	cooldown: { time: 15, text: '15 seconds' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

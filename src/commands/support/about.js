@@ -5,7 +5,7 @@ const { makeGrid } = require('../../utils/functions.js');
 module.exports = {
 	name: 'about',
 	description: 'Shows lots of cool information about the bot!',
-	usage: '`/about`',
+	usage: '/about',
 
 	permissions: [],
 	ownerOnly: false,
@@ -17,6 +17,7 @@ module.exports = {
 		.setDMPermission(false),
 
 	cooldown: { time: 15, text: '15 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

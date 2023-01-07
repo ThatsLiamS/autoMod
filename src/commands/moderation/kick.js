@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kicks a member from the server.',
-	usage: '`/kick <member> [reason]`',
+	usage: '/kick <member> [reason]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

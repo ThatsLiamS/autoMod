@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = {
 	name: 'whois',
 	description: 'Shows information about a user',
-	usage: '`/whois [user]`',
+	usage: '/whois [user]',
 
 	permissions: [],
 	ownerOnly: false,
@@ -19,6 +19,7 @@ module.exports = {
 		.addUserOption(option => option.setName('user').setDescription('The user to get the information for').setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

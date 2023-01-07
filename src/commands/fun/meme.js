@@ -4,7 +4,7 @@ const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('disco
 module.exports = {
 	name: 'meme',
 	description: 'Receive a meme from r/memes!',
-	usage: '`/meme`',
+	usage: '/meme',
 
 	permissions: [],
 	ownerOnly: false,
@@ -16,6 +16,7 @@ module.exports = {
 		.setDMPermission(true),
 
 	cooldown: { time: 0, text: 'None (0)' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**

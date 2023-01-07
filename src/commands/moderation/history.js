@@ -5,7 +5,7 @@ const { database, getUserId } = require('../../utils/functions.js');
 module.exports = {
 	name: 'history',
 	description: 'Shows all moderation actions against a user.',
-	usage: '`/history <user> [page]`',
+	usage: '/history <user> [page]',
 
 	permissions: ['Kick Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

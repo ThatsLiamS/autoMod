@@ -4,7 +4,7 @@ const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	name: 'say',
 	description: 'Makes the bot repeat your message!',
-	usage: '`/say <message>`',
+	usage: '/say <message>',
 
 	permissions: [],
 	ownerOnly: false,
@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('message').setDescription('What should I say?').setRequired(true)),
 
 	cooldown: { time: 0, text: 'None (0)' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

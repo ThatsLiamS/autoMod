@@ -5,7 +5,7 @@ const { database } = require('../../utils/functions.js');
 module.exports = {
 	name: 'unban',
 	description: 'Unbans a member from the server.',
-	usage: '`/unban <user ID> [reason]`',
+	usage: '/unban <user ID> [reason]',
 
 	permissions: ['Ban Members'],
 	ownerOnly: false,
@@ -20,6 +20,7 @@ module.exports = {
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unbanning them?')),
 
 	cooldown: { time: 10, text: '10 seconds' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**

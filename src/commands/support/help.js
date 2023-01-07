@@ -1,13 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { readdirSync } = require('fs');
-
 const emojis = require('./../../utils/emojis');
+
+/* Formats command usage */
+const formatUsage = (string) => string.split('\n').map((str) => '`' + str + '`').join('\n');
 
 module.exports = {
 	name: 'help',
 	description: 'Provides a list of all my commands!',
-	usage: '`/help [command]`',
+	usage: '/help [command]',
 
 	permissions: [],
 	ownerOnly: false,
@@ -21,6 +23,7 @@ module.exports = {
 		.addStringOption(option => option.setName('command').setDescription('Shows details about how to use a command').setRequired(false)),
 
 	cooldown: { time: 0, text: 'None (0)' },
+	defer: { defer: true, ephemeral: false },
 	error: false,
 
 	/**
@@ -48,7 +51,7 @@ module.exports = {
 				.setDescription(cmd.description)
 				.setTimestamp();
 
-			embed.addFields({ name: '__Usage:__', value: (cmd.usage ? cmd.usage : '/ ' + cmd.name), inline: false });
+			embed.addFields({ name: '__Usage:__', value: formatUsage(cmd.usage ? cmd.usage : '/ ' + cmd.name), inline: false });
 
 			/* Add specific values and properties */
 			if (cmd.permissions[0] && cmd.ownerOnly == false) {
@@ -83,7 +86,7 @@ module.exports = {
 				const commandFiles = readdirSync(__dirname + '/../../commands/' + category).filter(file => file.endsWith('.js'));
 				for (const file of commandFiles) {
 					const command = require(`${__dirname}/../../commands/${category}/${file}`);
-					description += `${command.usage}\n`;
+					description += `${formatUsage(command.usage)}\n`;
 				}
 
 				/* Adds the categories information into the Embed */

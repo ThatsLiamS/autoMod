@@ -4,7 +4,7 @@ const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, WebhookCl
 module.exports = {
 	name: 'report',
 	description: 'Report a bug/issue to the developers!',
-	usage: '`/report <detailed description>`',
+	usage: '/report <detailed description>',
 
 	permissions: [],
 	ownerOnly: false,
@@ -18,6 +18,7 @@ module.exports = {
 		.addStringOption(option => option.setName('description').setDescription('Explain the issue you are having').setRequired(true)),
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
+	defer: { defer: true, ephemeral: true },
 	error: false,
 
 	/**
