@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, WebhookClient } = require('discord.js');
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, WebhookClient, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+
+const format = (string) => string.split('\n').map((line) => '> ' + line).join('\n');
 
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest an improvement, command or feature!',
-	usage: '/suggest <detailed description>',
+	usage: '/suggest',
 
 	permissions: [],
 	ownerOnly: false,
@@ -13,14 +15,10 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('suggest')
 		.setDescription('Suggest an improvement, command or feature!')
-		.setDMPermission(false)
-
-		.addStringOption(option => option
-			.setName('description').setDescription('Include a detailed description of your suggestion').setRequired(true),
-		),
+		.setDMPermission(false),
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
-	defer: { defer: true, ephemeral: true },
+	defer: { defer: false, ephemeral: false },
 	error: false,
 
 	/**
@@ -34,21 +32,62 @@ module.exports = {
 	**/
 	execute: async ({ interaction, client }) => {
 
-		/* Creates the Webhook Embed to send */
-		const avatarURL = interaction.guild.iconURL() ? interaction.guild.iconURL() : 'https://i.imgur.com/yLv2YVnh.jpg';
-		const embed = new EmbedBuilder()
-			.setColor('#0099ff')
-			.setDescription(`**${client.user.tag}**\n${interaction.options.getString('description')}`)
-			.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-			.setFooter({ text: `ID: ${interaction.member.id}` })
-			.setTimestamp();
+		/* Create modal to display */
+		const modalPopup = new ModalBuilder()
+			.setCustomId(`report-${interaction.user.id}-${client.user.id}`).setTitle('autoMod\'s Feature Request!');
 
-		/* Sends the webhook */
-		const webhook = new WebhookClient({ url: process.env['SuggestionWebhook'] });
-		webhook.send({ username: interaction.guild.name, avatarURL, embeds: [embed] });
+		/* Add input fields */
+		const title = new ActionRowBuilder().addComponents(
+			new TextInputBuilder().setCustomId('title').setLabel('Short title')
+				.setStyle(TextInputStyle.Short).setMaxLength(150).setMinLength(5),
+		);
+		const description = new ActionRowBuilder().addComponents(
+			new TextInputBuilder().setCustomId('description').setLabel('A clear and concise description')
+				.setStyle(TextInputStyle.Paragraph).setMaxLength(2000).setMinLength(50),
+		);
+		const reproduce = new ActionRowBuilder().addComponents(
+			new TextInputBuilder().setCustomId('solve').setLabel('Does this solve a bug?')
+				.setStyle(TextInputStyle.Paragraph).setMaxLength(1000).setMinLength(2)
+				.setPlaceholder('Yes, it always frustrates me when [....]'),
+		);
 
-		/* Responds to the user */
-		interaction.followUp({ content: 'Your suggestion has been sent to my developers.', ephemeral: true });
-		return true;
+		/* Display the modal */
+		modalPopup.addComponents(title, description, reproduce);
+		await interaction.showModal(modalPopup);
+
+		/* Get the responses */
+		const filter = (modal) => modal.customId === `report-${interaction.user.id}-${client.user.id}`;
+		const res = interaction.awaitModalSubmit({ filter, time: 150_000 })
+			.then(async (modal) => {
+
+				await modal.deferReply({ ephemeral: true });
+
+				const embed = new EmbedBuilder()
+					.setColor('#0099ff')
+					.setAuthor({ name: modal.user.username, iconURL: modal.user.displayAvatarURL() })
+					.setTitle(`${modal.fields.getTextInputValue('title')}`)
+					.setDescription(`**Description:**\n${format(modal.fields.getTextInputValue('description'))}`)
+					.addFields({ name: '__Does it solve a bug?__', value: `${format(modal.fields.getTextInputValue('solve'))}` })
+					.setFooter({ text: `User ID: ${modal.member.id}` })
+					.setTimestamp();
+
+				/* Locate and send the webhook */
+				const webhook = new WebhookClient({ url: process.env['SuggestionWebhook'] });
+				webhook.send({ username: client.user.username, avatarURL: client.user.displayAvatarURL(), embeds: [embed] });
+
+				/* Returns true to enable the cooldown */
+				modal.followUp({ content: 'Thank you, your suggest has been sent to our developers', ephemeral: true });
+				return true;
+
+			})
+			/* If they didn't response */
+			.catch(async () => {
+				await interaction.followUp({ content: 'Sorry, you took too long to repond.' });
+				return false;
+			});
+
+		/* Returns boolean to enable the cooldown */
+		return res;
+
 	},
 };
