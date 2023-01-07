@@ -1,4 +1,5 @@
-const { InteractionType, Collection } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { Interaction, Client, InteractionType, Collection } = require('discord.js');
 const { formatTime } = require('./../utils/functions.js');
 const cooldowns = new Collection();
 
@@ -6,6 +7,14 @@ module.exports = {
 	name: 'interactionCreate',
 	once: false,
 
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Interaction} interaction Command Interaction
+	 * @param {Client} client Discord Bot's Client
+	 * @returns {boolean}
+	**/
 	execute: async (interaction, client) => {
 
 		/* Is interaction a command? */
@@ -21,6 +30,7 @@ module.exports = {
 				return;
 			}
 
+			/* Loops through the required permissions */
 			if (cmd['permissions'] != []) {
 				for (const permission of cmd['permissions']) {
 					/* Loops through and check permissions against the user */
@@ -36,11 +46,14 @@ module.exports = {
 			const timestamps = cooldowns.get(cmd.name);
 			const cooldownAmount = (cmd?.cooldown?.time || 0) * 1000;
 
+			/* Are they in the cooldown */
 			if (timestamps.has(interaction.user.id)) {
 
+				/* How long is left? */
 				const expiration = Number(timestamps.get(interaction.user.id)) + Number(cooldownAmount);
 				const secondsLeft = Math.floor((Number(expiration) - Number(Date.now())) / 1000);
 
+				/* Alert the user */
 				interaction.followUp({ content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.` });
 				return false;
 			}
@@ -71,9 +84,9 @@ module.exports = {
 
 			/* Execute the button file */
 			try {
-				await file.execute({ interaction, client }).then(() => {
-					return true;
-				}).catch((err) => console.log(err));
+				await file.execute({ interaction, client })
+					.then(() => true)
+					.catch((err) => console.log(err));
 			}
 			catch (err) { console.log(err); }
 		}

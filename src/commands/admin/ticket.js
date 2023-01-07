@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { GuildSchema } = require('../../utils/Database Schema.js');
 const { database } = require('../../utils/functions.js');
 
@@ -42,6 +43,15 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
 		/* Which command was run */

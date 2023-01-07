@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { readdirSync } = require('fs');
 
 const emojis = require('./../../utils/emojis');
@@ -21,13 +22,25 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @param {Client} arguments.client
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction, client }) => {
 
+		/* Did the user specify a command */
 		const cmdName = interaction.options.getString('command');
 		const cmd = client.commands.get(cmdName);
 
 		if (cmd) {
 
+			/* Builds the command specific information Embed */
 			const embed = new EmbedBuilder()
 				.setColor('#0099FF')
 				.setTitle(cmd.name.charAt(0).toUpperCase() + cmd.name.slice(1) + ' Command')
@@ -37,6 +50,7 @@ module.exports = {
 
 			embed.addFields({ name: '__Usage:__', value: (cmd.usage ? cmd.usage : '/ ' + cmd.name), inline: false });
 
+			/* Add specific values and properties */
 			if (cmd.permissions[0] && cmd.ownerOnly == false) {
 				embed.addFields({ name: '__Permissions:__', value: '`' + cmd.permissions.join('` `') + '`', inline: false });
 			}
@@ -47,7 +61,9 @@ module.exports = {
 				embed.addFields({ name: '__Error:__', value: 'This command is currently unavailable, please try again later.', inline: false });
 			}
 
+			/* Responds to the user */
 			interaction.followUp({ embeds: [embed], ephemeral: false });
+			return true;
 
 		}
 		else {
@@ -60,6 +76,7 @@ module.exports = {
 				.setThumbnail(client.user.displayAvatarURL())
 				.setTimestamp();
 
+			/* Filter through command files */
 			for (const category of ['general', 'fun', 'moderation', 'admin', 'support']) {
 				let description = '';
 
@@ -69,9 +86,11 @@ module.exports = {
 					description += `${command.usage}\n`;
 				}
 
+				/* Adds the categories information into the Embed */
 				embed.addFields({ name: `__${category.charAt(0).toUpperCase() + category.slice(1)}__`, value: description, inline: false });
 			}
 
+			/* Creates LINK Buttons */
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
@@ -80,6 +99,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Link).setLabel('Invite').setURL('https://automod.liamskinner.co.uk/invite').setEmoji(emojis.invite),
 				);
 
+			/* Responds to the user */
 			interaction.followUp({ embeds: [embed], components: [row], ephemeral: false });
 			return true;
 

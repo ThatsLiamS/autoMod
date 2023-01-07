@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 
 module.exports = {
@@ -19,17 +20,30 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
+		/* Fetch the Target User */
 		const member = interaction.options.getMember('user') || interaction.member;
 		const user = await member.user.fetch(true);
 
+		/* How long have they been a member */
 		const ageTimestamp = new Date().getTime() - member.joinedTimestamp;
 		const age = `${Math.floor(ageTimestamp / 86400000)}d ${Math.floor(ageTimestamp / 3600000) % 24}h ${Math.floor(ageTimestamp / 60000) % 60}m ${Math.floor(ageTimestamp / 1000) % 60}s`;
 
+		/* Create an array of their roles */
 		const roles = [];
 		member.roles.cache.forEach(r => roles.push(r));
 
+		/* Create the Embed of information */
 		const embed = new EmbedBuilder()
 			.setColor(user.hexAccentColor)
 			.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.displayAvatarURL() })
@@ -49,6 +63,7 @@ module.exports = {
 			.setFooter({ text: `Requested by ${interaction.member.user.tag}, ID ${interaction.member.id}` })
 			.setTimestamp();
 
+		/* Responds to the user */
 		interaction.followUp({ embeds: [embed] });
 		return true;
 

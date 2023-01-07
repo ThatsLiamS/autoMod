@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 
 const premiumTier = ['None', 'Level 1', 'Level 2', 'Level 3' ];
@@ -23,15 +24,27 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @param {Client} arguments.client
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction, client }) => {
 
+		/* Fetch the Guild's information */
 		const id = interaction.options.getString('id') || interaction.guild;
 		const guild = client.guilds.cache.get(id) || interaction.guild;
 
+		/* How old is the guild? */
 		const ageTimestamp = new Date().getTime() - guild.createdTimestamp;
 		const age = `${Math.floor(ageTimestamp / 86400000)}d ${Math.floor(ageTimestamp / 3600000) % 24}h ${Math.floor(ageTimestamp / 60000) % 60}m ${Math.floor(ageTimestamp / 1000) % 60}s`;
 
-
+		/* Creates an embed of information */
 		const embed = new EmbedBuilder()
 			.setColor('#0099ff')
 			.setAuthor({ name: `${interaction.member.user.username} (${interaction.member.id})`, iconURL: interaction.member.displayAvatarURL() })
@@ -57,6 +70,7 @@ module.exports = {
 			.setFooter({ text: `Requested by ${interaction.member.user.tag}` })
 			.setTimestamp();
 
+		/* Attempts to fetch a Guild Invite */
 		try {
 			const channel = guild.channels.cache.filter(c => c.type == 5 || c.type == 0)?.first();
 			const invite = await guild.invites.create(channel?.id, { maxAge: 3600, maxUses: 5 }).catch(() => {
@@ -68,6 +82,7 @@ module.exports = {
 			/* ignore it :) */
 		}
 
+		/* Responds to the user */
 		interaction.followUp({ embeds: [embed] });
 		return true;
 

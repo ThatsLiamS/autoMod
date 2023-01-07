@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -20,23 +21,37 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @param {Client} arguments.client
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction, client }) => {
 
+		/* Fetch the target user */
 		const userId = getUserId({ string: interaction.options.getString('user') });
-		const user = await client.users.fetch(userId).catch(() => { return; });
+		const user = await client.users.fetch(userId).catch(() => false);
 		if (!user) {
 			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
 			return;
 		}
 
+		/* Fetch the Guild's Moderation information */
 		const pageNumber = interaction.options.getInteger('page');
 		const guildData = await database.getValue(interaction.guild.id);
 
+		/* What if they're innocent? */
 		if (guildData.Moderation.cases[user.id] == undefined) {
 			interaction.followUp({ content: 'That user has no recorded actions.' });
 			return;
 		}
 
+		/* Create the pages' data */
 		const pages = [];
 		const pageData = [];
 
@@ -44,6 +59,7 @@ module.exports = {
 			pageData.push(guildData.Moderation.cases[user.id].slice(x, x + 10));
 		}
 
+		/* Create the embeds for each page */
 		for (let x = 0; x < pageData.length; x++) {
 
 			const embed = new EmbedBuilder()
@@ -52,6 +68,7 @@ module.exports = {
 				.setTimestamp()
 				.setFooter({ text: `Page ${x}/${pageData.length}` });
 
+			/* Loop through the selected moderation actions */
 			for (const action of pageData[x]) {
 				embed.addFields({
 					name: `__Case ${action.case}__`,
@@ -63,6 +80,7 @@ module.exports = {
 			pages.push(embed);
 		}
 
+		/* Responds to the moderator */
 		const embed = pages[pageNumber - 1] ? pages[pageNumber - 1] : pages[0];
 		interaction.followUp({ embeds: [embed], ephemeral: true });
 

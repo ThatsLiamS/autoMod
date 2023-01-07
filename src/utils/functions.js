@@ -144,7 +144,7 @@ const formatTime = (seconds) => {
 	return `${num} ${denominations[type][1]}${num != 1 ? 's' : ''}`;
 };
 
-
+/* Export all fuctions */
 module.exports = {
 	getUserId,
 	database,

@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { makeGrid } = require('../../utils/functions.js');
 
 module.exports = {
@@ -17,8 +18,19 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @param {Client} arguments.client
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction, client }) => {
 
+		/* Gather stats from across ALL Shards */
 		const promises = [
 			client.shard.fetchClientValues('ws.ping'),
 			client.shard.fetchClientValues('guilds.cache.size'),
@@ -26,6 +38,7 @@ module.exports = {
 		];
 		const results = await Promise.all(promises);
 
+		/* Formats the data into an Embed */
 		const embed = new EmbedBuilder()
 			.setTitle('My Information')
 			.setColor('Green')
@@ -41,6 +54,7 @@ module.exports = {
 			)
 			.setFooter({ text: 'Do /help to get started.' });
 
+		/* Responds to the user */
 		interaction.followUp({ embeds: [embed] });
 		return true;
 

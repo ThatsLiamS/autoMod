@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const emojis = ['🔴', '🟠', '🟢', '🔵', '🟣'];
 
@@ -30,8 +31,18 @@ module.exports = {
 
 	cooldown: { time: 30, text: '30 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
+		/* Fetch the arguments */
 		const emojiCount = interaction.options.getInteger('reactions');
 		const userCount = interaction.options.getInteger('usercount');
 		let active = false;

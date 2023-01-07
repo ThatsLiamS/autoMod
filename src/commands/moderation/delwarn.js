@@ -1,4 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, Client, SlashCommandBuilder } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -20,8 +21,19 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @param {Client} arguments.client
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction, client }) => {
 
+		/* Fetch the target user */
 		const userId = getUserId({ string: interaction.options.getString('user') });
 		const user = await client.users.fetch(userId).catch(() => { return; });
 		if (!user) {
@@ -29,19 +41,23 @@ module.exports = {
 			return;
 		}
 
+		/* Fetch the Guild's Moderation information */
 		const caseNumber = interaction.options.getString('case');
 		const guildData = await database.getValue(interaction.guild.id);
 
+		/* What if they're innocent? */
 		if (guildData.Moderation.cases[user.id] == undefined) {
 			interaction.followUp({ content: 'That user has no recorded actions.' });
 			return;
 		}
 
+		/* Filter the moderation actions */
 		guildData.Moderation.cases[user.id] = guildData.Moderation.cases[user.id]
 			.filter((doc) => (doc.case == caseNumber) == false);
 
 		await database.setValue(interaction.guild.id, guildData);
 
+		/* Respond to the moderator */
 		interaction.followUp({ content: 'That action has been deleted.', ephemeral: true });
 		return true;
 

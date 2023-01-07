@@ -1,10 +1,19 @@
-const { EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { Message, EmbedBuilder } = require('discord.js');
 const GhostPing = require('discord.js-ghost-ping');
 
 module.exports = {
 	name: 'messageUpdate',
 	once: false,
 
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Message} oldMessage The original Message
+	 * @param {Message} newMessage The updated Message
+	 * @returns {boolean}
+	**/
 	execute: async (oldMessage, newMessage) => {
 
 		/* Fetch Partial Messages */
@@ -15,19 +24,23 @@ module.exports = {
 
 		/* Ghost Ping Detector */
 		const res = GhostPing('messageUpdate', oldMessage, newMessage);
+		/* Has a GhostPing occured */
 		if (res && res?.mentions) {
 			const embed = new EmbedBuilder()
 				.setTitle('Ghost Ping Detected')
 				.setColor('White')
 				.addFields(
-					{ name: '__Who?__', value: `**Author:** ${res.author}\n**Channel:** ${res.channel}`, inline: true },
+					{ name: '__Who?__', value: `**Author:**   ${res.author}\n**Channel:** ${res.channel}`, inline: true },
 					{ name: '__Mentions__', value: `${res.mentions.join(' ')}!`, inline: true },
 				)
-				.setFooter({ text: 'Use this feature at:\nhttps://www.npmjs.com/package/discord.js-ghost-ping' })
+				.setFooter({ text: 'Don\'t GhostPing, smh!' })
 				.setTimestamp();
 
+			/* Sends the GhostPing message to the channel */
 			newMessage.channel.send({ embeds: [embed] });
 		}
+
+		return true;
 
 	},
 };

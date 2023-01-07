@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const possibleAnswers = [
 	'As I see it, yes.',
@@ -41,8 +42,18 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
+		/* Creates the embed reponse */
 		const embed = new EmbedBuilder()
 			.setTitle('Magic 8 Ball')
 			.addFields(
@@ -51,6 +62,7 @@ module.exports = {
 			)
 			.setThumbnail('https://i.imgur.com/SD5OXUV.jpg');
 
+		/* Responds to the user */
 		interaction.followUp({ embeds: [embed] });
 		return true;
 

@@ -1,9 +1,18 @@
+// eslint-disable-next-line no-unused-vars
+const { Message } = require('discord.js');
 const emojis = require('./../utils/emojis');
 
 module.exports = {
 	name: 'messageCreate',
 	once: false,
 
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Message} Message The message object sent
+	 * @returns {boolean}
+	**/
 	execute: async (message) => {
 
 		/* Fetch message partials */
@@ -22,5 +31,6 @@ module.exports = {
 			await message.react(emojis.tada);
 		}
 
+		return true;
 	},
 };

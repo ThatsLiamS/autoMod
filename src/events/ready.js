@@ -1,15 +1,24 @@
-const { Collection } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { Client, Collection } = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
 	name: 'ready',
 	once: true,
 
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Client} client Discord Bot's Client
+	 * @returns {boolean}
+	**/
 	execute: async (client) => {
 
+		/* Logs the Shard's Id */
 		console.log(`Shard ${client.shard.ids[0] + 1}/${client.shard.count} ready`);
 
-		/* Set client status */
+		/* Set client status: type 3 == Watching */
 		await client.user.setPresence({
 			status: 'online',
 			activities: [{ type: 3, name: 'over your server! do /help for more.' }],

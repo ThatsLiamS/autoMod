@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { database } = require('../../utils/functions.js');
 
 module.exports = {
@@ -33,35 +34,50 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
+		/* Fetch the subcommand that's used */
 		const subCommandName = interaction.options.getSubcommand();
 		if (!subCommandName) {
 			interaction.followUp({ content: 'Woah, an unexpected error has occurred. Please try again!' });
 			return false;
 		}
 
+		/* Fetch the Guild's information */
 		const guildData = await database.getValue(interaction.guild.id);
 
 
 		if (subCommandName == 'setup') {
+			/* Checks it is a valid channel */
 			const channel = interaction.options.getChannel('channel');
-			if (!channel || (channel?.type != 'GUILD_TEXT' && channel?.type != 'GUILD_NEWS')) {
+			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
 				interaction.followUp({ content: 'Please mention a valid text channel.' });
 				return false;
 			}
 
+			/* Sets the new value in the database */
 			guildData.GhostPing.channel = channel.id;
 			const embed = new EmbedBuilder()
 				.setTitle('Successfully set up!')
 				.setColor('Green')
 				.setDescription(`The **Ghost Ping Detector** has been set up to ${channel}. Use the \`/ghostping enable\` command to turn it on.`);
 
+			/* Responds to the user */
 			interaction.followUp({ embeds: [embed] });
 		}
 
 		if (subCommandName == 'enable') {
 
+			/* Has it been set up */
 			if (!guildData.GhostPing.channel || guildData.GhostPing.channel == '') {
 				const embed = new EmbedBuilder()
 					.setTitle('An error has occurred!')
@@ -72,6 +88,7 @@ module.exports = {
 				return false;
 			}
 
+			/* Is it already enabled */
 			if (guildData.GhostPing.on == true) {
 				interaction.followUp({ content: 'The **Ghost Ping Detector** is already enabled in this server.' });
 				return false;
@@ -82,7 +99,7 @@ module.exports = {
 		}
 
 		if (subCommandName == 'disable') {
-
+			/* Is it already disabled */
 			if (guildData.GhostPing.on != true) {
 				interaction.followUp({ content: 'The **Ghost Ping Detector** is already disabled in this server.' });
 				return false;
@@ -92,6 +109,7 @@ module.exports = {
 			interaction.followUp({ content: 'The **Ghost Ping Detector** has been disabled.' });
 		}
 
+		/* Sets the value into the database */
 		await database.setValue(interaction.guild.id, guildData);
 		return true;
 
