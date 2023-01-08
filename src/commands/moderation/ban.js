@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, Client, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,13 +8,12 @@ module.exports = {
 	usage: '/ban <user> [days] [reason]',
 
 	permissions: ['Ban Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
-	data: new SlashCommandBuilder()
+	ata: new SlashCommandBuilder()
 		.setName('ban')
 		.setDescription('Bans a user from the server.')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('user').setDescription('The user to ban - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option
@@ -24,7 +23,6 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

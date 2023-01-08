@@ -11,10 +11,6 @@ module.exports = {
 	description: 'Shows information about the server',
 	usage: '/serverinfo [server id]',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('serverinfo')
 		.setDescription('Shows information about the server!')
@@ -24,7 +20,6 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

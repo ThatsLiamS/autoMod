@@ -29,10 +29,6 @@ module.exports = {
 	description: 'Ask the all knowing, magic 8ball a question!',
 	usage: '/8ball <question>',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('8ball')
 		.setDescription('Ask the all knowing, magic 8ball a question!')
@@ -42,7 +38,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

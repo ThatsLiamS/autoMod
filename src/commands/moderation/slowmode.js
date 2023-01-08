@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { calculateTime } = require('./../../utils/functions.js');
 
 module.exports = {
@@ -8,13 +8,12 @@ module.exports = {
 	usage: '/slowmode <duration> <units>',
 
 	permissions: ['Manage Channels'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('slowmode')
 		.setDescription('Applies or removes a channel slowmode')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels | PermissionFlagsBits.ManageGuild)
 
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for? (0 to remove)').setRequired(true))
 		.addStringOption(option => option
@@ -24,7 +23,6 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

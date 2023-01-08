@@ -7,10 +7,6 @@ module.exports = {
 	description: 'Shows lots of cool information about the bot!',
 	usage: '/about',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('about')
 		.setDescription('Shows lots of cool information about the bot!')
@@ -18,7 +14,6 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

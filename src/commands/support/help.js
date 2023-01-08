@@ -11,10 +11,6 @@ module.exports = {
 	description: 'Provides a list of all my commands!',
 	usage: '/help [command]',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Provides a list of all my commands!')
@@ -24,7 +20,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function
@@ -54,11 +49,11 @@ module.exports = {
 			embed.addFields({ name: '__Usage:__', value: formatUsage(cmd.usage ? cmd.usage : '/ ' + cmd.name), inline: false });
 
 			/* Add specific values and properties */
-			if (cmd.permissions[0] && cmd.ownerOnly == false) {
+			if (cmd.permissions[0]) {
 				embed.addFields({ name: '__Permissions:__', value: '`' + cmd.permissions.join('` `') + '`', inline: false });
 			}
-			if (!cmd.permissions[0] && cmd.ownerOnly == true) {
-				embed.addFields({ name: '__Permissions:__', value: '**Server Owner Only**', inline: false });
+			if (cmd?.cooldown?.text) {
+				embed.addFields({ name: '__Cooldown:__', value: `**${cmd.cooldowm.text}**`, inline: false });
 			}
 			if (cmd.error == true) {
 				embed.addFields({ name: '__Error:__', value: 'This command is currently unavailable, please try again later.', inline: false });

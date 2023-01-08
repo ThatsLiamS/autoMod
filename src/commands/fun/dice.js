@@ -6,10 +6,6 @@ module.exports = {
 	description: 'Roll a 6 sided die!',
 	usage: '/dice',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('dice')
 		.setDescription('Roll a 6 sided die!')
@@ -17,7 +13,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

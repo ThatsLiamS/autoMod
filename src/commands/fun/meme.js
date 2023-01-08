@@ -6,10 +6,6 @@ module.exports = {
 	description: 'Receive a meme from r/memes!',
 	usage: '/meme',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('meme')
 		.setDescription('Receive a meme from r/memes!')
@@ -17,7 +13,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

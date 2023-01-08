@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,20 +8,18 @@ module.exports = {
 	usage: '/unmute <member> [reason]',
 
 	permissions: ['Moderator Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('unmute')
 		.setDescription('Removes a timeout to a user')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers | PermissionFlagsBits.ManageRoles | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to unmute - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are we unmuting them?')),
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

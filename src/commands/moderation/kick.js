@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,20 +8,18 @@ module.exports = {
 	usage: '/kick <member> [reason]',
 
 	permissions: ['Kick Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('kick')
 		.setDescription('kicks a user from the server.')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to kick - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

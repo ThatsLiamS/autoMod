@@ -8,10 +8,6 @@ module.exports = {
 	description: 'Creates a reaction speed test. Then displays first few users to react!',
 	usage: '/reaction-test <reactions> <usercount>',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('reaction-test')
 		.setDescription('Creates a reactions-based speed test. Then displays first few users to react!')
@@ -31,7 +27,6 @@ module.exports = {
 
 	cooldown: { time: 30, text: '30 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

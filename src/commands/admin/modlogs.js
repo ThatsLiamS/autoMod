@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
 const { database } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,18 +8,18 @@ module.exports = {
 	usage: '/modlogs setup <channel>\n/modlogs enable\n/modlogs disable',
 
 	permissions: ['Manage Guild'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('modlogs')
 		.setDescription('Contains all the moderation log sub-commands!')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild | PermissionFlagsBits.ManageEvents)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
 			.setDescription('Sets up the moderation log system')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should it be logged').setRequired(true)),
+			.addChannelOption(option => option.setName('channel').setDescription('Where should it be logged')
+				.setRequired(true).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement)),
 		)
 
 		.addSubcommand(subcommand => subcommand
@@ -34,7 +34,6 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function
@@ -58,12 +57,7 @@ module.exports = {
 
 
 		if (subCommandName == 'setup') {
-			/* Checks it is a valid channel */
 			const channel = interaction.options.getChannel('channel');
-			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
-				interaction.followUp({ content: 'Please mention a valid text channel.' });
-				return false;
-			}
 
 			/* Sets the new value in the database */
 			guildData.Moderation.logs.channel = channel.id;

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { database, calculateTime, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,13 +8,12 @@ module.exports = {
 	usage: '/mute <member> <duration> <units> [reason]',
 
 	permissions: ['Moderator Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('mute')
 		.setDescription('Applies a timeout to a user')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers | PermissionFlagsBits.ManageRoles | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('member').setDescription('The member to mute - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('duration').setDescription('How long for?').setRequired(true))
@@ -30,7 +29,6 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

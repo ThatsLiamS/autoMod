@@ -6,10 +6,6 @@ module.exports = {
 	description: 'Flip a coin!',
 	usage: '/coinflip',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('coinflip')
 		.setDescription('Flip a coin!')
@@ -17,7 +13,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

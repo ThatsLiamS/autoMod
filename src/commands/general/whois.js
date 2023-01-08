@@ -7,10 +7,6 @@ module.exports = {
 	description: 'Shows information about a user',
 	usage: '/whois [user]',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('whois')
 		.setDescription('Shows information about a user!')
@@ -20,7 +16,6 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function

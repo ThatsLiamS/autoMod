@@ -8,10 +8,6 @@ module.exports = {
 	description: 'Suggest an improvement, command or feature!',
 	usage: '/suggest',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('suggest')
 		.setDescription('Suggest an improvement, command or feature!')
@@ -19,7 +15,6 @@ module.exports = {
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
 	defer: { defer: false, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

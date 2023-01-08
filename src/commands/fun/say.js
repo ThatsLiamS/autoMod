@@ -6,10 +6,6 @@ module.exports = {
 	description: 'Makes the bot repeat your message!',
 	usage: '/say <message>',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: false,
-
 	data: new SlashCommandBuilder()
 		.setName('say')
 		.setDescription('Makes me repeat your message!')
@@ -19,7 +15,6 @@ module.exports = {
 
 	cooldown: { time: 0, text: 'None (0)' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

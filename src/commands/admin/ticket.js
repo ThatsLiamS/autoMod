@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
 const { GuildSchema } = require('../../utils/Database Schema.js');
 const { database } = require('../../utils/functions.js');
 
@@ -15,20 +15,25 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ticket')
 		.setDescription('Contains all the tickets sub-commands!')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild | PermissionFlagsBits.ManageEvents)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
 			.setDescription('Sets up the ticket system')
-			.addChannelOption(option => option.setName('category').setDescription('The ticket\'s parent category:').setRequired(true))
-			.addChannelOption(option => option.setName('channel').setDescription('Where should users open tickets').setRequired(true))
+			.addChannelOption(option => option.setName('category').setDescription('The ticket\'s parent category:')
+				.setRequired(true).addChannelTypes(ChannelType.GuildCategory))
+			.addChannelOption(option => option.setName('channel').setDescription('Where should users open tickets')
+				.setRequired(true).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement))
 			.addRoleOption(option => option.setName('role').setDescription('Which role should be able to handle tickets:').setRequired(true)),
 		)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:').setRequired(false)),
+			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:')
+				.setRequired(false).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement)),
 		)
 
 		.addSubcommand(subcommand => subcommand
@@ -43,7 +48,6 @@ module.exports = {
 
 	cooldown: { time: 15, text: '15 seconds' },
 	defer: { defer: true, ephemeral: true },
-	error: false,
 
 	/**
 	 * @async @function
@@ -86,11 +90,6 @@ module.exports = {
 				new ButtonBuilder().setLabel('Create Ticket').setStyle(ButtonStyle.Success).setCustomId('tickets-create'),
 			]);
 
-			/* Send the ticketCreate message */
-			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
-				interaction.followUp({ content: 'Please mention a valid __**text**__ channel.' });
-				return false;
-			}
 			channel.send({ embeds: [ticketCreate], components: [row] });
 
 			/* Reply to the message */
@@ -105,14 +104,6 @@ module.exports = {
 
 			/* Define command arguments */
 			const channel = interaction.options.getChannel('channel');
-
-			/* Is the channel valid */
-			if (!channel || (channel?.type != 0 && channel?.type != 5)) {
-				interaction.followUp({ content: 'Please mention a valid __**text**__ channel.' });
-				return false;
-			}
-
-			/* Set the data */
 			guildData.Tickets.settings.logs = channel.id;
 
 			/* Reply to the message */

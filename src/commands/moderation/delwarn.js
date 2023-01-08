@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, Client, SlashCommandBuilder } = require('discord.js');
+const { CommandInteraction, Client, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,20 +8,18 @@ module.exports = {
 	usage: '/dewarn <user> <case ID>',
 
 	permissions: ['Kick Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('delwarn')
 		.setDescription('Removes a moderation action against a user.')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('user').setDescription('The user to delete logs for - @mention or ID').setRequired(true))
 		.addStringOption(option => option.setName('case').setDescription('Case number of the action').setRequired(true)),
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

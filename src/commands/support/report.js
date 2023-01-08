@@ -8,10 +8,6 @@ module.exports = {
 	description: 'Report a bug/issue to the developers!',
 	usage: '/report',
 
-	permissions: [],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('report')
 		.setDescription('Report a bug/issue to the developers!')
@@ -19,7 +15,6 @@ module.exports = {
 
 	cooldown: { time: 10 * 60, text: '10 minutes' },
 	defer: { defer: false, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { database, getUserId } = require('../../utils/functions.js');
 
 module.exports = {
@@ -8,20 +8,18 @@ module.exports = {
 	usage: '/history <user> [page]',
 
 	permissions: ['Kick Members'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('history')
 		.setDescription('Shows all moderation actions against a user.')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers | PermissionFlagsBits.ManageGuild)
 
 		.addStringOption(option => option.setName('user').setDescription('The user to fetch logs for - @mention or ID').setRequired(true))
 		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
 
 	/**
 	 * @async @function

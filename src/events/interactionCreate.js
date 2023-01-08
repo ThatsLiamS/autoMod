@@ -29,17 +29,6 @@ module.exports = {
 				return;
 			}
 
-			/* Loops through the required permissions */
-			if (cmd['permissions'] != []) {
-				for (const permission of cmd['permissions']) {
-					/* Loops through and check permissions against the user */
-					if (!interaction.member.permissions.has(permission.replace(' ', '_').toUpperCase())) {
-						interaction.reply({ content: 'Sorry, you do not have permission to run this command.', ephemeral: true });
-						return;
-					}
-				}
-			}
-
 			/* Work out the appropriate cooldown time */
 			if (!cooldowns.has(cmd.name)) cooldowns.set(cmd.name, new Collection());
 			const timestamps = cooldowns.get(cmd.name);

@@ -1,4 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
+// eslint-disable-next-line no-unused-vars
+const { CommandInteraction, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
 	name: 'purge',
@@ -6,13 +7,12 @@ module.exports = {
 	usage: '/purge <amount>',
 
 	permissions: ['Manage Messages'],
-	ownerOnly: false,
-	guildOnly: true,
-
 	data: new SlashCommandBuilder()
 		.setName('purge')
 		.setDescription('Mass deletes messages')
+
 		.setDMPermission(false)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages | PermissionFlagsBits.ManageGuild)
 
 		.addIntegerOption(option => option
 			.setName('amount').setDescription('How many messages do I delete').setMinValue(1).setMaxValue(100).setRequired(true),
@@ -20,7 +20,15 @@ module.exports = {
 
 	cooldown: { time: 10, text: '10 seconds' },
 	defer: { defer: true, ephemeral: false },
-	error: false,
+
+	/**
+	 * @async @function
+	 * @author Liam Skinner <me@liamskinner.co.uk>
+	 *
+	 * @param {Object} arguments
+	 * @param {CommandInteraction} arguments.interaction
+	 * @returns {Boolean}
+	**/
 	execute: async ({ interaction }) => {
 
 		/* Fetch the amount to delete */
