@@ -1,10 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-const { Interaction, Client, InteractionType, Collection } = require('discord.js');
+const { Interaction, Client, InteractionType, Events, Collection } = require('discord.js');
 const { formatTime } = require('./../utils/functions.js');
 const cooldowns = new Collection();
 
 module.exports = {
-	name: 'interactionCreate',
+	name: Events.InteractionCreate,
 	once: false,
 
 	/**

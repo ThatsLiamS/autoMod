@@ -35,12 +35,13 @@ module.exports = {
 		}
 
 		/* Create the new ticket channel */
-		const channel = await interaction.guild.channels.create(`ticket-${guildData.Tickets.case}`, {
+		const channel = await interaction.guild.channels.create({
+			name: `ticket-${guildData.Tickets.case}`,
 			type: ChannelType.GuildText,
 			topic: `${interaction.user.tag} ${interaction.user.id} | DO NOT MANUALLY DELETE`,
 			parent: guildData.Tickets.settings.category,
 			nsfw: false,
-			reason: 'New ticket channel.',
+			reason: 'New ticket channel by autoMod.',
 
 			permissionOverwrites: [{
 				id: interaction.user.id,
@@ -78,8 +79,8 @@ module.exports = {
 		logs?.send({ embeds: [embed_log] }).catch(() => false);
 
 		/* Update the values in the database */
-		guildData.tickets.case = Number(guildData.tickets.case) + 1;
-		guildData.tickets.active.push(interaction.user.id);
+		guildData.Tickets.case = Number(guildData.tickets.case) + 1;
+		guildData.Tickets.active.push(interaction.user.id);
 
 		await database.setValue(interaction.guild.id, guildData);
 

@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
-const { Guild, Client, EmbedBuilder, WebhookClient } = require('discord.js');
+const { Guild, Client, Events, EmbedBuilder, WebhookClient } = require('discord.js');
 
 module.exports = {
-	name: 'guildCreate',
+	name: Events.GuildCreate,
 	once: false,
 
 	/**

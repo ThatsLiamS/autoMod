@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-const { Message } = require('discord.js');
+const { Message, Events } = require('discord.js');
 const emojis = require('./../utils/emojis');
 
 module.exports = {
-	name: 'messageCreate',
+	name: Events.MessageCreate,
 	once: false,
 
 	/**

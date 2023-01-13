@@ -37,7 +37,7 @@ module.exports = {
 		/* Calculate total time in ms */
 		const dur = Number(interaction.options.getInteger('duration'));
 		const units = interaction.options.getString('units');
-		const time = calculateTime(dur, units);
+		const time = Math.floor(Number(calculateTime(dur, units) / 1000));
 
 		if (time > 21600) {
 			/* Higher than the Discord Max */

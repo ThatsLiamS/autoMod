@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message, EmbedBuilder, Events } = require('discord.js');
 const GhostPing = require('discord.js-ghost-ping');
 
 module.exports = {
-	name: 'messageDelete',
+	name: Events.MessageDelete,
 	once: false,
 
 	/**
