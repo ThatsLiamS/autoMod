@@ -8,7 +8,7 @@ module.exports = {
 	usage: '/ban <user> [days] [reason]',
 
 	permissions: ['Ban Members'],
-	ata: new SlashCommandBuilder()
+	data: new SlashCommandBuilder()
 		.setName('ban')
 		.setDescription('Bans a user from the server.')
 
