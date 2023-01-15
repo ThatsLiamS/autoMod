@@ -1,18 +1,20 @@
 # autoMod
 
-autoMod is a cutting edge, verified Discord moderation bot designed to keep your server a safe place for all members. autoMod comes with many features, such as our ticket syetem and ghost ping detection system, and with many more added all the time.  This repository comes to you from the developer of verified bots: **Coin Flipper**, **Slothy** and **kekbot**.
+autoMod is a state-of-the-art moderation bot for Discord that is designed to make managing a server easy and efficient. The bot is equipped with powerful features that allow for automatic deletion of messages containing specific keywords or phrases, ban or kick of users who violate the server's rules, and logging of all moderated actions for easy reference and accountability. 
+
+The bot can be easily installed by inviting it to your server via the [provided link](https://discord.com/api/oauth2/authorize?client_id=782985846474932315&permissions=8&scope=applications.commands%20bot) and configured using the available slash commands. Additionally, it has a **[support server](https://discord.gg/2je9aJynqt)** and an **[open-source GitHub repository](https://github.com/ThatsLiamS/autoMod)** where users can report issues or contribute to its development. Overall, autoMod is a reliable and user-friendly solution for managing your Discord server effectively.
 
 ## Support
 
 #### General Support
 
-If you are ever unsure about autoMod or have any questions, please do not hesitate to join our [Discord Support Server](https://automod.liamskinner.co.uk/support) and we will be happy to answer any concerns.
+If you are ever unsure about autoMod or have any questions, please do not hesitate to join our [Discord Support Server](https://discord.gg/2je9aJynqt) and we will be happy to answer any concerns.
 
 #### Reporting Issues
 
 We currently support two separate ways to report any issues and bugs with autoMod. 
 
-1. The first is the **/report <issue>** command, the command will ask for a description of the error and then promptly alert the developers. 
+1. The first is the **/report** command, fill in the modal with as much information as possible which will then promptly alert the developers. 
 
 2. The second is to open an [issue](https://github.com/ThatsLiamS/autoMod/issues) on the GitHub repository. Upon opening a new GitHub Issue, fill out all the relevant fields and submit the report.
 
@@ -24,30 +26,13 @@ Contributions are always welcome! A massive benefit of being an open-source bot 
 See `contributing.md` for ways to get started. Please adhere to this project's `code of conduct`.
 
 
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your `.env` file.  A copy of this can be found in `example.env`
-
-```.env
-# https://discord.com/developers/applications/CLIENT_ID/bot
-BotToken = "String"
-
-# https://gist.github.com/ThatsLiamS/ab4c35d70c512d7528332db84093165c
-Database = {Object}
-
-# Discord Webhook URLS
-SuggestionWebhook = "String"
-ReportWebhook = "String"
-```
-
-
 ## Authors
 key contributors of autoMod
-- [@ThatsLiamS](https://github.com/ThatsLiamS)
+- **[@ThatsLiamS](https://github.com/ThatsLiamS)**
 
 
 ## Links
 
-- [Invite](https://automod.liamskinner.co.uk/invite)
+- [Invite](https://discord.com/api/oauth2/authorize?client_id=782985846474932315&permissions=8&scope=applications.commands%20bot)
 - [Support Server](https://automod.liamskinner.co.uk/support)
 - [GitHub](https://github.com/ThatsLiamS/autoMod)
