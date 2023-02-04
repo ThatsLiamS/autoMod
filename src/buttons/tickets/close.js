@@ -28,10 +28,10 @@ module.exports = {
 
 		/* Remove the user from the channel */
 		await interaction.channel.permissionOverwrites.create(user, {
-			SEND_MESSAGES: false,
-			ADD_REACTIONS: false,
-			READ_MESSAGE_HISTORY: false,
-			VIEW_CHANNEL: false,
+			'SendMessages': false,
+			'AddReactions': false,
+			'ReadMessageHistory': false,
+			'ViewChannel': false,
 		});
 
 		/* Allow the moderators to delete the channel */

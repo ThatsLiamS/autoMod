@@ -79,7 +79,7 @@ module.exports = {
 		logs?.send({ embeds: [embed_log] }).catch(() => false);
 
 		/* Update the values in the database */
-		guildData.Tickets.case = Number(guildData.tickets.case) + 1;
+		guildData.Tickets.case = Number(guildData.Tickets.case) + 1;
 		guildData.Tickets.active.push(interaction.user.id);
 
 		await database.setValue(interaction.guild.id, guildData);

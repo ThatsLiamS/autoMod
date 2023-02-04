@@ -25,7 +25,7 @@ module.exports = {
 			.addChannelOption(option => option.setName('category').setDescription('The ticket\'s parent category:')
 				.setRequired(true).addChannelTypes(ChannelType.GuildCategory))
 			.addChannelOption(option => option.setName('channel').setDescription('Where should users open tickets')
-				.setRequired(true).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement))
+				.setRequired(true).addChannelTypes(ChannelType.GuildText))
 			.addRoleOption(option => option.setName('role').setDescription('Which role should be able to handle tickets:').setRequired(true)),
 		)
 
@@ -33,7 +33,7 @@ module.exports = {
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
 			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:')
-				.setRequired(false).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement)),
+				.setRequired(false).addChannelTypes(ChannelType.GuildText)),
 		)
 
 		.addSubcommand(subcommand => subcommand
