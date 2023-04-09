@@ -22,7 +22,7 @@
 		"discord.js-ghost-ping": "^3.0.0",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
-		"firebase-admin": "^11.5.0",
+		"firebase-admin": "^11.6.0",
 		"got": "^12.6.0",
 		"moment": "^2.29.4"
 	},
