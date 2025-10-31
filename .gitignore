@@ -1,6 +1,8 @@
-# Dependency directories
+# NodeJS Dependencies
 node_modules/
-jspm_packages/
 
-# dotenv environment variables file
+# Package Lock File
+package-lock.json
+
+# Environment Variables
 .env
