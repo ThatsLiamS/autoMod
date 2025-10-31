@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { database, getUserId } = require('../../utils/functions.js');
+
+const { database, getUserId } = require('../../utils/functions');
 
 module.exports = {
 	name: 'history',
@@ -15,11 +16,26 @@ module.exports = {
 		.setDMPermission(false)
 		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.KickMembers | PermissionFlagsBits.ManageGuild)
 
-		.addStringOption(option => option.setName('user').setDescription('The user to fetch logs for - @mention or ID').setRequired(true))
-		.addIntegerOption(option => option.setName('page').setDescription('Moderation log page to display').setMinValue(1).setRequired(false)),
+		.addStringOption(option => option
+			.setName('user')
+			.setDescription('The user to fetch logs for - @mention or ID')
+			.setRequired(true),
+		)
+		.addIntegerOption(option => option
+			.setName('page')
+			.setDescription('Moderation log page to display')
+			.setMinValue(1)
+			.setRequired(false),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -34,10 +50,12 @@ module.exports = {
 
 		/* Fetch the target user */
 		const userId = getUserId({ string: interaction.options.getString('user') });
-		const user = await client.users.fetch(userId).catch(() => false);
+		const user = await client.users.fetch(userId).catch();
 		if (!user) {
-			interaction.followUp({ content: 'Sorry, I can\'t find that user.' });
-			return;
+			interaction.followUp({
+				content: 'Sorry, I can\'t find that user.',
+			});
+			return false;
 		}
 
 		/* Fetch the Guild's Moderation information */
@@ -45,9 +63,11 @@ module.exports = {
 		const guildData = await database.getValue(interaction.guild.id);
 
 		/* What if they're innocent? */
-		if (guildData.Moderation.cases[user.id] == undefined) {
-			interaction.followUp({ content: 'That user has no recorded actions.' });
-			return;
+		if (guildData.Moderation.cases[user.id] === undefined) {
+			interaction.followUp({
+				content: 'That user has no recorded actions.',
+			});
+			return false;
 		}
 
 		/* Create the pages' data */
@@ -65,7 +85,9 @@ module.exports = {
 				.setTitle(`${user.username}'s logs`)
 				.setColor('#DC143C')
 				.setTimestamp()
-				.setFooter({ text: `Page ${x}/${pageData.length}` });
+				.setFooter({
+					text: `Page ${x}/${pageData.length}`,
+				});
 
 			/* Loop through the selected moderation actions */
 			for (const action of pageData[x]) {
@@ -81,9 +103,11 @@ module.exports = {
 
 		/* Responds to the moderator */
 		const embed = pages[pageNumber - 1] ? pages[pageNumber - 1] : pages[0];
-		interaction.followUp({ embeds: [embed], ephemeral: true });
+		interaction.followUp({
+			embeds: [embed],
+			ephemeral: true,
+		});
 
 		return true;
-
 	},
 };

@@ -11,10 +11,20 @@ module.exports = {
 		.setDescription('Makes me repeat your message!')
 		.setDMPermission(true)
 
-		.addStringOption(option => option.setName('message').setDescription('What should I say?').setRequired(true)),
+		.addStringOption(option => option
+			.setName('message')
+			.setDescription('What should I say?')
+			.setRequired(true),
+		),
 
-	cooldown: { time: 0, text: 'None (0)' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 0,
+		text: 'None (0)',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -28,12 +38,18 @@ module.exports = {
 
 		/* Formats into a blockquote */
 		const message = interaction.options.getString('message')
-			.split('\n').map((line) => '> ' + line).join('\n');
+			.split('\n')
+			.map((line) => '> ' + line)
+			.join('\n');
 
 		/* Responds to the user */
 		interaction.followUp({
 			content: `${message}\n\n**- ${interaction.user.username}**`,
-			allowedMentions: { parse: [], users: [], roles: [] },
+			allowedMentions: {
+				parse: [],
+				users: [],
+				roles: [],
+			},
 			ephemeral: false,
 		});
 

@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { makeGrid } = require('../../utils/functions.js');
+
+const { makeGrid } = require('../../utils/functions');
 
 module.exports = {
 	name: 'about',
@@ -12,8 +13,14 @@ module.exports = {
 		.setDescription('Shows lots of cool information about the bot!')
 		.setDMPermission(false),
 
-	cooldown: { time: 15, text: '15 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 15,
+		text: '15 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -30,7 +37,11 @@ module.exports = {
 		const promises = [
 			client.shard.fetchClientValues('ws.ping'),
 			client.shard.fetchClientValues('guilds.cache.size'),
-			client.shard.broadcastEval(() => this.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
+			client.shard.broadcastEval(() =>
+				this.guilds.cache.reduce((acc, guild) =>
+					acc + guild.memberCount, 0,
+				),
+			),
 		];
 		const results = await Promise.all(promises);
 
@@ -48,11 +59,15 @@ module.exports = {
 				{ name: '**Shard ID:**', value: `\`#${Number(interaction.guild.shardId) + 1} out of ${client.shard.count}\``, inline: true },
 				{ name: '**Developer:**', value: '**[ThatsLiamS#6950](https://liamskinner.co.uk)**', inline: true },
 			)
-			.setFooter({ text: 'Do /help to get started.' });
+			.setFooter({
+				text: 'Do /help to get started.',
+			});
 
 		/* Responds to the user */
-		interaction.followUp({ embeds: [embed] });
-		return true;
+		interaction.followUp({
+			embeds: [embed],
+		});
 
+		return true;
 	},
 };

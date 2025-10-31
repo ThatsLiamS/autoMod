@@ -1,7 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
-const { GuildSchema } = require('../../utils/Database Schema.js');
-const { database } = require('../../utils/functions.js');
+
+const { GuildSchema } = require('../../utils/Database Schema');
+const { database } = require('../../utils/functions');
 
 module.exports = {
 	name: 'ticket',
@@ -22,18 +23,34 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
 			.setDescription('Sets up the ticket system')
-			.addChannelOption(option => option.setName('category').setDescription('The ticket\'s parent category:')
-				.setRequired(true).addChannelTypes(ChannelType.GuildCategory))
-			.addChannelOption(option => option.setName('channel').setDescription('Where should users open tickets')
-				.setRequired(true).addChannelTypes(ChannelType.GuildText))
-			.addRoleOption(option => option.setName('role').setDescription('Which role should be able to handle tickets:').setRequired(true)),
+			.addChannelOption(option => option
+				.setName('category')
+				.setDescription('The ticket\'s parent category:')
+				.setRequired(true)
+				.addChannelTypes(ChannelType.GuildCategory),
+			)
+			.addChannelOption(option => option
+				.setName('channel')
+				.setDescription('Where should users open tickets')
+				.setRequired(true)
+				.addChannelTypes(ChannelType.GuildText),
+			)
+			.addRoleOption(option => option
+				.setName('role')
+				.setDescription('Which role should be able to handle tickets:')
+				.setRequired(true),
+			),
 		)
 
 		.addSubcommand(subcommand => subcommand
 			.setName('logs')
 			.setDescription('Creates and enables ticket logs')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should the logs be sent:')
-				.setRequired(false).addChannelTypes(ChannelType.GuildText)),
+			.addChannelOption(option => option
+				.setName('channel')
+				.setDescription('Where should the logs be sent:')
+				.setRequired(false)
+				.addChannelTypes(ChannelType.GuildText),
+			),
 		)
 
 		.addSubcommand(subcommand => subcommand
@@ -46,8 +63,14 @@ module.exports = {
 			.setDescription('Disables the ticket system'),
 		),
 
-	cooldown: { time: 15, text: '15 seconds' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 15,
+		text: '15 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -62,15 +85,19 @@ module.exports = {
 		/* Which command was run */
 		const subCommandName = interaction.options.getSubcommand();
 		if (!subCommandName) {
-			interaction.followUp({ content: 'Woah, an unexpected error has occurred. Please try again!' });
+			interaction.followUp({
+				content: 'Woah, an unexpected error has occurred. Please try again!',
+			});
 			return false;
 		}
 
 		/* Fetch the guild's data */
 		const guildData = await database.getValue(interaction.guild.id);
-		if (!guildData.Tickets) guildData.Tickets = GuildSchema.Tickets;
+		if (!guildData.Tickets) {
+			guildData.Tickets = GuildSchema.Tickets;
+		}
 
-		if (subCommandName == 'setup') {
+		if (subCommandName === 'setup') {
 
 			/* Define command arguments */
 			const category = interaction.options.getChannel('category');
@@ -86,50 +113,70 @@ module.exports = {
 				.setTitle(`${interaction.guild.name} | Support`)
 				.setColor('Green')
 				.setDescription(`Create a ticket below to speak privately to <@&${role.id}> and our staff team. Abuse or spam tickets will be dealt with accordingly.`);
+			
 			const row = new ActionRowBuilder().addComponents([
-				new ButtonBuilder().setLabel('Create Ticket').setStyle(ButtonStyle.Success).setCustomId('tickets-create'),
+				new ButtonBuilder()
+					.setLabel('Create Ticket')
+					.setStyle(ButtonStyle.Success)
+					.setCustomId('tickets-create'),
 			]);
 
-			channel.send({ embeds: [ticketCreate], components: [row] });
+			channel.send({
+				embeds: [ticketCreate],
+				components: [row],
+			});
 
 			/* Reply to the message */
 			const embed = new EmbedBuilder()
 				.setTitle('Ticket System fully set up!')
 				.setColor('Green')
 				.setDescription(`The **Ticket System** has been set up to <#${category.id}>. Use the \`/ticket enable\` command to turn it on.`);
-			interaction.followUp({ embeds: [embed] });
+
+			interaction.followUp({
+				embeds: [embed],
+			});
 		}
 
-		if (subCommandName == 'logs') {
+		if (subCommandName === 'logs') {
 
 			/* Define command arguments */
 			const channel = interaction.options.getChannel('channel');
 			guildData.Tickets.settings.logs = channel.id;
 
 			/* Reply to the message */
-			interaction.followUp({ content: `The **Ticket Logs** have been set to <#${channel.id}>` });
+			interaction.followUp({
+				content: `The **Ticket Logs** have been set to <#${channel.id}>`,
+			});
 		}
 
-		if (subCommandName == 'enable') {
+		if (subCommandName === 'enable') {
 
-			if (guildData.Tickets.settings.on == true) {
-				interaction.followUp({ content: 'The **Ticket System** is already enabled.' });
+			if (guildData.Tickets.settings.on === true) {
+				interaction.followUp({
+					content: 'The **Ticket System** is already enabled.',
+				});
 				return false;
 			}
 
 			guildData.Tickets.settings.on = true;
-			interaction.followUp({ content: 'The **Ticket System** has been enabled.' });
+			interaction.followUp({
+				content: 'The **Ticket System** has been enabled.',
+			});
 		}
 
-		if (subCommandName == 'disable') {
+		if (subCommandName === 'disable') {
 
-			if (guildData.Tickets.settings.on == false) {
-				interaction.followUp({ content: 'The **Ticket System** is already disabled.' });
+			if (guildData.Tickets.settings.on === false) {
+				interaction.followUp({
+					content: 'The **Ticket System** is already disabled.',
+				});
 				return false;
 			}
 
 			guildData.Tickets.settings.on = false;
-			interaction.followUp({ content: 'The **Ticket System** has been disabled.' });
+			interaction.followUp({
+				content: 'The **Ticket System** has been disabled.',
+			});
 		}
 
 		/* Save the newly set data */

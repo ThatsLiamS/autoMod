@@ -11,8 +11,14 @@ module.exports = {
 		.setDescription('Receive a meme from r/memes!')
 		.setDMPermission(true),
 
-	cooldown: { time: 0, text: 'None (0)' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 0,
+		text: 'None (0)',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -36,12 +42,16 @@ module.exports = {
 				.setDescription(`👍 ${content[0].data.children[0].data.ups}    💬 ${content[0].data.children[0].data.num_comments}`)
 				.setColor('Random')
 				.setImage(`${content[0].data.children[0].data.url}`)
-				.setFooter({ text: 'Powered by kekbot#5882' });
+				.setFooter({
+					text: 'Powered by kekbot#5882',
+				});
 
 			/* Responds to the user */
-			interaction.followUp({ embeds: [embed] });
+			interaction.followUp({
+				embeds: [embed],
+			});
+
 			return true;
 		});
-
 	},
 };

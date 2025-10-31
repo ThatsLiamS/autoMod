@@ -16,14 +16,21 @@ module.exports = {
 	 * @returns {Boolean}
 	**/
 	execute: async ({ interaction }) => {
-		await interaction.reply({ content: 'This channel will be deleted shortly.' });
+		await interaction.reply({
+			content: 'This channel will be deleted shortly.',
+		});
 
 		/* Deletes the channel */
 		interaction.channel.delete()
 			.catch(() => {
 				/* Woah, an error appeared */
-				interaction.followUp({ content: 'I am unable to delete this ticket.\nYou **may manually** delete it.' });
+				interaction.followUp({
+					content: 'I am unable to delete this ticket.\nYou **may manually** delete it.',
+				});
+
+				return false;
 			});
 
+		return true;
 	},
 };

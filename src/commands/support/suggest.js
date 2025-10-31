@@ -13,8 +13,14 @@ module.exports = {
 		.setDescription('Suggest an improvement, command or feature!')
 		.setDMPermission(false),
 
-	cooldown: { time: 10 * 60, text: '10 minutes' },
-	defer: { defer: false, ephemeral: false },
+	cooldown: {
+		time: 10 * 60,
+		text: '10 minutes',
+	},
+	defer: {
+		defer: false,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -29,20 +35,33 @@ module.exports = {
 
 		/* Create modal to display */
 		const modalPopup = new ModalBuilder()
-			.setCustomId(`report-${interaction.user.id}-${client.user.id}`).setTitle('autoMod\'s Feature Request!');
+			.setCustomId(`report-${interaction.user.id}-${client.user.id}`)
+			.setTitle('autoMod\'s Feature Request!');
 
 		/* Add input fields */
 		const title = new ActionRowBuilder().addComponents(
-			new TextInputBuilder().setCustomId('title').setLabel('Short title')
-				.setStyle(TextInputStyle.Short).setMaxLength(150).setMinLength(5),
+			new TextInputBuilder()
+				.setCustomId('title')
+				.setLabel('Short title')
+				.setStyle(TextInputStyle.Short)
+				.setMaxLength(150)
+				.setMinLength(5),
 		);
 		const description = new ActionRowBuilder().addComponents(
-			new TextInputBuilder().setCustomId('description').setLabel('A clear and concise description')
-				.setStyle(TextInputStyle.Paragraph).setMaxLength(2000).setMinLength(50),
+			new TextInputBuilder()
+				.setCustomId('description')
+				.setLabel('A clear and concise description')
+				.setStyle(TextInputStyle.Paragraph)
+				.setMaxLength(2000)
+				.setMinLength(50),
 		);
 		const reproduce = new ActionRowBuilder().addComponents(
-			new TextInputBuilder().setCustomId('solve').setLabel('Does this solve a bug?')
-				.setStyle(TextInputStyle.Paragraph).setMaxLength(1000).setMinLength(2)
+			new TextInputBuilder()
+				.setCustomId('solve')
+				.setLabel('Does this solve a bug?')
+				.setStyle(TextInputStyle.Paragraph)
+				.setMaxLength(1000)
+				.setMinLength(2)
 				.setPlaceholder('Yes, it always frustrates me when [....]'),
 		);
 
@@ -52,37 +71,58 @@ module.exports = {
 
 		/* Get the responses */
 		const filter = (modal) => modal.customId === `report-${interaction.user.id}-${client.user.id}`;
-		const res = interaction.awaitModalSubmit({ filter, time: 150_000 })
+		const res = interaction.awaitModalSubmit({
+			filter,
+			time: 150_000,
+		})
 			.then(async (modal) => {
 
 				await modal.deferReply({ ephemeral: true });
 
 				const embed = new EmbedBuilder()
 					.setColor('#0099ff')
-					.setAuthor({ name: modal.user.username, iconURL: modal.user.displayAvatarURL() })
+					.setAuthor({
+						name: modal.user.username,
+						iconURL: modal.user.displayAvatarURL(),
+					})
 					.setTitle(`${modal.fields.getTextInputValue('title')}`)
 					.setDescription(`**Description:**\n${format(modal.fields.getTextInputValue('description'))}`)
-					.addFields({ name: '__Does it solve a bug?__', value: `${format(modal.fields.getTextInputValue('solve'))}` })
-					.setFooter({ text: `User ID: ${modal.member.id}` })
+					.addFields({
+						name: '__Does it solve a bug?__',
+						value: `${format(modal.fields.getTextInputValue('solve'))}`,
+					})
+					.setFooter({
+						text: `User ID: ${modal.member.id}`,
+					})
 					.setTimestamp();
 
 				/* Locate and send the webhook */
-				const webhook = new WebhookClient({ url: process.env['SuggestionWebhook'] });
-				webhook.send({ username: client.user.username, avatarURL: client.user.displayAvatarURL(), embeds: [embed] });
+				const webhook = new WebhookClient({
+					url: process.env['SuggestionWebhook'],
+				});
+				webhook.send({
+					username: client.user.username,
+					avatarURL: client.user.displayAvatarURL(),
+					embeds: [embed],
+				});
 
 				/* Returns true to enable the cooldown */
-				modal.followUp({ content: 'Thank you, your suggest has been sent to our developers', ephemeral: true });
+				modal.followUp({
+					content: 'Thank you, your suggest has been sent to our developers',
+					ephemeral: true,
+				});
 				return true;
 
 			})
 			/* If they didn't response */
 			.catch(async () => {
-				await interaction.followUp({ content: 'Sorry, you took too long to repond.' });
+				await interaction.followUp({
+					content: 'Sorry, you took too long to repond.',
+				});
 				return false;
 			});
 
 		/* Returns boolean to enable the cooldown */
 		return res;
-
 	},
 };

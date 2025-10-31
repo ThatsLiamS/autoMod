@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
-const { database } = require('../../utils/functions.js');
+
+const { database } = require('../../utils/functions');
 
 module.exports = {
 	name: 'modlogs',
@@ -18,8 +19,12 @@ module.exports = {
 		.addSubcommand(subcommand => subcommand
 			.setName('setup')
 			.setDescription('Sets up the moderation log system')
-			.addChannelOption(option => option.setName('channel').setDescription('Where should it be logged')
-				.setRequired(true).addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement)),
+			.addChannelOption(option => option
+				.setName('channel')
+				.setDescription('Where should it be logged')
+				.setRequired(true)
+				.addChannelTypes(ChannelType.GuildText | ChannelType.GuildAnnouncement),
+			),
 		)
 
 		.addSubcommand(subcommand => subcommand
@@ -32,8 +37,14 @@ module.exports = {
 			.setDescription('Disables the modlog system'),
 		),
 
-	cooldown: { time: 15, text: '15 seconds' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 15,
+		text: '15 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -48,7 +59,9 @@ module.exports = {
 		/* Fetch the subcommand that's used */
 		const subCommandName = interaction.options.getSubcommand();
 		if (!subCommandName) {
-			interaction.followUp({ content: 'Woah, an unexpected error has occurred. Please try again!' });
+			interaction.followUp({
+				content: 'Woah, an unexpected error has occurred. Please try again!',
+			});
 			return false;
 		}
 
@@ -56,7 +69,7 @@ module.exports = {
 		const guildData = await database.getValue(interaction.guild.id);
 
 
-		if (subCommandName == 'setup') {
+		if (subCommandName === 'setup') {
 			const channel = interaction.options.getChannel('channel');
 
 			/* Sets the new value in the database */
@@ -67,46 +80,57 @@ module.exports = {
 				.setDescription(`The **Moderation Logs** have been set up to ${channel}. Use the \`/modlogs enable\` command to turn it on.`);
 
 			/* responds to the user */
-			interaction.followUp({ embeds: [embed] });
+			interaction.followUp({
+				embeds: [embed],
+			});
 		}
 
-		if (subCommandName == 'enable') {
+		if (subCommandName === 'enable') {
 
 			/* Has it been set up? */
-			if (!guildData.Moderation.logs.channel || guildData.Moderation.logs.channel == '') {
+			if (!guildData.Moderation.logs.channel || guildData.Moderation.logs.channel === '') {
 				const embed = new EmbedBuilder()
 					.setTitle('An error has occurred!')
 					.setColor('Red')
 					.setDescription('The **Moderation Logs** are required to be setup before being enabled. Please run the `/modlogs setup <channel>` command and try again.');
 
-				interaction.followUp({ embeds: [embed] });
+				interaction.followUp({
+					embeds: [embed],
+				});
 				return false;
 			}
 
 			/* Is it already enabled */
-			if (guildData.Moderation.logs.on == true) {
-				interaction.followUp({ content: 'The **Moderation Logs** are already enabled in this server.' });
+			if (guildData.Moderation.logs.on === true) {
+				interaction.followUp({
+					content: 'The **Moderation Logs** are already enabled in this server.',
+				});
 				return false;
 			}
 
 			guildData.Moderation.logs.on = true;
-			interaction.followUp({ content: 'The **Moderation Logs** have been enabled.' });
+			interaction.followUp({
+				content: 'The **Moderation Logs** have been enabled.',
+			});
 		}
 
-		if (subCommandName == 'disable') {
+		if (subCommandName === 'disable') {
 			/* Is it already disabled */
-			if (guildData.Moderation.logs.on != true) {
-				interaction.followUp({ content: 'The **Moderation Logs** are already disabled in this server.' });
+			if (guildData.Moderation.logs.on !== true) {
+				interaction.followUp({
+					content: 'The **Moderation Logs** are already disabled in this server.',
+				});
 				return false;
 			}
 
 			guildData.Moderation.logs.on = false;
-			interaction.followUp({ content: 'The **Moderation Logs** have been disabled.' });
+			interaction.followUp({
+				content: 'The **Moderation Logs** have been disabled.',
+			});
 		}
 
 		/* Sets the values in the database */
 		await database.setValue(interaction.guild.id, guildData);
 		return true;
-
 	},
 };

@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { database, getUserId } = require('../../utils/functions.js');
+
+const { database, getUserId } = require('../../utils/functions');
 
 module.exports = {
 	name: 'kick',
@@ -15,11 +16,25 @@ module.exports = {
 		.setDMPermission(false)
 		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.ManageGuild)
 
-		.addStringOption(option => option.setName('member').setDescription('The member to kick - @mention or ID').setRequired(true))
-		.addStringOption(option => option.setName('reason').setDescription('Why are you kicking them?').setRequired(false)),
+		.addStringOption(option => option
+			.setName('member')
+			.setDescription('The member to kick - @mention or ID')
+			.setRequired(true),
+		)
+		.addStringOption(option => option
+			.setName('reason')
+			.setDescription('Why are you kicking them?')
+			.setRequired(false),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -35,18 +50,24 @@ module.exports = {
 		const userId = getUserId({ string: interaction.options.getString('member') });
 		const member = interaction.guild.members.cache.get(userId);
 		if (!member) {
-			interaction.followUp({ content: 'I am unable to find that member.' });
-			return;
+			interaction.followUp({
+				content: 'I am unable to find that member.',
+			});
+			return false;
 		}
 		/* Fetch the reason provided */
-		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
+		const reason = interaction.options.getString('reason')
+			? interaction.options.getString('reason')
+			: 'No reason specified';
 
 
 		return interaction.guild.members.kick(member, `Mod: ${interaction.user.tag}\nReason: ${reason}`)
 			.then(async () => {
 
 				const guildData = await database.getValue(interaction.guild.id);
-				if (!guildData.Moderation.cases[member.id]) guildData.Moderation.cases[member.id] = [];
+				if (!guildData.Moderation.cases[member.id]) {
+					guildData.Moderation.cases[member.id] = [];
+				}
 				guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 				const object = {
@@ -67,9 +88,12 @@ module.exports = {
 				await database.setValue(interaction.guild.id, guildData);
 
 				/* Sends an Embed logging this action */
-				if (guildData.Moderation.logs.on == true) {
+				if (guildData.Moderation.logs.on === true) {
 					const logEmbed = new EmbedBuilder()
-						.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+						.setAuthor({
+							name: interaction.user.tag,
+							iconURL: interaction.user.displayAvatarURL(),
+						})
 						.setTitle(`🔨 Kicked: ${member.user.tag}`)
 						.setColor('#DC143C')
 						.addFields(
@@ -80,13 +104,25 @@ module.exports = {
 						.setTimestamp();
 
 					const channel = interaction.guild.channels.cache.get(guildData.Moderation.logs.channel);
-					channel?.send({ embeds: [logEmbed] }).catch(() => false);
+					channel?.send({
+						embeds: [logEmbed],
+					}).catch();
 				}
 
 				/* Responds to the moderator */
-				interaction.followUp({ content: `${member.user.tag} has been kicked.`, ephemeral: true });
+				interaction.followUp({
+					content: `${member.user.tag} has been kicked.`,
+					ephemeral: true,
+				});
+
 				return true;
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
+			.catch(() => {
+				interaction.followUp({
+					content: 'Sorry, an error has occurred, please double check my permissions.',
+					ephemeral: true,
+				});
+				return false;
+			});
 	},
 };

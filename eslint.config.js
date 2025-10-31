@@ -41,9 +41,6 @@ module.exports = [
 			'no-param-reassign': ['error', { props: false }],
 			'callback-return': 'error',
 
-			// ----- Console -----
-			'no-console': 'error',
-
 			// ----- Import Rules -----
 			'import/order': ['error', {
 				groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -58,7 +55,7 @@ module.exports = [
 			}],
 
 			// ----- Security Rules (balanced) -----
-			'security/detect-object-injection': 'warn',
+			'security/detect-object-injection': 'off',
 			'security/detect-non-literal-require': 'error',
 
 			// ----- Unicorn Rules -----

@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { ButtonInteraction, Client, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { database } = require('../../utils/functions.js');
+
+const { database } = require('../../utils/functions');
 
 module.exports = {
 	name: 'close',
@@ -38,7 +39,10 @@ module.exports = {
 		const row = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
-					.setStyle(ButtonStyle.Danger).setLabel('Delete').setEmoji('🛑').setCustomId('tickets-delete'),
+					.setStyle(ButtonStyle.Danger)
+					.setLabel('Delete')
+					.setEmoji('🛑')
+					.setCustomId('tickets-delete'),
 			);
 
 		const logs = interaction.guild.channels.cache.get(guildData.Tickets.settings.logs);
@@ -46,17 +50,26 @@ module.exports = {
 			.setTitle('Ticket Closure')
 			.setColor('Red')
 			.setDescription(`${user.tag}'s ticket has been closed by ${interaction.user.username}`)
-			.setFooter({ text: `${user.tag} (${user.id})` });
+			.setFooter({
+				text: `${user.tag} (${user.id})`,
+			});
 
 		/* Send an embed logging this action */
-		logs?.send({ embeds: [embed] }).catch(() => false);
+		logs?.send({
+			embeds: [embed],
+		}).catch();
 
 		/* Set the value into the database */
-		guildData.Tickets.active = guildData.Tickets.active.filter(m => m != user.id);
+		guildData.Tickets.active = guildData.Tickets.active.filter(m => m !== user.id);
 		await database.setValue(interaction.guild.id, guildData);
 
 		/* Respond in the channel */
-		interaction.followUp({ components: [row], content: 'Ticket has been locked to staff only.\nReact with 🛑 to delete the ticket.', ephemeral: false });
+		interaction.followUp({
+			components: [row],
+			content: 'Ticket has been locked to staff only.\nReact with 🛑 to delete the ticket.',
+			ephemeral: false,
+		});
 
+		return true;
 	},
 };

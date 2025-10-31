@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { ButtonInteraction, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ChannelType, PermissionsBitField } = require('discord.js');
-const { database } = require('../../utils/functions.js');
+
+const { database } = require('../../utils/functions');
 
 module.exports = {
 	name: 'create',
@@ -17,21 +18,30 @@ module.exports = {
 	 * @returns {Boolean}
 	**/
 	execute: async ({ interaction }) => {
-		await interaction.reply({ content: 'processing...', ephemeral: true });
+		await interaction.reply({
+			content: 'processing...',
+			ephemeral: true,
+		});
 
 		/* Fetch the Guild's information */
 		const guildData = await database.getValue(interaction.guild.id);
 
 		/* Are tickets enabled */
-		if (guildData.Tickets.settings.on == false) {
-			interaction.editReply({ content: 'Tickets have been disabled by the staff.', ephemeral: true });
-			return;
+		if (guildData.Tickets.settings.on === false) {
+			interaction.editReply({
+				content: 'Tickets have been disabled by the staff.',
+				ephemeral: true,
+			});
+			return false;
 		}
 
 		/* Does the user still have a ticket */
 		if (guildData.Tickets.active.includes(interaction.user.id)) {
-			interaction.editReply({ content: 'You already have an active ticket.', ephemeral: true });
-			return;
+			interaction.editReply({
+				content: 'You already have an active ticket.',
+				ephemeral: true,
+			});
+			return false;
 		}
 
 		/* Create the new ticket channel */
@@ -61,12 +71,22 @@ module.exports = {
 		const row = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
-					.setStyle(ButtonStyle.Primary).setLabel('Close').setEmoji('🔒').setCustomId('tickets-close'),
+					.setStyle(ButtonStyle.Primary)
+					.setLabel('Close')
+					.setEmoji('🔒')
+					.setCustomId('tickets-close'),
 			);
 
 		/* Sends the control panel into the channel */
-		channel.send({ content: `${interaction.user}`, embeds: [embed], components: [row] });
-		interaction.editReply({ content: 'Your ticket has been created', ephemeral: true });
+		channel.send({
+			content: `${interaction.user}`,
+			embeds: [embed],
+			components: [row],
+		});
+		interaction.editReply({
+			content: 'Your ticket has been created',
+			ephemeral: true,
+		});
 
 		/* Create an embed logging this action */
 		const logs = interaction.guild.channels.cache.get(guildData.Tickets.settings.logs);
@@ -74,15 +94,19 @@ module.exports = {
 			.setTitle('Ticket Created')
 			.setColor('Green')
 			.setDescription(`${interaction.user.tag} has opened a ticket: ${channel}.`)
-			.setFooter({ text: `${interaction.user.tag} (${interaction.user.id})` });
+			.setFooter({
+				text: `${interaction.user.tag} (${interaction.user.id})`,
+			});
 
-		logs?.send({ embeds: [embed_log] }).catch(() => false);
+		logs?.send({
+			embeds: [embed_log],
+		}).catch();
 
 		/* Update the values in the database */
 		guildData.Tickets.case = Number(guildData.Tickets.case) + 1;
 		guildData.Tickets.active.push(interaction.user.id);
 
 		await database.setValue(interaction.guild.id, guildData);
-
+		return true;
 	},
 };

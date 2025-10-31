@@ -1,6 +1,8 @@
+const { readdirSync } = require('fs');
+
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { readdirSync } = require('fs');
+
 const emojis = require('./../../utils/emojis');
 
 /* Formats command usage */
@@ -16,10 +18,20 @@ module.exports = {
 		.setDescription('Provides a list of all my commands!')
 		.setDMPermission(true)
 
-		.addStringOption(option => option.setName('command').setDescription('Shows details about how to use a command').setRequired(false)),
+		.addStringOption(option => option
+			.setName('command')
+			.setDescription('Shows details about how to use a command')
+			.setRequired(false),
+		),
 
-	cooldown: { time: 0, text: 'None (0)' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 0,
+		text: 'None (0)',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -46,21 +58,40 @@ module.exports = {
 				.setDescription(cmd.description)
 				.setTimestamp();
 
-			embed.addFields({ name: '__Usage:__', value: formatUsage(cmd.usage ? cmd.usage : '/ ' + cmd.name), inline: false });
+			embed.addFields({
+				name: '__Usage:__',
+				value: formatUsage(cmd.usage ? cmd.usage : '/ ' + cmd.name),
+				inline: false,
+			});
 
 			/* Add specific values and properties */
 			if (cmd.permissions[0]) {
-				embed.addFields({ name: '__Permissions:__', value: '`' + cmd.permissions.join('` `') + '`', inline: false });
+				embed.addFields({
+					name: '__Permissions:__',
+					value: '`' + cmd.permissions.join('` `') + '`',
+					inline: false,
+				});
 			}
 			if (cmd?.cooldown?.text) {
-				embed.addFields({ name: '__Cooldown:__', value: `**${cmd.cooldowm.text}**`, inline: false });
+				embed.addFields({
+					name: '__Cooldown:__',
+					value: `**${cmd.cooldowm.text}**`,
+					inline: false,
+				});
 			}
-			if (cmd.error == true) {
-				embed.addFields({ name: '__Error:__', value: 'This command is currently unavailable, please try again later.', inline: false });
+			if (cmd.error === true) {
+				embed.addFields({
+					name: '__Error:__',
+					value: 'This command is currently unavailable, please try again later.',
+					inline: false,
+				});
 			}
 
 			/* Responds to the user */
-			interaction.followUp({ embeds: [embed], ephemeral: false });
+			interaction.followUp({
+				embeds: [embed],
+				ephemeral: false,
+			});
 			return true;
 
 		}
@@ -78,30 +109,47 @@ module.exports = {
 			for (const category of ['general', 'fun', 'moderation', 'admin', 'support']) {
 				let description = '';
 
-				const commandFiles = readdirSync(__dirname + '/../../commands/' + category).filter(file => file.endsWith('.js'));
+				const commandFiles = readdirSync(__dirname + '/../../commands/' + category)
+					.filter(file => file.endsWith('.js'));
+
 				for (const file of commandFiles) {
+
+					// eslint-disable-next-line security/detect-non-literal-require
 					const command = require(`${__dirname}/../../commands/${category}/${file}`);
 					description += `${formatUsage(command.usage)}\n`;
 				}
 
 				/* Adds the categories information into the Embed */
-				embed.addFields({ name: `__${category.charAt(0).toUpperCase() + category.slice(1)}__`, value: description, inline: false });
+				embed.addFields({
+					name: `__${category.charAt(0).toUpperCase() + category.slice(1)}__`,
+					value: description,
+					inline: false,
+				});
 			}
 
 			/* Creates LINK Buttons */
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setStyle(ButtonStyle.Link).setLabel('Support Server').setURL('https://automod.liamskinner.co.uk/support').setEmoji(emojis.link),
+						.setStyle(ButtonStyle.Link)
+						.setLabel('Support Server')
+						.setURL('https://automod.liamskinner.co.uk/support')
+						.setEmoji(emojis.link),
 					new ButtonBuilder()
-						.setStyle(ButtonStyle.Link).setLabel('Invite').setURL('https://automod.liamskinner.co.uk/invite').setEmoji(emojis.invite),
+						.setStyle(ButtonStyle.Link)
+						.setLabel('Invite')
+						.setURL('https://automod.liamskinner.co.uk/invite')
+						.setEmoji(emojis.invite),
 				);
 
 			/* Responds to the user */
-			interaction.followUp({ embeds: [embed], components: [row], ephemeral: false });
+			interaction.followUp({
+				embeds: [embed],
+				components: [row],
+				ephemeral: false,
+			});
+
 			return true;
-
 		}
-
 	},
 };

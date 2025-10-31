@@ -34,10 +34,20 @@ module.exports = {
 		.setDescription('Ask the all knowing, magic 8ball a question!')
 		.setDMPermission(true)
 
-		.addStringOption(option => option.setName('question').setDescription('What is your question').setRequired(true)),
+		.addStringOption(option => option
+			.setName('question')
+			.setDescription('What is your question')
+			.setRequired(true),
+		),
 
-	cooldown: { time: 0, text: 'None (0)' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 0,
+		text: 'None (0)',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -59,8 +69,10 @@ module.exports = {
 			.setThumbnail('https://i.imgur.com/SD5OXUV.jpg');
 
 		/* Responds to the user */
-		interaction.followUp({ embeds: [embed] });
-		return true;
+		interaction.followUp({
+			embeds: [embed],
+		});
 
+		return true;
 	},
 };

@@ -15,7 +15,9 @@ module.exports = {
 	**/
 	execute: async (message) => {
 
-		if (message?.author?.bot == true || message?.author?.bot) return false;
+		if (message?.author?.bot === true || message?.author?.bot) {
+			return false;
+		}
 
 		/* Ghost Ping Detector */
 		const res = GhostPing('messageDelete', message);
@@ -28,14 +30,17 @@ module.exports = {
 					{ name: '__Who?__', value: `**Author:**   ${res.author}\n**Channel:** ${res.channel}`, inline: true },
 					{ name: '__Mentions__', value: `${res.mentions.join(' ')}!`, inline: true },
 				)
-				.setFooter({ text: 'Don\'t GhostPing, smh!' })
+				.setFooter({
+					text: 'Don\'t GhostPing, smh!',
+				})
 				.setTimestamp();
 
 			/* Sends the GhostPing message to the channel */
-			message.channel.send({ embeds: [embed] });
+			message.channel.send({
+				embeds: [embed],
+			});
 		}
 
 		return true;
-
 	},
 };

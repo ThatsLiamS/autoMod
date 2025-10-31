@@ -1,6 +1,7 @@
-/* Import Required Types and Modules */
 const { Collection } = require('discord.js');
-const { GuildSchema } = require('./Database Schema.js');
+const firebaseAdmin = require('firebase-admin');
+
+const { GuildSchema } = require('./Database Schema');
 
 
 /**
@@ -21,9 +22,10 @@ const getUserId = ({ string }) => {
 
 
 /* Connection to the Firestore Database */
-const admin = require('firebase-admin');
-admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env['Database'])) });
-const firestore = admin.firestore();
+firebaseAdmin.initializeApp({
+	credential: firebaseAdmin.credential.cert(JSON.parse(process.env['Database'])),
+});
+const firestore = firebaseAdmin.firestore();
 
 /* Create the Database's cache */
 const cache = new Collection();
@@ -41,7 +43,9 @@ const database = {
 
 		/* Is the data in the cache? */
 		const cacheData = cache.get(documentID);
-		if (cacheData) return cacheData;
+		if (cacheData) {
+			return cacheData;
+		}
 
 		/* Fetch the data from Firestore */
 		const collection = await firestore.collection('guilds').doc(documentID).get();
@@ -76,7 +80,7 @@ const database = {
 
 
 /**
- * Change a strings length with 2 way padding
+ * Change a strings length with right padding
  * @function
  * @author Liam Skinner <me@liamskinner.co.uk>
  *
@@ -84,7 +88,7 @@ const database = {
  * @param {number} length - Idea length of the string
  * @returns {string}
 **/
-const fitString = (str, length) => (str + ' '.repeat(length -= str.length));
+const fitString = (str, length) => (str + ' '.repeat(length - str.length));
 
 /**
  * Form a grid of values from a 2D Array
@@ -101,9 +105,9 @@ const makeGrid = (results) => {
 		const values = [y + 1];
 
 		for (let x = 0; x < 3; x++) {
-			if (x == '0') {
+			if (x === 0) {
 				const num = results[x][y].toString();
-				values.push(`${num.length == 2 ? 0 + num.toString() : num.toString()} ms  `);
+				values.push(`${num.length === 2 ? 0 + num.toString() : num.toString()} ms  `);
 			}
 			else { values.push(fitString(results[x][y].toString(), [8, 7, 7][x])); }
 		}
@@ -132,10 +136,16 @@ const formatTime = (seconds) => {
 		[60, 'Minute'],
 		[60 * 60, 'Hour'],
 	];
-	const type = (seconds < 61 ? 0 : (seconds < 3600 ? 1 : 2));
+
+	const getDenominationType = (seconds) => {
+		if (seconds < 61) { return 0; }
+		if (seconds < 3600) { return 1; }
+		return 2;
+	};
+	const type = getDenominationType(seconds);
 	const num = Math.floor(seconds / denominations[type][0]);
 
-	return `${num} ${denominations[type][1]}${num != 1 ? 's' : ''}`;
+	return `${num} ${denominations[type][1]}${num !== 1 ? 's' : ''}`;
 };
 
 /**

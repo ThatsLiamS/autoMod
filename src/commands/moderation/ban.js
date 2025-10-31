@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const { database, getUserId } = require('../../utils/functions.js');
+
+const { database, getUserId } = require('../../utils/functions');
 
 module.exports = {
 	name: 'ban',
@@ -15,14 +16,32 @@ module.exports = {
 		.setDMPermission(false)
 		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers | PermissionFlagsBits.ManageGuild)
 
-		.addStringOption(option => option.setName('user').setDescription('The user to ban - @mention or ID').setRequired(true))
-		.addIntegerOption(option => option
-			.setName('days').setDescription('Do I purge their messages?').setMinValue(0).setMaxValue(7).setRequired(false),
+		.addStringOption(option => option
+			.setName('user')
+			.setDescription('The user to ban - @mention or ID')
+			.setRequired(true),
 		)
-		.addStringOption(option => option.setName('reason').setDescription('Why are you banning them?').setRequired(false)),
+		.addIntegerOption(option => option
+			.setName('days')
+			.setDescription('Do I purge their messages?')
+			.setMinValue(0)
+			.setMaxValue(7)
+			.setRequired(false),
+		)
+		.addStringOption(option => option
+			.setName('reason')
+			.setDescription('Why are you banning them?')
+			.setRequired(false),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: { 
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -37,23 +56,28 @@ module.exports = {
 
 		/* Fetch the target user */
 		const userId = getUserId({ string: interaction.options.getString('user') });
-		const user = await client.users.fetch(userId).catch(() => { return; });
+		const user = await client.users.fetch(userId).catch();
 		if (!user) {
-			interaction.followUp({ content: 'I am unable to find that user.' });
-			return;
+			interaction.followUp({
+				content: 'I am unable to find that user.',
+			});
+			return false;
 		}
 
 		/* Fetch the other arguments */
 		const days = interaction.options.getInteger('days') || 0;
-		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
-
+		const reason = interaction.options.getString('reason')
+			? interaction.options.getString('reason')
+			: 'No reason specified';
 
 		return interaction.guild.members.ban(user, { days, reason: `Mod: ${interaction.user.tag}\nReason: ${reason}` })
 			.then(async () => {
 
 				/* Fetch the Guild's Moderation information */
 				const guildData = await database.getValue(interaction.guild.id);
-				if (!guildData.Moderation.cases[user.id]) guildData.Moderation.cases[user.id] = [];
+				if (!guildData.Moderation.cases[user.id]) {
+					guildData.Moderation.cases[user.id] = [];
+				}
 				guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 				const object = {
@@ -74,9 +98,12 @@ module.exports = {
 				await database.setValue(interaction.guild.id, guildData);
 
 				/* Sends an Embed logging this action */
-				if (guildData.Moderation.logs.on == true) {
+				if (guildData.Moderation.logs.on === true) {
 					const logEmbed = new EmbedBuilder()
-						.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+						.setAuthor({
+							name: interaction.user.tag,
+							iconURL: interaction.user.displayAvatarURL(),
+						})
 						.setTitle(`🔨 Banned: ${user.tag}`)
 						.setColor('#DC143C')
 						.addFields(
@@ -87,13 +114,24 @@ module.exports = {
 						.setTimestamp();
 
 					const channel = interaction.guild.channels.cache.get(guildData.Moderation.logs.channel);
-					channel?.send({ embeds: [logEmbed] }).catch(() => false);
+					channel?.send({
+						embeds: [logEmbed],
+					}).catch();
 				}
 
 				/* Responds to the moderator */
-				interaction.followUp({ content: `${user.tag} has been banned.`, ephemeral: true });
+				interaction.followUp({ 
+					content: `${user.tag} has been banned.`,
+					ephemeral: true,
+				});
 				return true;
 			})
-			.catch(() => interaction.followUp({ content: 'Sorry, an error has occurred, please double check my permissions.', ephemeral: true }));
+			.catch(() => {
+				interaction.followUp({
+					content: 'Sorry, an error has occurred, please double check my permissions.',
+					ephemeral: true,
+				});
+				return false;
+			});
 	},
 };

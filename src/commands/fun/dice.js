@@ -11,8 +11,14 @@ module.exports = {
 		.setDescription('Roll a 6 sided die!')
 		.setDMPermission(true),
 
-	cooldown: { time: 0, text: 'None (0)' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 0,
+		text: 'None (0)',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -32,8 +38,11 @@ module.exports = {
 			.setThumbnail(`https://assets.liamskinner.co.uk/dice/${random}.png`);
 
 		/* Responds to the user */
-		interaction.followUp({ embeds: [embed], ephemeral: false });
-		return true;
+		interaction.followUp({
+			embeds: [embed],
+			ephemeral: false,
+		});
 
+		return true;
 	},
 };

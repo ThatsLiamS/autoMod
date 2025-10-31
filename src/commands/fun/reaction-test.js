@@ -1,7 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
-const emojis = ['🔴', '🟠', '🟢', '🔵', '🟣'];
+const emojis = [
+	'🔴',
+	'🟠',
+	'🟢',
+	'🔵',
+	'🟣',
+];
 
 module.exports = {
 	name: 'reaction-test',
@@ -16,17 +22,27 @@ module.exports = {
 		.addIntegerOption(option => option
 			.setName('reactions')
 			.setDescription('Amount of reactions to add')
-			.setMinValue(1).setMaxValue(5).setRequired(true),
+			.setMinValue(1)
+			.setMaxValue(5)
+			.setRequired(true),
 		)
 
 		.addIntegerOption(option => option
 			.setName('usercount')
 			.setDescription('How many users to display?')
-			.setMinValue(1).setMaxValue(5).setRequired(true),
+			.setMinValue(1)
+			.setMaxValue(5)
+			.setRequired(true),
 		),
 
-	cooldown: { time: 30, text: '30 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 30,
+		text: '30 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -48,8 +64,12 @@ module.exports = {
 			.setTitle('Preparing reaction test!')
 			.setColor('Red')
 			.setDescription('Please wait while we begin the test!')
-			.setFooter({ text: 'Any reactions before the test starts are disqualified.' });
-		const message = await interaction.followUp({ embeds: [preparingEmbed] });
+			.setFooter({
+				text: 'Any reactions before the test starts are disqualified.',
+			});
+		const message = await interaction.followUp({
+			embeds: [preparingEmbed],
+		});
 
 		for (const emoji of emojis.slice(0, emojiCount)) {
 			await message.react(emoji);
@@ -61,8 +81,12 @@ module.exports = {
 			const startingEmbed = new EmbedBuilder()
 				.setTitle('Reaction test in progess!')
 				.setColor('Green')
-				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe ** first ${userCount == 1 ? 'user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`);
-			await message.edit({ embeds: [startingEmbed] });
+				.setDescription(`Click the ${emoji} as fast as you can!\n\nThe ** first ${userCount === 1 ? 'user' : `${userCount} people`}** to react will be shown here.\n\nIf you have reacted before, you have likely been disqualified.`);
+
+			await message.edit({
+				embeds: [startingEmbed],
+			});
+
 			active = true;
 		}, 3000);
 
@@ -71,10 +95,16 @@ module.exports = {
 		const users = [];
 
 		const filter = (reaction, user) => reaction.emoji.name === emoji && !user.bot && !users.includes(user);
-		const collector = message.createReactionCollector({ filter, time: 10_000, maxUsers: userCount });
+		const collector = message.createReactionCollector({
+			filter,
+			time: 10_000,
+			maxUsers: userCount,
+		});
 
 		collector.on('collect', (_reaction, user) => {
-			if (active) { users.push(user); }
+			if (active) {
+				users.push(user);
+			}
 		});
 		return collector.on('end', async () => {
 			const positions = userCount > users.length ? users.length : userCount;
@@ -86,22 +116,27 @@ module.exports = {
 					data = data + `**${x}. ${users[x - 1].username}** (<@${users[x - 1].id}>)\n`;
 				}
 			}
-			else { data = 'Whoops, seems like nobody reacted.'; }
+			else {
+				data = 'Whoops, seems like nobody reacted.';
+			}
 
 
 			/* Display the fastest reactors! */
 			const winnersEmbed = new EmbedBuilder()
 				.setTitle('Reaction test is over!')
 				.setColor('Blue')
-				.setDescription(`Here's ${positions == 1 ? 'the **first user' : `a list of the **first ${positions} people`}** who reacted.\n\n${data}`)
-				.setFooter({ text: 'Thanks for playing!' });
+				.setDescription(`Here's ${positions === 1 ? 'the **first user' : `a list of the **first ${positions} people`}** who reacted.\n\n${data}`)
+				.setFooter({
+					text: 'Thanks for playing!',
+				});
 
 			return setTimeout(async () => {
-				await message.edit({ embeds: [winnersEmbed] });
+				await message.edit({
+					embeds: [winnersEmbed],
+				});
+
 				return true;
 			}, 3000);
-
 		});
-
 	},
 };

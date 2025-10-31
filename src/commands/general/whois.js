@@ -12,10 +12,20 @@ module.exports = {
 		.setDescription('Shows information about a user!')
 		.setDMPermission(false)
 
-		.addUserOption(option => option.setName('user').setDescription('The user to get the information for').setRequired(false)),
+		.addUserOption(option => option
+			.setName('user')
+			.setDescription('The user to get the information for')
+			.setRequired(false),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -42,7 +52,10 @@ module.exports = {
 		/* Create the Embed of information */
 		const embed = new EmbedBuilder()
 			.setColor(user.hexAccentColor)
-			.setAuthor({ name: interaction.member.user.username, iconURL: interaction.member.displayAvatarURL() })
+			.setAuthor({
+				name: interaction.member.user.username,
+				iconURL: interaction.member.displayAvatarURL(),
+			})
 			.setTitle(`${member.displayName}'s Information`)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.addFields(
@@ -56,12 +69,16 @@ module.exports = {
 
 				{ name: '**Roles**', value: `${roles.join(' ')}`, inline: false },
 			)
-			.setFooter({ text: `Requested by ${interaction.member.user.tag}, ID ${interaction.member.id}` })
+			.setFooter({
+				text: `Requested by ${interaction.member.user.tag}, ID ${interaction.member.id}`,
+			})
 			.setTimestamp();
 
 		/* Responds to the user */
-		interaction.followUp({ embeds: [embed] });
-		return true;
+		interaction.followUp({
+			embeds: [embed],
+		});
 
+		return true;
 	},
 };

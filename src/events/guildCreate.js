@@ -14,7 +14,9 @@ module.exports = {
 	 * @returns {boolean}
 	**/
 	execute: async (guild, client) => {
-		if (!guild || !guild?.available) return false;
+		if (!guild || !guild?.available) {
+			return false;
+		}
 
 		/* Fetch the Owner's Information */
 		const ownerId = guild?.ownerId;
@@ -35,13 +37,24 @@ module.exports = {
 				{ name: 'Created At', value: `${guild?.createdAt}`, inline: true },
 				{ name: 'Location', value: `${guild?.preferredLocale || 'Unknown Location'}`, inline: true },
 			)
-			.setAuthor({ name: guild?.name, iconURL: avatarURL })
-			.setFooter({ text: 'Filter keywords: autoMod, guildCreate, Guild, Joined, Create' })
+			.setAuthor({
+				name: guild?.name,
+				iconURL: avatarURL,
+			})
+			.setFooter({
+				text: 'Filter keywords: autoMod, guildCreate, Guild, Joined, Create',
+			})
 			.setTimestamp();
 
 		/* Send the webhook embed */
-		const webhook = new WebhookClient({ url: process.env['DeveloperLogs'] });
-		webhook?.send({ username: client.user.username, avatarURL: client.user.displayAvatarURL(), embeds: [embed] });
+		const webhook = new WebhookClient({
+			url: process.env['DeveloperLogs'],
+		});
+		webhook?.send({
+			username: client.user.username,
+			avatarURL: client.user.displayAvatarURL(),
+			embeds: [embed],
+		});
 
 		return true;
 	},

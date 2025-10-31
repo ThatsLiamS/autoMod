@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { database, getUserId } = require('../../utils/functions.js');
+
+const { database, getUserId } = require('../../utils/functions');
 
 module.exports = {
 	name: 'warn',
@@ -15,11 +16,25 @@ module.exports = {
 		.setDMPermission(false)
 		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers | PermissionFlagsBits.BanMembers | PermissionFlagsBits.ModerateMembers | PermissionFlagsBits.ManageGuild)
 
-		.addStringOption(option => option.setName('user').setDescription('The user to warn - @mention or ID').setRequired(true))
-		.addStringOption(option => option.setName('reason').setDescription('Why are we warning them?').setRequired(true)),
+		.addStringOption(option => option
+			.setName('user')
+			.setDescription('The user to warn - @mention or ID')
+			.setRequired(true),
+		)
+		.addStringOption(option => option
+			.setName('reason')
+			.setDescription('Why are we warning them?')
+			.setRequired(true),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: false },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: false,
+	},
 
 	/**
 	 * @async @function
@@ -34,17 +49,24 @@ module.exports = {
 
 		/* Fetch the target user */
 		const userId = getUserId({ string: interaction.options.getString('user') });
-		const user = await client.users.fetch(userId).catch(() => false);
+		const user = await client.users.fetch(userId).catch();
 		if (!user) {
-			interaction.followUp({ content: 'I am unable to find that user.' });
-			return;
+			interaction.followUp({
+				content: 'I am unable to find that user.',
+			});
+			return false;
 		}
+
 		/* Fetch the provided reason */
-		const reason = interaction.options.getString('reason') ? interaction.options.getString('reason') : 'No reason specified';
+		const reason = interaction.options.getString('reason')
+			? interaction.options.getString('reason')
+			: 'No reason specified';
 
 		/* Fetch the Guild's Moderation information */
 		const guildData = await database.getValue(interaction.guild.id);
-		if (!guildData.Moderation.cases[user.id]) guildData.Moderation.cases[user.id] = [];
+		if (!guildData.Moderation.cases[user.id]) {
+			guildData.Moderation.cases[user.id] = [];
+		}
 		guildData.Moderation.case = Number(guildData.Moderation.case) + 1;
 
 		const object = {
@@ -73,12 +95,17 @@ module.exports = {
 				{ name: '**Reason**', value: `${reason}`, inline: false },
 			)
 			.setTimestamp();
-		user.send({ embeds: [userEmbed] }).catch(() => false);
+		user.send({
+			embeds: [userEmbed],
+		}).catch();
 
 		/* Sends an Embed logging this action */
-		if (guildData.Moderation.logs.on == true) {
+		if (guildData.Moderation.logs.on === true) {
 			const logEmbed = new EmbedBuilder()
-				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+				.setAuthor({
+					name: interaction.user.tag,
+					iconURL: interaction.user.displayAvatarURL(),
+				})
 				.setTitle(`⚠️ Warned: ${user.tag}`)
 				.setColor('#DC143C')
 				.addFields(
@@ -89,11 +116,16 @@ module.exports = {
 				.setTimestamp();
 
 			const channel = interaction.guild.channels.cache.get(guildData.Moderation.logs.channel);
-			channel?.send({ embeds: [logEmbed] }).catch(() => false);
+			channel?.send({
+				embeds: [logEmbed],
+			}).catch();
 		}
 
 		/* Responds to the moderator */
-		interaction.followUp({ content: `${user.tag} has been warned.`, ephemeral: true });
+		interaction.followUp({
+			content: `${user.tag} has been warned.`,
+			ephemeral: true,
+		});
 		return true;
 	},
 };

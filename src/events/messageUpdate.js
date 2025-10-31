@@ -17,10 +17,16 @@ module.exports = {
 	execute: async (oldMessage, newMessage) => {
 
 		/* Fetch Partial Messages */
-		if (oldMessage?.partial) await oldMessage.fetch();
-		if (newMessage?.partial) await newMessage.fetch();
+		if (oldMessage?.partial) {
+			await oldMessage.fetch();
+		}
+		if (newMessage?.partial) {
+			await newMessage.fetch();
+		}
 
-		if (oldMessage?.author?.bot == true || oldMessage?.author?.bot) return false;
+		if (oldMessage?.author?.bot === true || oldMessage?.author?.bot) {
+			return false;
+		}
 
 		/* Ghost Ping Detector */
 		const res = GhostPing('messageUpdate', oldMessage, newMessage);
@@ -33,14 +39,17 @@ module.exports = {
 					{ name: '__Who?__', value: `**Author:**   ${res.author}\n**Channel:** ${res.channel}`, inline: true },
 					{ name: '__Mentions__', value: `${res.mentions.join(' ')}!`, inline: true },
 				)
-				.setFooter({ text: 'Don\'t GhostPing, smh!' })
+				.setFooter({
+					text: 'Don\'t GhostPing, smh!',
+				})
 				.setTimestamp();
 
 			/* Sends the GhostPing message to the channel */
-			newMessage.channel.send({ embeds: [embed] });
+			newMessage.channel.send({
+				embeds: [embed],
+			});
 		}
 
 		return true;
-
 	},
 };

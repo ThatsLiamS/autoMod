@@ -2,9 +2,23 @@
 const { CommandInteraction, Client, SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 
-const premiumTier = ['None', 'Level 1', 'Level 2', 'Level 3' ];
-const mfaLevel = ['Off', 'On' ];
-const verificationLevel = ['None.', 'Low: verified email required.', 'Medium: on Discord for 5 minutes.', 'High: on the server for 10 minutes.', 'Very High: verified phone number.' ];
+const premiumTier = [
+	'None',
+	'Level 1',
+	'Level 2',
+	'Level 3',
+];
+const mfaLevel = [
+	'Off',
+	'On',
+];
+const verificationLevel = [
+	'None.',
+	'Low: verified email required.',
+	'Medium: on Discord for 5 minutes.',
+	'High: on the server for 10 minutes.',
+	'Very High: verified phone number.',
+];
 
 module.exports = {
 	name: 'serverinfo',
@@ -16,10 +30,20 @@ module.exports = {
 		.setDescription('Shows information about the server!')
 		.setDMPermission(false)
 
-		.addStringOption(option => option.setName('id').setDescription('The server\'s ID ').setRequired(false)),
+		.addStringOption(option => option
+			.setName('id')
+			.setDescription('The server\'s ID ')
+			.setRequired(false),
+		),
 
-	cooldown: { time: 10, text: '10 seconds' },
-	defer: { defer: true, ephemeral: true },
+	cooldown: {
+		time: 10,
+		text: '10 seconds',
+	},
+	defer: {
+		defer: true,
+		ephemeral: true,
+	},
 
 	/**
 	 * @async @function
@@ -43,7 +67,10 @@ module.exports = {
 		/* Creates an embed of information */
 		const embed = new EmbedBuilder()
 			.setColor('#0099ff')
-			.setAuthor({ name: `${interaction.member.user.username} (${interaction.member.id})`, iconURL: interaction.member.displayAvatarURL() })
+			.setAuthor({
+				name: `${interaction.member.user.username} (${interaction.member.id})`,
+				iconURL: interaction.member.displayAvatarURL(),
+			})
 			.setTitle(`${guild.name}'s Information`)
 			.setThumbnail(guild.iconURL({ dynamic: true }))
 			.addFields(
@@ -63,24 +90,35 @@ module.exports = {
 				{ name: '**MFA Level**', value: `${mfaLevel[guild.mfaLevel]}`, inline: true },
 				{ name: '**Nitro Boost Level**', value: `${premiumTier[guild.premiumTier]}`, inline: true },
 			)
-			.setFooter({ text: `Requested by ${interaction.member.user.tag}` })
+			.setFooter({
+				text: `Requested by ${interaction.member.user.tag}`,
+			})
 			.setTimestamp();
 
 		/* Attempts to fetch a Guild Invite */
 		try {
-			const channel = guild.channels.cache.filter(c => c.type == 5 || c.type == 0)?.first();
-			const invite = await guild.invites.create(channel?.id, { maxAge: 3600, maxUses: 5 }).catch(() => {
-				/* Do Nothing! */
-			});
+			const channel = guild.channels.cache
+				.filter(c => c.type === 5 || c.type === 0)
+				.first();
+
+			const invite = await guild.invites
+				.create(channel?.id, {
+					maxAge: 3600,
+					maxUses: 5,
+				})
+				.catch();
+
 			embed.setURL(invite?.url);
 		}
-		catch (err) {
-			/* ignore it :) */
+		catch {
+			/* Ignore It */
 		}
 
 		/* Responds to the user */
-		interaction.followUp({ embeds: [embed] });
-		return true;
+		interaction.followUp({
+			embeds: [embed],
+		});
 
+		return true;
 	},
 };

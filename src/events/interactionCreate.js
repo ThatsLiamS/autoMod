@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { Interaction, Client, InteractionType, Events, Collection } = require('discord.js');
-const { formatTime } = require('./../utils/functions.js');
+
+const { formatTime } = require('./../utils/functions');
 const cooldowns = new Collection();
 
 module.exports = {
@@ -21,16 +22,23 @@ module.exports = {
 		if (interaction.type === InteractionType.ApplicationCommand) {
 
 			const cmd = client.commands.get(interaction.commandName);
-			if (!cmd) return false;
+			if (!cmd) {
+				return false;
+			}
 
 			/* Is the command working? */
-			if (cmd['error'] == true) {
-				interaction.reply({ content: 'Sorry, this command is currently unavailable. Please try again later.', ephemeral: true });
-				return;
+			if (cmd['error'] === true) {
+				interaction.reply({
+					content: 'Sorry, this command is currently unavailable. Please try again later.',
+					ephemeral: true,
+				});
+				return false;
 			}
 
 			/* Work out the appropriate cooldown time */
-			if (!cooldowns.has(cmd.name)) cooldowns.set(cmd.name, new Collection());
+			if (!cooldowns.has(cmd.name)) {
+				cooldowns.set(cmd.name, new Collection());
+			}
 			const timestamps = cooldowns.get(cmd.name);
 			const cooldownAmount = (cmd?.cooldown?.time || 0) * 1000;
 
@@ -42,24 +50,34 @@ module.exports = {
 				const secondsLeft = Math.floor((Number(expiration) - Number(Date.now())) / 1000);
 
 				/* Alert the user */
-				interaction.reply({ content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.` });
+				interaction.reply({
+					content: `Please wait **${formatTime(secondsLeft > 1 ? secondsLeft : 1)}** to use this command again.`,
+				});
 				return false;
 			}
 
 			/* Does the command need deferring */
-			if (cmd['defer']['defer'] == true) await interaction.deferReply({ ephemeral: cmd['defer']['ephemeral'] ? true : false });
+			if (cmd['defer']['defer'] === true) {
+				await interaction.deferReply({
+					ephemeral: cmd['defer']['ephemeral'] ? true : false,
+				});
+			}
 
 			/* Execute the command file */
 			try {
 				cmd.execute({ interaction, client }).then((res) => {
-					if (res == true) {
+					if (res === true) {
 						/* Set and delete the cooldown */
 						timestamps.set(interaction.user.id, Date.now());
 						setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 					}
-				}).catch((err) => console.log(err));
+				}).catch((err) => {
+					console.log(err);
+				});
 			}
-			catch (err) { console.log(err); }
+			catch (err) {
+				console.log(err);
+			}
 
 		}
 
@@ -70,17 +88,25 @@ module.exports = {
 			const category = interaction.customId.split('-')[0];
 			const name = interaction.customId.split('-')[1];
 
+			// eslint-disable-next-line security/detect-non-literal-require
 			const file = require(`./../buttons/${category}/${name}`);
-			if (!file) return false;
+			if (!file) {
+				return false;
+			}
 
 			/* Execute the button file */
 			try {
-				await file.execute({ interaction, client })
-					.then(() => true)
-					.catch((err) => console.log(err));
+				await file.execute({
+					interaction,
+					client,
+				});
 			}
-			catch (err) { console.log(err); }
+			catch (err) {
+				console.log(err);
+				return false;
+			}
 		}
 
+		return true;
 	},
 };
